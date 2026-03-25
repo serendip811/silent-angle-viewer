@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Silent Angle Viewer</title>
+  <style>
+    :root {
+      --bg: #f4efe7;
+      --panel: #fffaf2;
+      --ink: #1f2b24;
+      --muted: #6e756f;
+      --grid: #d8d2c7;
+      --wall: #4a4b4d;
+      --cover: #7fa27c;
+      --player: #1f6fb2;
+      --guard: #b4473d;
+      --target: #d4a72c;
+      --extract: #3b9f8c;
+      --sight: rgba(196, 76, 57, 0.2);
+      --range: rgba(31, 111, 178, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Iowan Old Style", serif;
+      color: var(--ink);
+      background: radial-gradient(circle at top, #fffaf2, var(--bg));
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(320px, 1fr) 360px;
+      gap: 18px;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid rgba(31, 43, 36, 0.08);
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(63, 55, 45, 0.08);
+    }
+
+    .stage {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .hud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .pill {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: #efe6d7;
+      font-size: 13px;
+    }
+
+    canvas {
+      width: 100%;
+      max-width: 920px;
+      aspect-ratio: 20 / 16;
+      border-radius: 14px;
+      background: #f8f3eb;
+      border: 1px solid rgba(31, 43, 36, 0.08);
+    }
+
+    .sidebar {
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    h1, h2, h3, p { margin: 0; }
+    h1 { font-size: 26px; }
+    h2 { font-size: 16px; margin-bottom: 10px; }
+    p, li, label, button, select, input { font-size: 14px; }
+    .muted { color: var(--muted); }
+
+    .controls, .stats, .variants {
+      padding: 14px;
+      border-radius: 12px;
+      background: rgba(239, 230, 215, 0.45);
+    }
+
+    .controls-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+
+    button, select, input[type="range"] {
+      appearance: none;
+      border: 1px solid rgba(31, 43, 36, 0.18);
+      background: #fffdf8;
+      color: var(--ink);
+      border-radius: 10px;
+      padding: 8px 10px;
+    }
+
+    button { cursor: pointer; }
+    input[type="range"] { width: 100%; padding: 0; }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .stat {
+      padding: 10px;
+      border-radius: 10px;
+      background: #fffdf8;
+      border: 1px solid rgba(31, 43, 36, 0.08);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 4px;
+      font-weight: normal;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 8px 6px;
+      border-bottom: 1px solid rgba(31, 43, 36, 0.08);
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 12px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .swatch {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+      border: 1px solid rgba(31, 43, 36, 0.15);
+    }
+
+    @media (max-width: 1100px) {
+      .layout { grid-template-columns: 1fr; }
+      canvas { max-width: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <section class="panel stage">
+      <div>
+        <h1>Silent Angle Debug Viewer</h1>
+        <p class="muted">Static browser viewer for simulation replay and balance reports.</p>
+      </div>
+      <div class="hud">
+        <div class="pill" id="mission-pill">Mission: -</div>
+        <div class="pill" id="variant-pill">Variant: -</div>
+        <div class="pill" id="profile-pill">Profile: -</div>
+        <div class="pill" id="turn-pill">Turn: 0</div>
+      </div>
+      <canvas id="map" width="960" height="768"></canvas>
+      <div class="legend">
+        <div class="legend-item"><span class="swatch" style="background: var(--wall);"></span>Wall</div>
+        <div class="legend-item"><span class="swatch" style="background: var(--cover);"></span>Cover</div>
+        <div class="legend-item"><span class="swatch" style="background: var(--extract);"></span>Extraction</div>
+        <div class="legend-item"><span class="swatch" style="background: var(--player);"></span>Player</div>
+        <div class="legend-item"><span class="swatch" style="background: var(--guard);"></span>Guard</div>
+        <div class="legend-item"><span class="swatch" style="background: var(--target);"></span>Target</div>
+      </div>
+    </section>
+
+    <aside class="panel sidebar">
+      <div class="controls">
+        <h2>Replay</h2>
+        <div class="controls-row">
+          <label for="replay-select">Replay</label>
+          <select id="replay-select">
+            <option value="data/replay_expert.json">Expert</option>
+            <option value="data/replay_standard.json">Standard</option>
+            <option value="data/replay_beginner.json">Beginner</option>
+          </select>
+        </div>
+        <div class="controls-row">
+          <button id="prev-btn">Prev</button>
+          <button id="play-btn">Play</button>
+          <button id="next-btn">Next</button>
+        </div>
+        <div class="controls-row">
+          <label><input type="checkbox" id="sight-toggle" checked> Sight</label>
+          <label><input type="checkbox" id="range-toggle" checked> Range</label>
+        </div>
+        <input id="turn-slider" type="range" min="0" max="0" value="0">
+      </div>
+
+      <div class="stats">
+        <h2>Run Stats</h2>
+        <div class="stats-grid" id="stats-grid"></div>
+      </div>
+
+      <div class="variants">
+        <h2>Variant Comparison</h2>
+        <p class="muted" id="variant-meta">Loading...</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Variant</th>
+              <th>Avg Success</th>
+              <th>Avg Diff</th>
+            </tr>
+          </thead>
+          <tbody id="variant-body"></tbody>
+        </table>
+      </div>
+    </aside>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const defaultReplay = params.get('replay') || 'data/replay_expert.json';
+    const variantsPath = params.get('variants') || 'data/variants.json';
+
+    const state = {
+      replay: null,
+      variants: null,
+      index: 0,
+      playing: false,
+      timer: null,
+    };
+
+    const canvas = document.getElementById('map');
+    const ctx = canvas.getContext('2d');
+    const replaySelect = document.getElementById('replay-select');
+    const turnSlider = document.getElementById('turn-slider');
+    const playBtn = document.getElementById('play-btn');
+    const sightToggle = document.getElementById('sight-toggle');
+    const rangeToggle = document.getElementById('range-toggle');
+
+    replaySelect.value = defaultReplay;
+
+    async function loadJson(path) {
+      const response = await fetch(path);
+      if (!response.ok) {
+        throw new Error(`Failed to load ${path}`);
+      }
+      return response.json();
+    }
+
+    function setPill(id, text) {
+      document.getElementById(id).textContent = text;
+    }
+
+    function renderStats(replay) {
+      const stats = {
+        Success: replay.result.success,
+        'Failure Reason': replay.result.failure_reason,
+        Turns: replay.result.turns,
+        Detected: replay.result.detected,
+        'Shot Fired': replay.result.shot_fired,
+        'Shot Hit': replay.result.shot_hit,
+        Extracted: replay.result.extracted,
+        Seed: replay.seed,
+      };
+      const grid = document.getElementById('stats-grid');
+      grid.innerHTML = '';
+      Object.entries(stats).forEach(([key, value]) => {
+        const div = document.createElement('div');
+        div.className = 'stat';
+        div.innerHTML = `<strong>${key}</strong>${value}`;
+        grid.appendChild(div);
+      });
+    }
+
+    function renderVariants(payload) {
+      document.getElementById('variant-meta').textContent = `Mission ${payload.mission} | batch ${payload.batch_size}`;
+      const body = document.getElementById('variant-body');
+      body.innerHTML = '';
+      payload.variants.forEach((variant) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${variant.variant}</td><td>${variant.avg_success_rate}</td><td>${variant.avg_difficulty_score}</td>`;
+        body.appendChild(tr);
+      });
+    }
+
+    function drawFrame() {
+      const replay = state.replay;
+      if (!replay) return;
+      const frame = replay.frames[state.index];
+      const mission = replay.mission;
+      const tileW = canvas.width / mission.width;
+      const tileH = canvas.height / mission.height;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#f8f3eb';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      if (sightToggle.checked) {
+        ctx.fillStyle = 'rgba(196, 76, 57, 0.2)';
+        frame.visible_tiles.flat().forEach(([x, y]) => {
+          ctx.fillRect(x * tileW, y * tileH, tileW, tileH);
+        });
+      }
+
+      if (rangeToggle.checked) {
+        const [px, py] = frame.player_pos;
+        ctx.beginPath();
+        ctx.fillStyle = 'rgba(31, 111, 178, 0.12)';
+        ctx.arc((px + 0.5) * tileW, (py + 0.5) * tileH, replay.mission.weapon.effective_range * tileW, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      for (let y = 0; y < mission.height; y++) {
+        for (let x = 0; x < mission.width; x++) {
+          const key = `${x},${y}`;
+          let fill = null;
+          if (mission.obstacles.some(([ox, oy]) => ox === x && oy === y)) fill = getCss('--wall');
+          else if (mission.cover.some(([cx, cy]) => cx === x && cy === y)) fill = getCss('--cover');
+          else if (mission.extraction[0] === x && mission.extraction[1] === y) fill = getCss('--extract');
+          if (fill) {
+            ctx.fillStyle = fill;
+            ctx.fillRect(x * tileW, y * tileH, tileW, tileH);
+          }
+          ctx.strokeStyle = getCss('--grid');
+          ctx.strokeRect(x * tileW, y * tileH, tileW, tileH);
+        }
+      }
+
+      frame.enemy_positions.forEach(([x, y]) => {
+        drawDot((x + 0.5) * tileW, (y + 0.5) * tileH, Math.min(tileW, tileH) * 0.28, getCss('--guard'));
+      });
+
+      if (frame.target_alive) {
+        drawDiamond((frame.target_pos[0] + 0.5) * tileW, (frame.target_pos[1] + 0.5) * tileH, Math.min(tileW, tileH) * 0.34, getCss('--target'));
+      }
+
+      drawDot((frame.player_pos[0] + 0.5) * tileW, (frame.player_pos[1] + 0.5) * tileH, Math.min(tileW, tileH) * 0.3, getCss('--player'));
+
+      setPill('mission-pill', `Mission: ${mission.mission_id}`);
+      setPill('variant-pill', `Variant: ${mission.variant_id}`);
+      setPill('profile-pill', `Profile: ${replay.profile.name}`);
+      setPill('turn-pill', `Turn: ${frame.turn}`);
+      turnSlider.value = state.index;
+    }
+
+    function getCss(name) {
+      return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    }
+
+    function drawDot(x, y, radius, color) {
+      ctx.beginPath();
+      ctx.fillStyle = color;
+      ctx.arc(x, y, radius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    function drawDiamond(x, y, size, color) {
+      ctx.beginPath();
+      ctx.fillStyle = color;
+      ctx.moveTo(x, y - size);
+      ctx.lineTo(x + size, y);
+      ctx.lineTo(x, y + size);
+      ctx.lineTo(x - size, y);
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    function stopPlayback() {
+      state.playing = false;
+      playBtn.textContent = 'Play';
+      if (state.timer) clearInterval(state.timer);
+      state.timer = null;
+    }
+
+    function startPlayback() {
+      stopPlayback();
+      state.playing = true;
+      playBtn.textContent = 'Pause';
+      state.timer = setInterval(() => {
+        if (state.index >= state.replay.frames.length - 1) {
+          stopPlayback();
+          return;
+        }
+        state.index += 1;
+        drawFrame();
+      }, 350);
+    }
+
+    async function loadReplay(path) {
+      state.replay = await loadJson(path);
+      state.index = 0;
+      turnSlider.max = Math.max(0, state.replay.frames.length - 1);
+      renderStats(state.replay);
+      drawFrame();
+    }
+
+    document.getElementById('prev-btn').addEventListener('click', () => {
+      stopPlayback();
+      state.index = Math.max(0, state.index - 1);
+      drawFrame();
+    });
+
+    document.getElementById('next-btn').addEventListener('click', () => {
+      stopPlayback();
+      state.index = Math.min(state.replay.frames.length - 1, state.index + 1);
+      drawFrame();
+    });
+
+    playBtn.addEventListener('click', () => {
+      if (state.playing) stopPlayback();
+      else startPlayback();
+    });
+
+    turnSlider.addEventListener('input', (event) => {
+      stopPlayback();
+      state.index = Number(event.target.value);
+      drawFrame();
+    });
+
+    replaySelect.addEventListener('change', async (event) => {
+      stopPlayback();
+      await loadReplay(event.target.value);
+    });
+
+    sightToggle.addEventListener('change', drawFrame);
+    rangeToggle.addEventListener('change', drawFrame);
+
+    Promise.all([loadReplay(defaultReplay), loadJson(variantsPath)])
+      .then(([, variants]) => {
+        state.variants = variants;
+        renderVariants(variants);
+      })
+      .catch((error) => {
+        document.getElementById('variant-meta').textContent = error.message;
+      });
+  </script>
+</body>
+</html>

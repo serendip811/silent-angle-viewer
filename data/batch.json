@@ -1,0 +1,59 @@
+{
+  "mission": "dockyard_01",
+  "batch_size": 20,
+  "profiles": [
+    {
+      "runs": 20,
+      "success_rate": 0.3,
+      "detection_rate": 1.0,
+      "shot_fired_rate": 1.0,
+      "shot_hit_rate": 0.75,
+      "target_escape_rate": 0.1,
+      "post_shot_death_rate": 0.6,
+      "avg_turns": 19.0,
+      "difficulty_score": 61.95,
+      "difficulty_label": "Hard",
+      "failure_breakdown": {
+        "player_dead": 12,
+        "target_escaped": 2
+      },
+      "agent": "beginner",
+      "variant": "baseline"
+    },
+    {
+      "runs": 20,
+      "success_rate": 0.35,
+      "detection_rate": 0.9,
+      "shot_fired_rate": 1.0,
+      "shot_hit_rate": 0.95,
+      "target_escape_rate": 0.05,
+      "post_shot_death_rate": 0.6,
+      "avg_turns": 28.75,
+      "difficulty_score": 58.98,
+      "difficulty_label": "Normal",
+      "failure_breakdown": {
+        "player_dead": 12,
+        "target_escaped": 1
+      },
+      "agent": "standard",
+      "variant": "baseline"
+    },
+    {
+      "runs": 20,
+      "success_rate": 0.55,
+      "detection_rate": 1.0,
+      "shot_fired_rate": 1.0,
+      "shot_hit_rate": 1.0,
+      "target_escape_rate": 0.0,
+      "post_shot_death_rate": 0.45,
+      "avg_turns": 30.25,
+      "difficulty_score": 50.25,
+      "difficulty_label": "Normal",
+      "failure_breakdown": {
+        "player_dead": 9
+      },
+      "agent": "expert",
+      "variant": "baseline"
+    }
+  ]
+}
