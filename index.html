@@ -231,6 +231,7 @@
               <th>Variant</th>
               <th>Avg Success</th>
               <th>Avg Diff</th>
+              <th>Turn Limit</th>
             </tr>
           </thead>
           <tbody id="variant-body"></tbody>
@@ -243,10 +244,12 @@
     const params = new URLSearchParams(window.location.search);
     const defaultReplay = params.get('replay') || 'data/replay_expert.json';
     const variantsPath = params.get('variants') || 'data/variants.json';
+    const batchPath = params.get('batch') || 'data/batch.json';
 
     const state = {
       replay: null,
       variants: null,
+      batch: null,
       index: 0,
       playing: false,
       timer: null,
@@ -275,10 +278,13 @@
     }
 
     function renderStats(replay) {
+      const batch = state.batch;
       const stats = {
         Success: replay.result.success,
         'Failure Reason': replay.result.failure_reason,
         Turns: replay.result.turns,
+        'Current Limit': replay.mission.time_limit,
+        'Recommended Limit': batch ? batch.recommended_turn_limit : 'loading',
         Detected: replay.result.detected,
         'Shot Fired': replay.result.shot_fired,
         'Shot Hit': replay.result.shot_hit,
@@ -301,7 +307,7 @@
       body.innerHTML = '';
       payload.variants.forEach((variant) => {
         const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${variant.variant}</td><td>${variant.avg_success_rate}</td><td>${variant.avg_difficulty_score}</td>`;
+        tr.innerHTML = `<td>${variant.variant}</td><td>${variant.avg_success_rate}</td><td>${variant.avg_difficulty_score}</td><td>${variant.current_turn_limit} -> ${variant.recommended_turn_limit}</td>`;
         body.appendChild(tr);
       });
     }
@@ -448,9 +454,11 @@
     sightToggle.addEventListener('change', drawFrame);
     rangeToggle.addEventListener('change', drawFrame);
 
-    Promise.all([loadReplay(defaultReplay), loadJson(variantsPath)])
-      .then(([, variants]) => {
+    Promise.all([loadReplay(defaultReplay), loadJson(variantsPath), loadJson(batchPath)])
+      .then(([, variants, batch]) => {
         state.variants = variants;
+        state.batch = batch;
+        renderStats(state.replay);
         renderVariants(variants);
       })
       .catch((error) => {
