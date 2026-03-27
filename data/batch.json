@@ -1,59 +1,58 @@
 {
   "mission": "dockyard_01",
   "variant": "baseline",
-  "batch_size": 50,
+  "batch_size": 40,
   "current_turn_limit": 55,
-  "recommended_turn_limit": 28,
+  "recommended_turn_limit": 47,
   "profiles": [
     {
-      "runs": 50,
-      "success_rate": 0.02,
-      "detection_rate": 0.2,
+      "runs": 40,
+      "success_rate": 0.45,
+      "detection_rate": 1.0,
       "shot_fired_rate": 1.0,
-      "shot_hit_rate": 0.82,
-      "target_escape_rate": 0.06,
-      "post_shot_death_rate": 0.92,
-      "avg_turns": 20.44,
-      "difficulty_score": 61.62,
-      "difficulty_label": "Hard",
+      "shot_hit_rate": 0.675,
+      "target_escape_rate": 0.175,
+      "post_shot_death_rate": 0.375,
+      "avg_turns": 18.8,
+      "difficulty_score": 53.67,
+      "difficulty_label": "Normal",
       "failure_breakdown": {
-        "player_dead": 46,
-        "target_escaped": 3
+        "player_dead": 15,
+        "target_escaped": 7
       },
       "agent": "beginner",
       "variant": "baseline"
     },
     {
-      "runs": 50,
-      "success_rate": 0.12,
-      "detection_rate": 0.74,
+      "runs": 40,
+      "success_rate": 0.9,
+      "detection_rate": 0.325,
       "shot_fired_rate": 1.0,
-      "shot_hit_rate": 0.96,
-      "target_escape_rate": 0.02,
-      "post_shot_death_rate": 0.86,
-      "avg_turns": 20.12,
-      "difficulty_score": 66.86,
-      "difficulty_label": "Hard",
+      "shot_hit_rate": 1.0,
+      "target_escape_rate": 0.0,
+      "post_shot_death_rate": 0.1,
+      "avg_turns": 33.83,
+      "difficulty_score": 18.15,
+      "difficulty_label": "Very Easy",
       "failure_breakdown": {
-        "player_dead": 43,
-        "target_escaped": 1
+        "player_dead": 4
       },
       "agent": "standard",
       "variant": "baseline"
     },
     {
-      "runs": 50,
-      "success_rate": 0.1,
-      "detection_rate": 0.56,
+      "runs": 40,
+      "success_rate": 0.925,
+      "detection_rate": 0.35,
       "shot_fired_rate": 1.0,
       "shot_hit_rate": 1.0,
       "target_escape_rate": 0.0,
-      "post_shot_death_rate": 0.9,
-      "avg_turns": 20.04,
-      "difficulty_score": 64.34,
-      "difficulty_label": "Hard",
+      "post_shot_death_rate": 0.075,
+      "avg_turns": 34.75,
+      "difficulty_score": 17.44,
+      "difficulty_label": "Very Easy",
       "failure_breakdown": {
-        "player_dead": 45
+        "player_dead": 3
       },
       "agent": "expert",
       "variant": "baseline"

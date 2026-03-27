@@ -19,6 +19,7 @@
       --target: #e0b742;
       --sight: rgba(224, 108, 95, 0.2);
       --range: rgba(196, 214, 230, 0.18);
+      --goal: rgba(212, 160, 72, 0.95);
     }
 
     * { box-sizing: border-box; }
@@ -138,6 +139,43 @@
       font-weight: normal;
     }
 
+    .enemy-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .enemy-card {
+      padding: 10px;
+      border-radius: 10px;
+      background: rgba(255, 252, 245, 0.95);
+      border: 1px solid rgba(31, 43, 36, 0.08);
+    }
+
+    .enemy-card strong,
+    .enemy-card span {
+      display: block;
+    }
+
+    .enemy-card strong {
+      margin-bottom: 5px;
+      font-size: 13px;
+    }
+
+    .enemy-card span + span {
+      margin-top: 3px;
+    }
+
+    .awareness-pill {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      text-transform: capitalize;
+      margin-bottom: 4px;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
@@ -251,6 +289,11 @@
         <div class="stats-grid" id="stats-grid"></div>
       </div>
 
+      <div class="stats">
+        <h2>Enemy Response</h2>
+        <div class="enemy-list" id="enemy-list"></div>
+      </div>
+
       <div class="variants">
         <h2>Variant Comparison</h2>
         <p class="muted" id="variant-meta">Loading...</p>
@@ -353,6 +396,42 @@
       });
     }
 
+    function awarenessColor(awareness) {
+      const colors = {
+        unaware: ['rgba(126, 138, 128, 0.2)', '#4b564d'],
+        suspicious: ['rgba(210, 164, 88, 0.24)', '#8c5f18'],
+        alerted: ['rgba(204, 96, 82, 0.24)', '#8a3429'],
+        investigating: ['rgba(198, 125, 74, 0.24)', '#8b4f1c'],
+        searching: ['rgba(184, 110, 64, 0.24)', '#7a4218'],
+        engage: ['rgba(196, 82, 70, 0.28)', '#7b2016'],
+        returning: ['rgba(90, 128, 180, 0.2)', '#345579'],
+      };
+      return colors[awareness] || ['rgba(120, 120, 120, 0.18)', '#4c4c4c'];
+    }
+
+    function formatPoint(point) {
+      return point ? `${point[0]}, ${point[1]}` : 'none';
+    }
+
+    function renderEnemyStates(replay, frame) {
+      const list = document.getElementById('enemy-list');
+      list.innerHTML = '';
+      replay.mission.enemies.forEach((enemyDef, index) => {
+        const awareness = frame.enemy_awareness?.[index] || 'unaware';
+        const goal = frame.enemy_goals?.[index] || null;
+        const [bg, ink] = awarenessColor(awareness);
+        const card = document.createElement('div');
+        card.className = 'enemy-card';
+        card.innerHTML = `
+          <strong>${enemyDef.enemy_id}</strong>
+          <span class="awareness-pill" style="background:${bg}; color:${ink};">${awareness}</span>
+          <span>Position: ${formatPoint(frame.enemy_positions[index])}</span>
+          <span>Goal: ${formatPoint(goal)}</span>
+        `;
+        list.appendChild(card);
+      });
+    }
+
     function renderVariants(payload) {
       document.getElementById('variant-meta').textContent = `Mission ${payload.mission} | batch ${payload.batch_size}`;
       const body = document.getElementById('variant-body');
@@ -382,6 +461,7 @@
       if (trailToggle.checked) drawTrailLayer(replay, tileW, tileH);
       drawActorsLayer(replay, frame, tileW, tileH);
       drawAccentLayer(replay, frame, tileW, tileH);
+      renderEnemyStates(replay, frame);
 
       setPill('mission-pill', `Mission: ${mission.mission_id}`);
       setPill('variant-pill', `Variant: ${mission.variant_id}`);
@@ -767,6 +847,29 @@
       const px = (frame.player_pos[0] + 0.5) * tileW;
       const py = (frame.player_pos[1] + 0.5) * tileH;
       ctx.save();
+
+      frame.enemy_goals?.forEach((goal, index) => {
+        if (!goal) return;
+        const [gx, gy] = goal;
+        const awareness = frame.enemy_awareness?.[index] || 'unaware';
+        if (awareness === 'unaware') return;
+        const cx = (gx + 0.5) * tileW;
+        const cy = (gy + 0.5) * tileH;
+        const [bg, ink] = awarenessColor(awareness);
+        ctx.strokeStyle = ink;
+        ctx.fillStyle = bg;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(cx, cy, Math.min(tileW, tileH) * 0.22, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        ctx.setLineDash([5, 4]);
+        ctx.beginPath();
+        ctx.moveTo((frame.enemy_positions[index][0] + 0.5) * tileW, (frame.enemy_positions[index][1] + 0.5) * tileH);
+        ctx.lineTo(cx, cy);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      });
 
       if (frame.target_alive) {
         const tx = (frame.target_pos[0] + 0.5) * tileW;

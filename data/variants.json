@@ -7,96 +7,93 @@
       "profiles": [
         {
           "runs": 10,
-          "success_rate": 0.0,
-          "detection_rate": 0.2,
+          "success_rate": 0.3,
+          "detection_rate": 1.0,
           "shot_fired_rate": 1.0,
-          "shot_hit_rate": 0.8,
-          "target_escape_rate": 0.1,
-          "post_shot_death_rate": 0.9,
-          "avg_turns": 23.6,
-          "difficulty_score": 63.29,
+          "shot_hit_rate": 0.4,
+          "target_escape_rate": 0.3,
+          "post_shot_death_rate": 0.4,
+          "avg_turns": 17.7,
+          "difficulty_score": 61.72,
           "difficulty_label": "Hard",
           "failure_breakdown": {
-            "player_dead": 9,
-            "target_escaped": 1
+            "player_dead": 4,
+            "target_escaped": 3
           },
           "agent": "beginner",
           "variant": "baseline"
         },
         {
           "runs": 10,
-          "success_rate": 0.3,
-          "detection_rate": 0.9,
+          "success_rate": 1.0,
+          "detection_rate": 0.5,
           "shot_fired_rate": 1.0,
           "shot_hit_rate": 1.0,
           "target_escape_rate": 0.0,
-          "post_shot_death_rate": 0.7,
-          "avg_turns": 23.0,
-          "difficulty_score": 60.68,
-          "difficulty_label": "Hard",
-          "failure_breakdown": {
-            "player_dead": 7
-          },
+          "post_shot_death_rate": 0.0,
+          "avg_turns": 34.4,
+          "difficulty_score": 16.25,
+          "difficulty_label": "Very Easy",
+          "failure_breakdown": {},
           "agent": "standard",
           "variant": "baseline"
         },
         {
           "runs": 10,
-          "success_rate": 0.4,
-          "detection_rate": 1.0,
+          "success_rate": 0.9,
+          "detection_rate": 0.4,
           "shot_fired_rate": 1.0,
           "shot_hit_rate": 1.0,
           "target_escape_rate": 0.0,
-          "post_shot_death_rate": 0.6,
-          "avg_turns": 25.3,
-          "difficulty_score": 57.6,
-          "difficulty_label": "Normal",
+          "post_shot_death_rate": 0.1,
+          "avg_turns": 34.4,
+          "difficulty_score": 19.75,
+          "difficulty_label": "Very Easy",
           "failure_breakdown": {
-            "player_dead": 6
+            "player_dead": 1
           },
           "agent": "expert",
           "variant": "baseline"
         }
       ],
-      "avg_success_rate": 0.233,
-      "avg_difficulty_score": 60.52,
+      "avg_success_rate": 0.733,
+      "avg_difficulty_score": 32.57,
       "current_turn_limit": 55,
-      "recommended_turn_limit": 35
+      "recommended_turn_limit": 47
     },
     {
       "variant": "low_guard_awareness",
       "profiles": [
         {
           "runs": 10,
-          "success_rate": 0.4,
-          "detection_rate": 0.6,
+          "success_rate": 0.6,
+          "detection_rate": 0.7,
           "shot_fired_rate": 1.0,
-          "shot_hit_rate": 0.8,
-          "target_escape_rate": 0.1,
-          "post_shot_death_rate": 0.5,
-          "avg_turns": 19.5,
-          "difficulty_score": 48.55,
+          "shot_hit_rate": 0.7,
+          "target_escape_rate": 0.3,
+          "post_shot_death_rate": 0.1,
+          "avg_turns": 22.9,
+          "difficulty_score": 40.16,
           "difficulty_label": "Normal",
           "failure_breakdown": {
-            "player_dead": 5,
-            "target_escaped": 1
+            "player_dead": 1,
+            "target_escaped": 3
           },
           "agent": "beginner",
           "variant": "low_guard_awareness"
         },
         {
           "runs": 10,
-          "success_rate": 0.8,
+          "success_rate": 0.9,
           "detection_rate": 0.0,
           "shot_fired_rate": 1.0,
           "shot_hit_rate": 0.9,
           "target_escape_rate": 0.1,
-          "post_shot_death_rate": 0.1,
-          "avg_turns": 24.3,
-          "difficulty_score": 15.42,
+          "post_shot_death_rate": 0.0,
+          "avg_turns": 26.4,
+          "difficulty_score": 10.3,
           "difficulty_label": "Very Easy",
           "failure_breakdown": {
-            "player_dead": 1,
             "target_escaped": 1
           },
           "agent": "standard",
@@ -104,41 +101,43 @@
         },
         {
           "runs": 10,
-          "success_rate": 1.0,
+          "success_rate": 0.9,
           "detection_rate": 0.0,
           "shot_fired_rate": 1.0,
           "shot_hit_rate": 1.0,
           "target_escape_rate": 0.0,
           "post_shot_death_rate": 0.0,
-          "avg_turns": 26.0,
-          "difficulty_score": 4.73,
+          "avg_turns": 45.7,
+          "difficulty_score": 12.31,
           "difficulty_label": "Very Easy",
-          "failure_breakdown": {},
+          "failure_breakdown": {
+            "timeout": 1
+          },
           "agent": "expert",
           "variant": "low_guard_awareness"
         }
       ],
-      "avg_success_rate": 0.733,
-      "avg_difficulty_score": 22.9,
+      "avg_success_rate": 0.8,
+      "avg_difficulty_score": 20.92,
       "current_turn_limit": 55,
-      "recommended_turn_limit": 36
+      "recommended_turn_limit": 62
     },
     {
       "variant": "high_guard_awareness",
       "profiles": [
         {
           "runs": 10,
-          "success_rate": 0.2,
+          "success_rate": 0.3,
           "detection_rate": 1.0,
-          "shot_fired_rate": 0.9,
-          "shot_hit_rate": 0.667,
+          "shot_fired_rate": 0.5,
+          "shot_hit_rate": 0.6,
           "target_escape_rate": 0.2,
-          "post_shot_death_rate": 0.5,
-          "avg_turns": 19.4,
-          "difficulty_score": 66.03,
-          "difficulty_label": "Hard",
+          "post_shot_death_rate": 0.0,
+          "avg_turns": 16.1,
+          "difficulty_score": 53.93,
+          "difficulty_label": "Normal",
           "failure_breakdown": {
-            "player_dead": 6,
+            "player_dead": 5,
             "target_escaped": 2
           },
           "agent": "beginner",
@@ -146,261 +145,257 @@
         },
         {
           "runs": 10,
-          "success_rate": 0.3,
-          "detection_rate": 0.9,
-          "shot_fired_rate": 1.0,
-          "shot_hit_rate": 1.0,
-          "target_escape_rate": 0.0,
-          "post_shot_death_rate": 0.7,
-          "avg_turns": 23.0,
-          "difficulty_score": 60.68,
+          "success_rate": 0.0,
+          "detection_rate": 1.0,
+          "shot_fired_rate": 0.0,
+          "shot_hit_rate": 0.0,
+          "target_escape_rate": 0.7,
+          "post_shot_death_rate": 0.0,
+          "avg_turns": 15.9,
+          "difficulty_score": 73.39,
           "difficulty_label": "Hard",
           "failure_breakdown": {
-            "player_dead": 7
+            "target_escaped": 7,
+            "player_dead": 3
           },
           "agent": "standard",
           "variant": "high_guard_awareness"
         },
         {
           "runs": 10,
-          "success_rate": 0.4,
+          "success_rate": 0.0,
           "detection_rate": 1.0,
-          "shot_fired_rate": 1.0,
-          "shot_hit_rate": 1.0,
-          "target_escape_rate": 0.0,
-          "post_shot_death_rate": 0.6,
-          "avg_turns": 25.3,
-          "difficulty_score": 57.6,
-          "difficulty_label": "Normal",
+          "shot_fired_rate": 0.0,
+          "shot_hit_rate": 0.0,
+          "target_escape_rate": 0.6,
+          "post_shot_death_rate": 0.0,
+          "avg_turns": 15.2,
+          "difficulty_score": 71.76,
+          "difficulty_label": "Hard",
           "failure_breakdown": {
-            "player_dead": 6
+            "player_dead": 4,
+            "target_escaped": 6
           },
           "agent": "expert",
           "variant": "high_guard_awareness"
         }
       ],
-      "avg_success_rate": 0.3,
-      "avg_difficulty_score": 61.44,
+      "avg_success_rate": 0.1,
+      "avg_difficulty_score": 66.36,
       "current_turn_limit": 55,
-      "recommended_turn_limit": 35
+      "recommended_turn_limit": 21
     },
     {
       "variant": "extra_cover",
       "profiles": [
         {
           "runs": 10,
-          "success_rate": 0.0,
-          "detection_rate": 0.2,
+          "success_rate": 0.3,
+          "detection_rate": 1.0,
           "shot_fired_rate": 1.0,
-          "shot_hit_rate": 0.8,
-          "target_escape_rate": 0.1,
-          "post_shot_death_rate": 0.8,
-          "avg_turns": 28.6,
-          "difficulty_score": 62.7,
+          "shot_hit_rate": 0.5,
+          "target_escape_rate": 0.4,
+          "post_shot_death_rate": 0.3,
+          "avg_turns": 19.3,
+          "difficulty_score": 62.01,
           "difficulty_label": "Hard",
           "failure_breakdown": {
-            "player_dead": 8,
-            "timeout": 1,
-            "target_escaped": 1
+            "player_dead": 3,
+            "target_escaped": 4
           },
           "agent": "beginner",
           "variant": "extra_cover"
         },
         {
           "runs": 10,
-          "success_rate": 0.3,
-          "detection_rate": 0.9,
-          "shot_fired_rate": 1.0,
-          "shot_hit_rate": 1.0,
-          "target_escape_rate": 0.0,
-          "post_shot_death_rate": 0.7,
-          "avg_turns": 23.9,
-          "difficulty_score": 60.85,
-          "difficulty_label": "Hard",
+          "success_rate": 0.7,
+          "detection_rate": 1.0,
+          "shot_fired_rate": 0.9,
+          "shot_hit_rate": 0.889,
+          "target_escape_rate": 0.1,
+          "post_shot_death_rate": 0.1,
+          "avg_turns": 26.2,
+          "difficulty_score": 39.76,
+          "difficulty_label": "Easy",
           "failure_breakdown": {
-            "player_dead": 7
+            "target_escaped": 1,
+            "player_dead": 2
           },
           "agent": "standard",
           "variant": "extra_cover"
         },
         {
           "runs": 10,
-          "success_rate": 0.8,
-          "detection_rate": 0.0,
+          "success_rate": 0.9,
+          "detection_rate": 0.4,
           "shot_fired_rate": 1.0,
           "shot_hit_rate": 1.0,
           "target_escape_rate": 0.0,
-          "post_shot_death_rate": 0.2,
-          "avg_turns": 27.8,
-          "difficulty_score": 16.05,
+          "post_shot_death_rate": 0.1,
+          "avg_turns": 34.6,
+          "difficulty_score": 19.79,
           "difficulty_label": "Very Easy",
           "failure_breakdown": {
-            "player_dead": 2
+            "player_dead": 1
           },
           "agent": "expert",
           "variant": "extra_cover"
         }
       ],
-      "avg_success_rate": 0.367,
-      "avg_difficulty_score": 46.53,
+      "avg_success_rate": 0.633,
+      "avg_difficulty_score": 40.52,
       "current_turn_limit": 55,
-      "recommended_turn_limit": 38
+      "recommended_turn_limit": 47
     },
     {
       "variant": "reduced_cover",
       "profiles": [
         {
           "runs": 10,
-          "success_rate": 0.0,
-          "detection_rate": 0.2,
+          "success_rate": 0.3,
+          "detection_rate": 1.0,
           "shot_fired_rate": 1.0,
-          "shot_hit_rate": 0.8,
-          "target_escape_rate": 0.1,
-          "post_shot_death_rate": 0.9,
-          "avg_turns": 20.7,
-          "difficulty_score": 62.76,
+          "shot_hit_rate": 0.4,
+          "target_escape_rate": 0.3,
+          "post_shot_death_rate": 0.4,
+          "avg_turns": 17.7,
+          "difficulty_score": 61.72,
           "difficulty_label": "Hard",
           "failure_breakdown": {
-            "player_dead": 9,
-            "target_escaped": 1
+            "player_dead": 4,
+            "target_escaped": 3
           },
           "agent": "beginner",
           "variant": "reduced_cover"
         },
         {
           "runs": 10,
-          "success_rate": 0.3,
-          "detection_rate": 0.9,
+          "success_rate": 1.0,
+          "detection_rate": 0.5,
           "shot_fired_rate": 1.0,
           "shot_hit_rate": 1.0,
           "target_escape_rate": 0.0,
-          "post_shot_death_rate": 0.7,
-          "avg_turns": 23.0,
-          "difficulty_score": 60.68,
-          "difficulty_label": "Hard",
-          "failure_breakdown": {
-            "player_dead": 7
-          },
+          "post_shot_death_rate": 0.0,
+          "avg_turns": 34.4,
+          "difficulty_score": 16.25,
+          "difficulty_label": "Very Easy",
+          "failure_breakdown": {},
           "agent": "standard",
           "variant": "reduced_cover"
         },
         {
           "runs": 10,
-          "success_rate": 0.4,
-          "detection_rate": 1.0,
+          "success_rate": 0.9,
+          "detection_rate": 0.4,
           "shot_fired_rate": 1.0,
           "shot_hit_rate": 1.0,
           "target_escape_rate": 0.0,
-          "post_shot_death_rate": 0.6,
-          "avg_turns": 25.3,
-          "difficulty_score": 57.6,
-          "difficulty_label": "Normal",
+          "post_shot_death_rate": 0.1,
+          "avg_turns": 34.4,
+          "difficulty_score": 19.75,
+          "difficulty_label": "Very Easy",
           "failure_breakdown": {
-            "player_dead": 6
+            "player_dead": 1
           },
           "agent": "expert",
           "variant": "reduced_cover"
         }
       ],
-      "avg_success_rate": 0.233,
-      "avg_difficulty_score": 60.35,
+      "avg_success_rate": 0.733,
+      "avg_difficulty_score": 32.57,
       "current_turn_limit": 55,
-      "recommended_turn_limit": 35
+      "recommended_turn_limit": 47
     },
     {
       "variant": "fast_target_escape",
       "profiles": [
         {
           "runs": 10,
-          "success_rate": 0.0,
-          "detection_rate": 0.2,
+          "success_rate": 0.6,
+          "detection_rate": 1.0,
           "shot_fired_rate": 1.0,
-          "shot_hit_rate": 0.9,
+          "shot_hit_rate": 0.7,
           "target_escape_rate": 0.0,
-          "post_shot_death_rate": 1.0,
-          "avg_turns": 23.9,
-          "difficulty_score": 63.35,
-          "difficulty_label": "Hard",
+          "post_shot_death_rate": 0.4,
+          "avg_turns": 19.7,
+          "difficulty_score": 45.58,
+          "difficulty_label": "Normal",
           "failure_breakdown": {
-            "player_dead": 10
+            "player_dead": 4
           },
           "agent": "beginner",
           "variant": "fast_target_escape"
         },
         {
           "runs": 10,
-          "success_rate": 0.3,
-          "detection_rate": 0.9,
+          "success_rate": 1.0,
+          "detection_rate": 0.5,
           "shot_fired_rate": 1.0,
           "shot_hit_rate": 1.0,
           "target_escape_rate": 0.0,
-          "post_shot_death_rate": 0.7,
-          "avg_turns": 23.0,
-          "difficulty_score": 60.68,
-          "difficulty_label": "Hard",
-          "failure_breakdown": {
-            "player_dead": 7
-          },
+          "post_shot_death_rate": 0.0,
+          "avg_turns": 34.4,
+          "difficulty_score": 16.25,
+          "difficulty_label": "Very Easy",
+          "failure_breakdown": {},
           "agent": "standard",
           "variant": "fast_target_escape"
         },
         {
           "runs": 10,
-          "success_rate": 0.4,
-          "detection_rate": 1.0,
+          "success_rate": 0.9,
+          "detection_rate": 0.4,
           "shot_fired_rate": 1.0,
           "shot_hit_rate": 1.0,
           "target_escape_rate": 0.0,
-          "post_shot_death_rate": 0.6,
-          "avg_turns": 25.3,
-          "difficulty_score": 57.6,
-          "difficulty_label": "Normal",
+          "post_shot_death_rate": 0.1,
+          "avg_turns": 34.4,
+          "difficulty_score": 19.75,
+          "difficulty_label": "Very Easy",
           "failure_breakdown": {
-            "player_dead": 6
+            "player_dead": 1
           },
           "agent": "expert",
           "variant": "fast_target_escape"
         }
       ],
-      "avg_success_rate": 0.233,
-      "avg_difficulty_score": 60.54,
+      "avg_success_rate": 0.833,
+      "avg_difficulty_score": 27.19,
       "current_turn_limit": 55,
-      "recommended_turn_limit": 35
+      "recommended_turn_limit": 47
     },
     {
       "variant": "short_range_weapon",
       "profiles": [
         {
           "runs": 10,
-          "success_rate": 0.0,
+          "success_rate": 0.3,
           "detection_rate": 0.0,
           "shot_fired_rate": 1.0,
-          "shot_hit_rate": 0.5,
-          "target_escape_rate": 0.3,
-          "post_shot_death_rate": 0.7,
-          "avg_turns": 21.5,
-          "difficulty_score": 58.91,
+          "shot_hit_rate": 0.3,
+          "target_escape_rate": 0.7,
+          "post_shot_death_rate": 0.0,
+          "avg_turns": 21.1,
+          "difficulty_score": 42.34,
           "difficulty_label": "Normal",
           "failure_breakdown": {
-            "target_escaped": 3,
-            "player_dead": 7
+            "target_escaped": 7
           },
           "agent": "beginner",
           "variant": "short_range_weapon"
         },
         {
           "runs": 10,
-          "success_rate": 0.3,
-          "detection_rate": 0.8,
+          "success_rate": 0.9,
+          "detection_rate": 0.0,
           "shot_fired_rate": 1.0,
           "shot_hit_rate": 0.9,
           "target_escape_rate": 0.1,
-          "post_shot_death_rate": 0.6,
-          "avg_turns": 22.5,
-          "difficulty_score": 58.59,
-          "difficulty_label": "Normal",
+          "post_shot_death_rate": 0.0,
+          "avg_turns": 25.6,
+          "difficulty_score": 10.15,
+          "difficulty_label": "Very Easy",
           "failure_breakdown": {
-            "player_dead": 6,
             "target_escaped": 1
           },
           "agent": "standard",
@@ -408,26 +403,26 @@
         },
         {
           "runs": 10,
-          "success_rate": 0.4,
-          "detection_rate": 1.0,
+          "success_rate": 0.9,
+          "detection_rate": 0.1,
           "shot_fired_rate": 1.0,
           "shot_hit_rate": 1.0,
           "target_escape_rate": 0.0,
-          "post_shot_death_rate": 0.6,
-          "avg_turns": 25.3,
-          "difficulty_score": 57.6,
-          "difficulty_label": "Normal",
+          "post_shot_death_rate": 0.1,
+          "avg_turns": 44.8,
+          "difficulty_score": 15.65,
+          "difficulty_label": "Very Easy",
           "failure_breakdown": {
-            "player_dead": 6
+            "player_dead": 1
           },
           "agent": "expert",
           "variant": "short_range_weapon"
         }
       ],
-      "avg_success_rate": 0.233,
-      "avg_difficulty_score": 58.37,
+      "avg_success_rate": 0.7,
+      "avg_difficulty_score": 22.71,
       "current_turn_limit": 55,
-      "recommended_turn_limit": 35
+      "recommended_turn_limit": 61
     }
   ]
 }
