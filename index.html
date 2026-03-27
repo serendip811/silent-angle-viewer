@@ -286,6 +286,7 @@
       variants: null,
       batch: null,
       assets: {},
+      assetsReady: false,
       index: 0,
       playing: false,
       timer: null,
@@ -320,6 +321,8 @@
     async function loadAssets() {
       const entries = await Promise.all(Object.entries(assetPaths).map(async ([key, path]) => [key, await loadImage(path)]));
       state.assets = Object.fromEntries(entries);
+      state.assetsReady = true;
+      if (state.replay) drawFrame();
     }
 
     function setPill(id, text) {
@@ -942,7 +945,7 @@
       state.index = 0;
       turnSlider.max = Math.max(0, state.replay.frames.length - 1);
       renderStats(state.replay);
-      drawFrame();
+      if (state.assetsReady) drawFrame();
     }
 
     document.getElementById('prev-btn').addEventListener('click', () => {
