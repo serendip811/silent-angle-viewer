@@ -6,19 +6,19 @@
   <title>Silent Angle Viewer</title>
   <style>
     :root {
-      --bg: #f4efe7;
-      --panel: #fffaf2;
-      --ink: #1f2b24;
-      --muted: #6e756f;
-      --grid: #d8d2c7;
-      --wall: #4a4b4d;
-      --cover: #7fa27c;
-      --player: #1f6fb2;
-      --guard: #b4473d;
-      --target: #d4a72c;
-      --extract: #3b9f8c;
-      --sight: rgba(196, 76, 57, 0.2);
-      --range: rgba(31, 111, 178, 0.12);
+      --bg: #f3eee5;
+      --panel: #fff9f0;
+      --ink: #1c231e;
+      --muted: #6b726c;
+      --line: rgba(38, 47, 41, 0.12);
+      --wall: #505458;
+      --cover: #738d68;
+      --extract: #49a99a;
+      --player: #2c73b8;
+      --guard: #c45246;
+      --target: #e0b742;
+      --sight: rgba(224, 108, 95, 0.2);
+      --range: rgba(196, 214, 230, 0.18);
     }
 
     * { box-sizing: border-box; }
@@ -26,7 +26,9 @@
       margin: 0;
       font-family: Georgia, "Iowan Old Style", serif;
       color: var(--ink);
-      background: radial-gradient(circle at top, #fffaf2, var(--bg));
+      background:
+        radial-gradient(circle at top, rgba(255, 252, 245, 0.95), rgba(243, 238, 229, 0.98)),
+        linear-gradient(180deg, #f3eee5, #ece5d8);
     }
 
     .layout {
@@ -39,9 +41,9 @@
 
     .panel {
       background: var(--panel);
-      border: 1px solid rgba(31, 43, 36, 0.08);
-      border-radius: 16px;
-      box-shadow: 0 8px 30px rgba(63, 55, 45, 0.08);
+      border: 1px solid rgba(27, 34, 29, 0.08);
+      border-radius: 18px;
+      box-shadow: 0 8px 30px rgba(78, 67, 56, 0.08);
     }
 
     .stage {
@@ -59,19 +61,21 @@
     }
 
     .pill {
-      padding: 8px 12px;
+      padding: 8px 14px;
       border-radius: 999px;
-      background: #efe6d7;
+      background: #f5ecde;
+      border: 1px solid rgba(35, 42, 37, 0.12);
       font-size: 13px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
     }
 
     canvas {
       width: 100%;
       max-width: 920px;
       aspect-ratio: 20 / 16;
-      border-radius: 14px;
-      background: #f8f3eb;
-      border: 1px solid rgba(31, 43, 36, 0.08);
+      border-radius: 16px;
+      background: #dde3e7;
+      border: 1px solid rgba(31, 43, 36, 0.12);
     }
 
     .sidebar {
@@ -87,10 +91,11 @@
     p, li, label, button, select, input { font-size: 14px; }
     .muted { color: var(--muted); }
 
-    .controls, .stats, .variants {
+    .controls, .stats, .variants, .layers {
       padding: 14px;
       border-radius: 12px;
-      background: rgba(239, 230, 215, 0.45);
+      background: rgba(239, 230, 215, 0.5);
+      border: 1px solid rgba(38, 47, 41, 0.08);
     }
 
     .controls-row {
@@ -121,7 +126,7 @@
     .stat {
       padding: 10px;
       border-radius: 10px;
-      background: #fffdf8;
+      background: rgba(255, 252, 245, 0.95);
       border: 1px solid rgba(31, 43, 36, 0.08);
     }
 
@@ -143,6 +148,7 @@
       text-align: left;
       padding: 8px 6px;
       border-bottom: 1px solid rgba(31, 43, 36, 0.08);
+      vertical-align: top;
     }
 
     .legend {
@@ -164,6 +170,16 @@
       border: 1px solid rgba(31, 43, 36, 0.15);
     }
 
+    .layers ol {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+    }
+
+    .layers li + li {
+      margin-top: 6px;
+    }
+
     @media (max-width: 1100px) {
       .layout { grid-template-columns: 1fr; }
       canvas { max-width: none; }
@@ -175,7 +191,7 @@
     <section class="panel stage">
       <div>
         <h1>Silent Angle Debug Viewer</h1>
-        <p class="muted">Static browser viewer for simulation replay and balance reports.</p>
+        <p class="muted">Layered tactical replay viewer for simulation, patrol reading, and balance work.</p>
       </div>
       <div class="hud">
         <div class="pill" id="mission-pill">Mission: -</div>
@@ -213,8 +229,21 @@
         <div class="controls-row">
           <label><input type="checkbox" id="sight-toggle" checked> Sight</label>
           <label><input type="checkbox" id="range-toggle" checked> Range</label>
+          <label><input type="checkbox" id="trail-toggle" checked> Trails</label>
         </div>
         <input id="turn-slider" type="range" min="0" max="0" value="0">
+      </div>
+
+      <div class="layers">
+        <h2>Layer Stack</h2>
+        <ol>
+          <li>Base tile field and map grime</li>
+          <li>Extraction mark and static underlays</li>
+          <li>Walls, cover, and prop shadows</li>
+          <li>Range arcs, sight coverage, and motion trails</li>
+          <li>Actor shadows and sprites</li>
+          <li>Highlight rings, aim lines, and event accents</li>
+        </ol>
       </div>
 
       <div class="stats">
@@ -246,10 +275,17 @@
     const variantsPath = params.get('variants') || 'data/variants.json';
     const batchPath = params.get('batch') || 'data/batch.json';
 
+    const assetPaths = {
+      floorA: 'assets/floor_tile.png',
+      floorB: 'assets/floor_tile_alt.png',
+      debris: 'assets/debris_corner.png'
+    };
+
     const state = {
       replay: null,
       variants: null,
       batch: null,
+      assets: {},
       index: 0,
       playing: false,
       timer: null,
@@ -262,15 +298,28 @@
     const playBtn = document.getElementById('play-btn');
     const sightToggle = document.getElementById('sight-toggle');
     const rangeToggle = document.getElementById('range-toggle');
+    const trailToggle = document.getElementById('trail-toggle');
 
     replaySelect.value = defaultReplay;
 
     async function loadJson(path) {
       const response = await fetch(path);
-      if (!response.ok) {
-        throw new Error(`Failed to load ${path}`);
-      }
+      if (!response.ok) throw new Error(`Failed to load ${path}`);
       return response.json();
+    }
+
+    async function loadImage(path) {
+      return new Promise((resolve) => {
+        const image = new Image();
+        image.onload = () => resolve(image);
+        image.onerror = () => resolve(null);
+        image.src = path;
+      });
+    }
+
+    async function loadAssets() {
+      const entries = await Promise.all(Object.entries(assetPaths).map(async ([key, path]) => [key, await loadImage(path)]));
+      state.assets = Object.fromEntries(entries);
     }
 
     function setPill(id, text) {
@@ -319,51 +368,17 @@
       const mission = replay.mission;
       const tileW = canvas.width / mission.width;
       const tileH = canvas.height / mission.height;
+      const obstacleSet = pointSet(mission.obstacles);
+      const coverSet = pointSet(mission.cover);
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = '#f8f3eb';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      if (sightToggle.checked) {
-        ctx.fillStyle = 'rgba(196, 76, 57, 0.2)';
-        frame.visible_tiles.flat().forEach(([x, y]) => {
-          ctx.fillRect(x * tileW, y * tileH, tileW, tileH);
-        });
-      }
-
-      if (rangeToggle.checked) {
-        const [px, py] = frame.player_pos;
-        ctx.beginPath();
-        ctx.fillStyle = 'rgba(31, 111, 178, 0.12)';
-        ctx.arc((px + 0.5) * tileW, (py + 0.5) * tileH, replay.mission.weapon.effective_range * tileW, 0, Math.PI * 2);
-        ctx.fill();
-      }
-
-      for (let y = 0; y < mission.height; y++) {
-        for (let x = 0; x < mission.width; x++) {
-          const key = `${x},${y}`;
-          let fill = null;
-          if (mission.obstacles.some(([ox, oy]) => ox === x && oy === y)) fill = getCss('--wall');
-          else if (mission.cover.some(([cx, cy]) => cx === x && cy === y)) fill = getCss('--cover');
-          else if (mission.extraction[0] === x && mission.extraction[1] === y) fill = getCss('--extract');
-          if (fill) {
-            ctx.fillStyle = fill;
-            ctx.fillRect(x * tileW, y * tileH, tileW, tileH);
-          }
-          ctx.strokeStyle = getCss('--grid');
-          ctx.strokeRect(x * tileW, y * tileH, tileW, tileH);
-        }
-      }
-
-      frame.enemy_positions.forEach(([x, y]) => {
-        drawDot((x + 0.5) * tileW, (y + 0.5) * tileH, Math.min(tileW, tileH) * 0.28, getCss('--guard'));
-      });
-
-      if (frame.target_alive) {
-        drawDiamond((frame.target_pos[0] + 0.5) * tileW, (frame.target_pos[1] + 0.5) * tileH, Math.min(tileW, tileH) * 0.34, getCss('--target'));
-      }
-
-      drawDot((frame.player_pos[0] + 0.5) * tileW, (frame.player_pos[1] + 0.5) * tileH, Math.min(tileW, tileH) * 0.3, getCss('--player'));
+      drawFloorLayer(mission, tileW, tileH);
+      drawExtractionLayer(mission, tileW, tileH);
+      drawStaticLayer(mission, obstacleSet, coverSet, tileW, tileH);
+      drawOverlayLayer(replay, frame, tileW, tileH);
+      if (trailToggle.checked) drawTrailLayer(replay, tileW, tileH);
+      drawActorsLayer(replay, frame, tileW, tileH);
+      drawAccentLayer(replay, frame, tileW, tileH);
 
       setPill('mission-pill', `Mission: ${mission.mission_id}`);
       setPill('variant-pill', `Variant: ${mission.variant_id}`);
@@ -372,25 +387,532 @@
       turnSlider.value = state.index;
     }
 
+    function pointKey(x, y) { return `${x},${y}`; }
+
+    function pointSet(points) {
+      return new Set(points.map(([x, y]) => pointKey(x, y)));
+    }
+
+    function previousFrames(replay, count = 5) {
+      const start = Math.max(0, state.index - count);
+      return replay.frames.slice(start, state.index + 1);
+    }
+
     function getCss(name) {
       return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
     }
 
-    function drawDot(x, y, radius, color) {
-      ctx.beginPath();
-      ctx.fillStyle = color;
-      ctx.arc(x, y, radius, 0, Math.PI * 2);
-      ctx.fill();
+    function drawFloorLayer(mission, tileW, tileH) {
+      const floorA = state.assets.floorA;
+      const floorB = state.assets.floorB;
+      ctx.fillStyle = '#d7dde0';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      for (let y = 0; y < mission.height; y += 1) {
+        for (let x = 0; x < mission.width; x += 1) {
+          const px = x * tileW;
+          const py = y * tileH;
+          const image = (x + y) % 3 === 0 ? floorB : floorA;
+          if (image) {
+            ctx.globalAlpha = 0.92;
+            ctx.drawImage(image, px, py, tileW, tileH);
+            ctx.globalAlpha = 1;
+          } else {
+            const shade = 208 + ((x * 11 + y * 17) % 20);
+            ctx.fillStyle = `rgb(${shade - 18}, ${shade - 10}, ${shade})`;
+            ctx.fillRect(px, py, tileW, tileH);
+          }
+        }
+      }
+
+      ctx.strokeStyle = 'rgba(45, 62, 52, 0.28)';
+      ctx.lineWidth = 1;
+      for (let x = 0; x <= mission.width; x += 1) {
+        ctx.beginPath();
+        ctx.moveTo(x * tileW, 0);
+        ctx.lineTo(x * tileW, canvas.height);
+        ctx.stroke();
+      }
+      for (let y = 0; y <= mission.height; y += 1) {
+        ctx.beginPath();
+        ctx.moveTo(0, y * tileH);
+        ctx.lineTo(canvas.width, y * tileH);
+        ctx.stroke();
+      }
+
+      if (state.assets.debris) {
+        ctx.globalAlpha = 0.6;
+        ctx.drawImage(state.assets.debris, canvas.width - tileW * 2.8, 0, tileW * 2.4, tileH * 2.1);
+        ctx.drawImage(state.assets.debris, canvas.width - tileW * 2.2, canvas.height - tileH * 1.8, tileW * 1.7, tileH * 1.5);
+        ctx.globalAlpha = 1;
+      }
     }
 
-    function drawDiamond(x, y, size, color) {
+    function drawExtractionLayer(mission, tileW, tileH) {
+      const [ex, ey] = mission.extraction;
+      const cx = (ex + 0.5) * tileW;
+      const cy = (ey + 0.5) * tileH;
+      const radius = tileW * 2.1;
+
+      ctx.save();
+      ctx.strokeStyle = 'rgba(244, 245, 246, 0.68)';
+      ctx.lineWidth = Math.max(4, tileW * 0.08);
       ctx.beginPath();
-      ctx.fillStyle = color;
-      ctx.moveTo(x, y - size);
-      ctx.lineTo(x + size, y);
-      ctx.lineTo(x, y + size);
-      ctx.lineTo(x - size, y);
+      ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius * 1.55, Math.PI * 0.82, Math.PI * 1.77);
+      ctx.stroke();
+      ctx.fillStyle = 'rgba(240, 245, 246, 0.58)';
+      ctx.font = `${Math.floor(tileW * 0.9)}px Georgia`;
+      ctx.textAlign = 'center';
+      ctx.fillText('H', cx, cy + tileH * 0.28);
+      ctx.font = `${Math.floor(tileW * 0.42)}px Georgia`;
+      ctx.fillText('EXTRACTION', cx, cy + tileH * 1.6);
+      ctx.fillText('ZONE', cx, cy + tileH * 2.05);
+      ctx.restore();
+    }
+
+    function drawStaticLayer(mission, obstacleSet, coverSet, tileW, tileH) {
+      const obstacleGroups = groupTiles(mission.obstacles);
+      const coverGroups = groupTiles(mission.cover);
+      obstacleGroups.forEach((group, index) => drawObstacleGroup(group, index, tileW, tileH));
+      coverGroups.forEach((group, index) => drawCoverGroup(group, index, tileW, tileH));
+    }
+
+    function groupTiles(points) {
+      const pointMap = new Set(points.map(([x, y]) => pointKey(x, y)));
+      const visited = new Set();
+      const groups = [];
+      points.forEach(([sx, sy]) => {
+        const key = pointKey(sx, sy);
+        if (visited.has(key)) return;
+        const queue = [[sx, sy]];
+        const group = [];
+        visited.add(key);
+        while (queue.length) {
+          const [x, y] = queue.shift();
+          group.push([x, y]);
+          [[1,0],[-1,0],[0,1],[0,-1]].forEach(([dx, dy]) => {
+            const nx = x + dx;
+            const ny = y + dy;
+            const nkey = pointKey(nx, ny);
+            if (pointMap.has(nkey) && !visited.has(nkey)) {
+              visited.add(nkey);
+              queue.push([nx, ny]);
+            }
+          });
+        }
+        groups.push(group);
+      });
+      return groups;
+    }
+
+    function boundsOf(group) {
+      const xs = group.map(([x]) => x);
+      const ys = group.map(([, y]) => y);
+      return {
+        minX: Math.min(...xs),
+        maxX: Math.max(...xs),
+        minY: Math.min(...ys),
+        maxY: Math.max(...ys),
+        width: Math.max(...xs) - Math.min(...xs) + 1,
+        height: Math.max(...ys) - Math.min(...ys) + 1,
+      };
+    }
+
+    function drawShadowRect(x, y, width, height, blur = 12, alpha = 0.26) {
+      ctx.save();
+      ctx.fillStyle = `rgba(19, 26, 31, ${alpha})`;
+      ctx.filter = `blur(${blur}px)`;
+      ctx.fillRect(x + 6, y + 7, width, height);
+      ctx.restore();
+    }
+
+    function drawObstacleGroup(group, index, tileW, tileH) {
+      const box = boundsOf(group);
+      const x = box.minX * tileW;
+      const y = box.minY * tileH;
+      const width = box.width * tileW;
+      const height = box.height * tileH;
+      drawShadowRect(x, y, width, height);
+
+      if (box.width >= 3 && box.width >= box.height) {
+        drawContainer(x, y, width, height, false);
+      } else if (box.height >= 3 && box.height > box.width) {
+        drawContainer(x, y, width, height, true);
+      } else if (box.width >= 2 || box.height >= 2) {
+        drawBarrier(x, y, width, height);
+      } else {
+        drawWallPanel(x, y, width, height, index);
+      }
+    }
+
+    function drawCoverGroup(group, index, tileW, tileH) {
+      const box = boundsOf(group);
+      const x = box.minX * tileW;
+      const y = box.minY * tileH;
+      const width = box.width * tileW;
+      const height = box.height * tileH;
+      drawShadowRect(x, y, width, height, 9, 0.22);
+      if (box.width >= 2) {
+        drawSandbag(x, y, width, height);
+      } else if ((box.minX + box.minY + index) % 2 === 0) {
+        drawCrate(x, y, width, height, true);
+      } else {
+        drawBush(x, y, width, height);
+      }
+    }
+
+    function drawContainer(x, y, width, height, vertical) {
+      const gradient = ctx.createLinearGradient(x, y, vertical ? x + width : x, vertical ? y : y + height);
+      gradient.addColorStop(0, '#687380');
+      gradient.addColorStop(0.5, '#4f5b67');
+      gradient.addColorStop(1, '#313a42');
+      ctx.fillStyle = gradient;
+      roundRect(x, y, width, height, Math.min(width, height) * 0.08, true);
+      ctx.strokeStyle = 'rgba(18, 25, 31, 0.7)';
+      ctx.lineWidth = 2;
+      roundRect(x, y, width, height, Math.min(width, height) * 0.08, false);
+      const lanes = vertical ? Math.max(2, Math.floor(width / 16)) : Math.max(3, Math.floor(width / 22));
+      ctx.strokeStyle = 'rgba(201, 212, 217, 0.12)';
+      for (let i = 1; i < lanes; i += 1) {
+        const px = vertical ? x + (width / lanes) * i : x + (width / lanes) * i;
+        const py = vertical ? y + (height / lanes) * i : y;
+        ctx.beginPath();
+        if (vertical) {
+          ctx.moveTo(x + 5, py);
+          ctx.lineTo(x + width - 5, py);
+        } else {
+          ctx.moveTo(px, y + 5);
+          ctx.lineTo(px, y + height - 5);
+        }
+        ctx.stroke();
+      }
+    }
+
+    function drawBarrier(x, y, width, height) {
+      const gradient = ctx.createLinearGradient(x, y, x, y + height);
+      gradient.addColorStop(0, '#8f9397');
+      gradient.addColorStop(1, '#575a5d');
+      ctx.fillStyle = gradient;
+      roundRect(x, y, width, height, Math.min(width, height) * 0.12, true);
+      ctx.strokeStyle = 'rgba(36, 38, 41, 0.75)';
+      ctx.lineWidth = 2;
+      roundRect(x, y, width, height, Math.min(width, height) * 0.12, false);
+      ctx.strokeStyle = 'rgba(126, 55, 39, 0.35)';
+      ctx.beginPath();
+      ctx.moveTo(x + width * 0.2, y + height * 0.3);
+      ctx.lineTo(x + width * 0.45, y + height * 0.55);
+      ctx.moveTo(x + width * 0.58, y + height * 0.28);
+      ctx.lineTo(x + width * 0.82, y + height * 0.48);
+      ctx.stroke();
+    }
+
+    function drawWallPanel(x, y, width, height, index) {
+      const palette = ['#5a5f63', '#485056', '#61686c'];
+      ctx.fillStyle = palette[index % palette.length];
+      roundRect(x, y, width, height, Math.min(width, height) * 0.14, true);
+      ctx.strokeStyle = 'rgba(20, 24, 27, 0.65)';
+      ctx.lineWidth = 2;
+      roundRect(x, y, width, height, Math.min(width, height) * 0.14, false);
+    }
+
+    function drawCrate(x, y, width, height, military) {
+      const gradient = ctx.createLinearGradient(x, y, x, y + height);
+      gradient.addColorStop(0, military ? '#6f7b56' : '#9f7b53');
+      gradient.addColorStop(1, military ? '#485337' : '#7a5a37');
+      ctx.fillStyle = gradient;
+      roundRect(x + 1, y + 1, width - 2, height - 2, Math.min(width, height) * 0.1, true);
+      ctx.strokeStyle = 'rgba(32, 32, 24, 0.5)';
+      ctx.lineWidth = 1.5;
+      roundRect(x + 1, y + 1, width - 2, height - 2, Math.min(width, height) * 0.1, false);
+      ctx.strokeStyle = 'rgba(218, 211, 172, 0.18)';
+      ctx.strokeRect(x + width * 0.22, y + height * 0.18, width * 0.56, height * 0.64);
+    }
+
+    function drawSandbag(x, y, width, height) {
+      const count = Math.max(2, Math.floor(width / 26));
+      for (let i = 0; i < count; i += 1) {
+        const bagW = width / count + 6;
+        const bagH = Math.max(12, height * 0.7);
+        const bx = x + (width / count) * i - 3;
+        const by = y + height * 0.15 + Math.sin(i * 0.8) * 3;
+        const gradient = ctx.createLinearGradient(bx, by, bx, by + bagH);
+        gradient.addColorStop(0, '#cfbf9c');
+        gradient.addColorStop(1, '#9e8d6e');
+        ctx.fillStyle = gradient;
+        roundRect(bx, by, bagW, bagH, bagH * 0.4, true);
+      }
+    }
+
+    function drawBush(x, y, width, height) {
+      ctx.save();
+      ctx.fillStyle = '#5f6d46';
+      drawBlob(x + width * 0.5, y + height * 0.6, width * 0.34, height * 0.28);
+      ctx.fillStyle = '#748458';
+      drawBlob(x + width * 0.38, y + height * 0.48, width * 0.28, height * 0.25);
+      ctx.restore();
+    }
+
+    function drawOverlayLayer(replay, frame, tileW, tileH) {
+      if (rangeToggle.checked) drawRangeOverlay(replay, frame, tileW, tileH);
+      if (sightToggle.checked) drawSightOverlay(replay, frame, tileW, tileH);
+    }
+
+    function drawRangeOverlay(replay, frame, tileW, tileH) {
+      const [px, py] = frame.player_pos;
+      const cx = (px + 0.5) * tileW;
+      const cy = (py + 0.5) * tileH;
+      const base = replay.mission.weapon.effective_range * tileW;
+      ctx.save();
+      ctx.strokeStyle = 'rgba(236, 240, 243, 0.55)';
+      ctx.lineWidth = 5;
+      ctx.beginPath();
+      ctx.arc(cx, cy, base, 0.1, Math.PI * 1.9);
+      ctx.stroke();
+      ctx.strokeStyle = 'rgba(223, 230, 236, 0.35)';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.arc(cx, cy, base * 1.45, Math.PI * 0.9, Math.PI * 1.95);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function drawSightOverlay(replay, frame, tileW, tileH) {
+      frame.enemy_positions.forEach(([x, y], index) => {
+        const facing = frame.enemy_facings[index] || [1, 0];
+        const enemyDef = replay.mission.enemies[index];
+        const radius = enemyDef.view_distance * tileW;
+        const angle = (enemyDef.view_angle || 80) * Math.PI / 180;
+        const cx = (x + 0.5) * tileW;
+        const cy = (y + 0.5) * tileH;
+        const facingAngle = Math.atan2(facing[1], facing[0]);
+        const gradient = ctx.createRadialGradient(cx, cy, radius * 0.15, cx, cy, radius);
+        gradient.addColorStop(0, 'rgba(242, 118, 107, 0.22)');
+        gradient.addColorStop(1, 'rgba(242, 118, 107, 0.02)');
+        ctx.save();
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.arc(cx, cy, radius, facingAngle - angle / 2, facingAngle + angle / 2);
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+      });
+
+      ctx.save();
+      ctx.fillStyle = getCss('--sight');
+      frame.visible_tiles.flat().forEach(([x, y]) => {
+        ctx.fillRect(x * tileW, y * tileH, tileW, tileH);
+      });
+      ctx.restore();
+    }
+
+    function drawTrailLayer(replay, tileW, tileH) {
+      const frames = previousFrames(replay, 4);
+      ctx.save();
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+
+      ctx.strokeStyle = 'rgba(70, 141, 210, 0.72)';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      frames.forEach((frame, index) => {
+        const x = (frame.player_pos[0] + 0.5) * tileW;
+        const y = (frame.player_pos[1] + 0.5) * tileH;
+        if (index === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      });
+      ctx.stroke();
+
+      const enemyCount = replay.frames[state.index].enemy_positions.length;
+      for (let i = 0; i < enemyCount; i += 1) {
+        ctx.strokeStyle = 'rgba(210, 96, 88, 0.28)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        frames.forEach((frame, index) => {
+          const point = frame.enemy_positions[i];
+          const x = (point[0] + 0.5) * tileW;
+          const y = (point[1] + 0.5) * tileH;
+          if (index === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        });
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    function drawActorsLayer(replay, frame, tileW, tileH) {
+      frame.enemy_positions.forEach(([x, y], index) => {
+        const facing = frame.enemy_facings[index] || [1, 0];
+        drawActorShadow((x + 0.5) * tileW, (y + 0.5) * tileH, tileW * 0.36, tileH * 0.18);
+        drawGuard((x + 0.5) * tileW, (y + 0.5) * tileH, Math.min(tileW, tileH) * 0.3, facing);
+      });
+
+      if (frame.target_alive) {
+        drawActorShadow((frame.target_pos[0] + 0.5) * tileW, (frame.target_pos[1] + 0.5) * tileH, tileW * 0.44, tileH * 0.22);
+        drawTargetBadge((frame.target_pos[0] + 0.5) * tileW, (frame.target_pos[1] + 0.5) * tileH, Math.min(tileW, tileH) * 0.34);
+      }
+
+      const facing = playerFacing(replay, frame);
+      drawActorShadow((frame.player_pos[0] + 0.5) * tileW, (frame.player_pos[1] + 0.5) * tileH, tileW * 0.4, tileH * 0.2);
+      drawSniper((frame.player_pos[0] + 0.5) * tileW, (frame.player_pos[1] + 0.5) * tileH, Math.min(tileW, tileH) * 0.31, facing);
+    }
+
+    function drawAccentLayer(replay, frame, tileW, tileH) {
+      const px = (frame.player_pos[0] + 0.5) * tileW;
+      const py = (frame.player_pos[1] + 0.5) * tileH;
+      ctx.save();
+
+      if (frame.target_alive) {
+        const tx = (frame.target_pos[0] + 0.5) * tileW;
+        const ty = (frame.target_pos[1] + 0.5) * tileH;
+        ctx.strokeStyle = 'rgba(76, 140, 205, 0.95)';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.moveTo(px, py);
+        ctx.lineTo(tx, ty);
+        ctx.stroke();
+      }
+
+      if (frame.alerted) {
+        ctx.fillStyle = 'rgba(202, 86, 68, 0.12)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+
+      ctx.restore();
+    }
+
+    function playerFacing(replay, frame) {
+      if (frame.target_alive) {
+        return [frame.target_pos[0] - frame.player_pos[0], frame.target_pos[1] - frame.player_pos[1]];
+      }
+      const [ex, ey] = replay.mission.extraction;
+      return [ex - frame.player_pos[0], ey - frame.player_pos[1]];
+    }
+
+    function drawActorShadow(x, y, width, height) {
+      ctx.save();
+      ctx.fillStyle = 'rgba(19, 23, 28, 0.28)';
+      ctx.filter = 'blur(6px)';
+      ctx.beginPath();
+      ctx.ellipse(x + 5, y + 7, width, height, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function drawSniper(x, y, size, facing) {
+      const angle = Math.atan2(facing[1], facing[0]);
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(angle);
+      ctx.strokeStyle = 'rgba(28, 42, 56, 0.95)';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(-size * 0.15, 0);
+      ctx.lineTo(size * 0.95, 0);
+      ctx.stroke();
+      ctx.fillStyle = '#4c6a40';
+      ctx.beginPath();
+      ctx.arc(0, 0, size * 0.72, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#778b61';
+      ctx.beginPath();
+      ctx.arc(-size * 0.1, -size * 0.06, size * 0.42, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(48, 58, 48, 0.8)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(0, 0, size * 0.72, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+
+      ctx.strokeStyle = 'rgba(62, 132, 210, 0.55)';
+      ctx.lineWidth = 3;
+      roundRect(x - size * 0.92, y - size * 0.92, size * 1.84, size * 1.84, size * 0.18, false);
+    }
+
+    function drawGuard(x, y, size, facing) {
+      const angle = Math.atan2(facing[1], facing[0]);
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.strokeStyle = 'rgba(204, 82, 70, 0.9)';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.arc(0, 0, size * 0.95, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.rotate(angle);
+      ctx.fillStyle = '#d6d8da';
+      ctx.beginPath();
+      ctx.arc(0, 0, size * 0.55, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#2d3237';
+      ctx.beginPath();
+      ctx.arc(0, 0, size * 0.4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#9fa4a8';
+      ctx.beginPath();
+      ctx.moveTo(size * 0.15, -size * 0.45);
+      ctx.lineTo(size * 0.92, -size * 0.72);
+      ctx.lineTo(size * 0.38, -size * 0.12);
       ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function drawTargetBadge(x, y, size) {
+      ctx.save();
+      ctx.translate(x, y);
+      const glow = ctx.createRadialGradient(0, 0, size * 0.2, 0, 0, size * 1.25);
+      glow.addColorStop(0, 'rgba(255, 223, 128, 0.65)');
+      glow.addColorStop(1, 'rgba(255, 223, 128, 0.02)');
+      ctx.fillStyle = glow;
+      ctx.beginPath();
+      ctx.arc(0, 0, size * 1.3, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#d9ae2b';
+      ctx.beginPath();
+      ctx.moveTo(0, -size);
+      ctx.lineTo(size, 0);
+      ctx.lineTo(0, size);
+      ctx.lineTo(-size, 0);
+      ctx.closePath();
+      ctx.fill();
+      ctx.fillStyle = '#5f4a1e';
+      roundRect(-size * 0.65, -size * 0.45, size * 1.3, size * 0.9, size * 0.15, true);
+      ctx.fillStyle = '#dbf5ff';
+      ctx.beginPath();
+      ctx.moveTo(0, -size * 0.2);
+      ctx.lineTo(size * 0.18, 0);
+      ctx.lineTo(0, size * 0.24);
+      ctx.lineTo(-size * 0.18, 0);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function roundRect(x, y, width, height, radius, fill) {
+      ctx.beginPath();
+      ctx.moveTo(x + radius, y);
+      ctx.arcTo(x + width, y, x + width, y + height, radius);
+      ctx.arcTo(x + width, y + height, x, y + height, radius);
+      ctx.arcTo(x, y + height, x, y, radius);
+      ctx.arcTo(x, y, x + width, y, radius);
+      ctx.closePath();
+      if (fill) ctx.fill();
+      else ctx.stroke();
+    }
+
+    function drawBlob(x, y, rx, ry) {
+      ctx.beginPath();
+      ctx.ellipse(x, y, rx, ry, 0.3, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.ellipse(x - rx * 0.4, y + ry * 0.1, rx * 0.7, ry * 0.7, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.ellipse(x + rx * 0.45, y - ry * 0.1, rx * 0.62, ry * 0.68, 0, 0, Math.PI * 2);
       ctx.fill();
     }
 
@@ -453,9 +975,10 @@
 
     sightToggle.addEventListener('change', drawFrame);
     rangeToggle.addEventListener('change', drawFrame);
+    trailToggle.addEventListener('change', drawFrame);
 
-    Promise.all([loadReplay(defaultReplay), loadJson(variantsPath), loadJson(batchPath)])
-      .then(([, variants, batch]) => {
+    Promise.all([loadAssets(), loadReplay(defaultReplay), loadJson(variantsPath), loadJson(batchPath)])
+      .then(([, , variants, batch]) => {
         state.variants = variants;
         state.batch = batch;
         renderStats(state.replay);
