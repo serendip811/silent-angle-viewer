@@ -372,15 +372,58 @@
       document.getElementById(id).textContent = text;
     }
 
+    function recommendedLimitForVariant(variantId) {
+      if (state.variants?.variants) {
+        const variantEntry = state.variants.variants.find((variant) => variant.variant === variantId);
+        if (variantEntry) return variantEntry.recommended_turn_limit;
+      }
+      if (state.batch && state.batch.variant === variantId) {
+        return state.batch.recommended_turn_limit;
+      }
+      return 'loading';
+    }
+
+    function firstFrameMatching(replay, predicate) {
+      return replay.frames?.find(predicate) || null;
+    }
+
+    function summarizeEscalationPath(replay) {
+      if (!replay.frames?.length) return 'none';
+      const sequence = [];
+      replay.frames.forEach((frame) => {
+        if (sequence[sequence.length - 1] !== frame.alert_stage) {
+          sequence.push(frame.alert_stage);
+        }
+      });
+      return sequence.join(' -> ');
+    }
+
     function renderStats(replay) {
-      const batch = state.batch;
+      const localFrame = firstFrameMatching(replay, (frame) => frame.alert_stage === 'local_investigation');
+      const contactFrame = firstFrameMatching(replay, (frame) => frame.alert_stage === 'confirmed_contact');
+      const crisisFrame = firstFrameMatching(replay, (frame) => frame.alert_stage === 'mission_crisis');
       const stats = {
         Success: replay.result.success,
         'Failure Reason': replay.result.failure_reason,
         Turns: replay.result.turns,
         'Current Limit': replay.mission.time_limit,
-        'Recommended Limit': batch ? batch.recommended_turn_limit : 'loading',
+        'Recommended Limit': recommendedLimitForVariant(replay.mission.variant_id),
+        'Escalation Path': summarizeEscalationPath(replay),
+        'Mission Crisis': replay.frames?.some((frame) => frame.mission_crisis) ?? false,
+        Alerted: replay.frames?.some((frame) => frame.alerted) ?? false,
+        'Local Alert': replay.frames?.some((frame) => frame.local_alert) ?? false,
+        'Local Alert Turn': localFrame?.turn ?? '-',
+        'Local Alert Cause': localFrame?.local_alert_reason || '-',
+        'Contact Turn': contactFrame?.turn ?? '-',
+        'Contact Cause': contactFrame?.confirmed_contact_reason || '-',
+        'Crisis Turn': crisisFrame?.turn ?? '-',
+        'Crisis Cause': crisisFrame?.mission_crisis_reason || '-',
+        'Shot Revealed': replay.result.shot_revealed,
+        'Reveal Turn': replay.result.reveal_turn ?? '-',
+        'Exact Exposure': replay.result.exposed,
+        'Exposure Turn': replay.result.exposure_turn ?? '-',
         Detected: replay.result.detected,
+        'Detection Turn': replay.result.detection_turn ?? '-',
         'Shot Fired': replay.result.shot_fired,
         'Shot Hit': replay.result.shot_hit,
         Extracted: replay.result.extracted,
@@ -419,12 +462,15 @@
       replay.mission.enemies.forEach((enemyDef, index) => {
         const awareness = frame.enemy_awareness?.[index] || 'unaware';
         const goal = frame.enemy_goals?.[index] || null;
+        const task = frame.enemy_tasks?.[index] || (awareness === 'unaware' ? 'patrol' : 'search_origin');
         const [bg, ink] = awarenessColor(awareness);
         const card = document.createElement('div');
         card.className = 'enemy-card';
         card.innerHTML = `
           <strong>${enemyDef.enemy_id}</strong>
           <span class="awareness-pill" style="background:${bg}; color:${ink};">${awareness}</span>
+          <span>Role: ${enemyDef.crisis_role || 'search_origin'}</span>
+          <span>Task: ${task}</span>
           <span>Position: ${formatPoint(frame.enemy_positions[index])}</span>
           <span>Goal: ${formatPoint(goal)}</span>
         `;
@@ -466,7 +512,10 @@
       setPill('mission-pill', `Mission: ${mission.mission_id}`);
       setPill('variant-pill', `Variant: ${mission.variant_id}`);
       setPill('profile-pill', `Profile: ${replay.profile.name}`);
-      setPill('turn-pill', `Turn: ${frame.turn}`);
+      setPill(
+        'turn-pill',
+        `Turn: ${frame.turn} | stage ${frame.alert_stage} | cause ${frame.alert_reason} | reveal ${frame.shot_revealed ? 'yes' : 'no'} | alert ${frame.alerted ? 'yes' : 'no'} | contact ${frame.confirmed_contact ? 'yes' : 'no'}`
+      );
       turnSlider.value = state.index;
     }
 
@@ -882,7 +931,7 @@
         ctx.stroke();
       }
 
-      if (frame.alerted) {
+      if (frame.mission_crisis) {
         ctx.fillStyle = 'rgba(202, 86, 68, 0.12)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
       }

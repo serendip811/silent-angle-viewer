@@ -1,5 +1,7 @@
 {
+  "simulation_version": "2026-03-28-range-bands-v1",
   "mission": {
+    "simulation_version": "2026-03-28-range-bands-v1",
     "mission_id": "dockyard_01",
     "variant_id": "baseline",
     "width": 20,
@@ -219,6 +221,11 @@
         ],
         "view_distance": 5,
         "view_angle": 80.0,
+        "crisis_role": "hold_angle",
+        "crisis_anchor": [
+          10,
+          3
+        ],
         "weapon": {
           "name": "guard_rifle",
           "effective_range": 5,
@@ -250,6 +257,8 @@
         ],
         "view_distance": 4,
         "view_angle": 80.0,
+        "crisis_role": "protect_vip",
+        "crisis_anchor": null,
         "weapon": {
           "name": "guard_rifle",
           "effective_range": 5,
@@ -281,6 +290,11 @@
         ],
         "view_distance": 5,
         "view_angle": 75.0,
+        "crisis_role": "guard_exit",
+        "crisis_anchor": [
+          18,
+          12
+        ],
         "weapon": {
           "name": "watch_rifle",
           "effective_range": 6,
@@ -302,21 +316,23 @@
     "shot_patience": 0.06,
     "extraction_risk_bias": 2.8,
     "hold_position_margin": 4.5,
-    "post_shot_cover_turns": 0,
-    "visibility_tolerance": 2,
-    "combat_survival_bonus": 0.0
+    "post_shot_cover_turns": 0
   },
   "seed": 1000,
   "result": {
     "agent": "beginner",
     "success": false,
     "failure_reason": "player_dead",
-    "turns": 13,
+    "turns": 16,
+    "shot_revealed": true,
+    "reveal_turn": 12,
+    "exposed": true,
+    "exposure_turn": 16,
     "detected": true,
-    "detection_turn": 13,
+    "detection_turn": 16,
     "shot_fired": true,
-    "shot_hit": false,
-    "target_killed": false,
+    "shot_hit": true,
+    "target_killed": true,
     "extracted": false,
     "post_shot_death": true
   },
@@ -333,8 +349,18 @@
       ],
       "target_alive": true,
       "player_alive": true,
+      "mission_crisis": false,
       "alerted": false,
+      "local_alert": false,
+      "alert_stage": "calm",
+      "alert_reason": "none",
+      "local_alert_reason": null,
+      "confirmed_contact_reason": null,
+      "mission_crisis_reason": null,
+      "shot_revealed": false,
+      "exposed": false,
       "detected": false,
+      "confirmed_contact": false,
       "enemy_positions": [
         [
           5,
@@ -372,6 +398,11 @@
         null,
         null,
         null
+      ],
+      "enemy_tasks": [
+        "patrol",
+        "patrol",
+        "patrol"
       ],
       "visible_tiles": [
         [
@@ -555,8 +586,18 @@
       ],
       "target_alive": true,
       "player_alive": true,
+      "mission_crisis": false,
       "alerted": false,
+      "local_alert": false,
+      "alert_stage": "calm",
+      "alert_reason": "none",
+      "local_alert_reason": null,
+      "confirmed_contact_reason": null,
+      "mission_crisis_reason": null,
+      "shot_revealed": false,
+      "exposed": false,
       "detected": false,
+      "confirmed_contact": false,
       "enemy_positions": [
         [
           6,
@@ -594,6 +635,11 @@
         null,
         null,
         null
+      ],
+      "enemy_tasks": [
+        "patrol",
+        "patrol",
+        "patrol"
       ],
       "visible_tiles": [
         [
@@ -741,8 +787,18 @@
       ],
       "target_alive": true,
       "player_alive": true,
+      "mission_crisis": false,
       "alerted": false,
+      "local_alert": false,
+      "alert_stage": "calm",
+      "alert_reason": "none",
+      "local_alert_reason": null,
+      "confirmed_contact_reason": null,
+      "mission_crisis_reason": null,
+      "shot_revealed": false,
+      "exposed": false,
       "detected": false,
+      "confirmed_contact": false,
       "enemy_positions": [
         [
           7,
@@ -780,6 +836,11 @@
         null,
         null,
         null
+      ],
+      "enemy_tasks": [
+        "patrol",
+        "patrol",
+        "patrol"
       ],
       "visible_tiles": [
         [
@@ -903,8 +964,18 @@
       ],
       "target_alive": true,
       "player_alive": true,
+      "mission_crisis": false,
       "alerted": false,
+      "local_alert": false,
+      "alert_stage": "calm",
+      "alert_reason": "none",
+      "local_alert_reason": null,
+      "confirmed_contact_reason": null,
+      "mission_crisis_reason": null,
+      "shot_revealed": false,
+      "exposed": false,
       "detected": false,
+      "confirmed_contact": false,
       "enemy_positions": [
         [
           8,
@@ -942,6 +1013,11 @@
         null,
         null,
         null
+      ],
+      "enemy_tasks": [
+        "patrol",
+        "patrol",
+        "patrol"
       ],
       "visible_tiles": [
         [
@@ -1045,8 +1121,18 @@
       ],
       "target_alive": true,
       "player_alive": true,
+      "mission_crisis": false,
       "alerted": false,
+      "local_alert": false,
+      "alert_stage": "calm",
+      "alert_reason": "none",
+      "local_alert_reason": null,
+      "confirmed_contact_reason": null,
+      "mission_crisis_reason": null,
+      "shot_revealed": false,
+      "exposed": false,
       "detected": false,
+      "confirmed_contact": false,
       "enemy_positions": [
         [
           9,
@@ -1084,6 +1170,11 @@
         null,
         null,
         null
+      ],
+      "enemy_tasks": [
+        "patrol",
+        "patrol",
+        "patrol"
       ],
       "visible_tiles": [
         [
@@ -1243,8 +1334,18 @@
       ],
       "target_alive": true,
       "player_alive": true,
+      "mission_crisis": false,
       "alerted": false,
+      "local_alert": false,
+      "alert_stage": "calm",
+      "alert_reason": "none",
+      "local_alert_reason": null,
+      "confirmed_contact_reason": null,
+      "mission_crisis_reason": null,
+      "shot_revealed": false,
+      "exposed": false,
       "detected": false,
+      "confirmed_contact": false,
       "enemy_positions": [
         [
           9,
@@ -1282,6 +1383,11 @@
         null,
         null,
         null
+      ],
+      "enemy_tasks": [
+        "patrol",
+        "patrol",
+        "patrol"
       ],
       "visible_tiles": [
         [
@@ -1409,8 +1515,18 @@
       ],
       "target_alive": true,
       "player_alive": true,
+      "mission_crisis": false,
       "alerted": false,
+      "local_alert": false,
+      "alert_stage": "calm",
+      "alert_reason": "none",
+      "local_alert_reason": null,
+      "confirmed_contact_reason": null,
+      "mission_crisis_reason": null,
+      "shot_revealed": false,
+      "exposed": false,
       "detected": false,
+      "confirmed_contact": false,
       "enemy_positions": [
         [
           9,
@@ -1448,6 +1564,11 @@
         null,
         null,
         null
+      ],
+      "enemy_tasks": [
+        "patrol",
+        "patrol",
+        "patrol"
       ],
       "visible_tiles": [
         [
@@ -1579,8 +1700,18 @@
       ],
       "target_alive": true,
       "player_alive": true,
+      "mission_crisis": false,
       "alerted": false,
+      "local_alert": false,
+      "alert_stage": "calm",
+      "alert_reason": "none",
+      "local_alert_reason": null,
+      "confirmed_contact_reason": null,
+      "mission_crisis_reason": null,
+      "shot_revealed": false,
+      "exposed": false,
       "detected": false,
+      "confirmed_contact": false,
       "enemy_positions": [
         [
           8,
@@ -1618,6 +1749,11 @@
         null,
         null,
         null
+      ],
+      "enemy_tasks": [
+        "patrol",
+        "patrol",
+        "patrol"
       ],
       "visible_tiles": [
         [
@@ -1769,8 +1905,18 @@
       ],
       "target_alive": true,
       "player_alive": true,
+      "mission_crisis": false,
       "alerted": false,
+      "local_alert": false,
+      "alert_stage": "calm",
+      "alert_reason": "none",
+      "local_alert_reason": null,
+      "confirmed_contact_reason": null,
+      "mission_crisis_reason": null,
+      "shot_revealed": false,
+      "exposed": false,
       "detected": false,
+      "confirmed_contact": false,
       "enemy_positions": [
         [
           7,
@@ -1808,6 +1954,11 @@
         null,
         null,
         null
+      ],
+      "enemy_tasks": [
+        "patrol",
+        "patrol",
+        "patrol"
       ],
       "visible_tiles": [
         [
@@ -1959,8 +2110,18 @@
       ],
       "target_alive": true,
       "player_alive": true,
+      "mission_crisis": false,
       "alerted": false,
+      "local_alert": false,
+      "alert_stage": "calm",
+      "alert_reason": "none",
+      "local_alert_reason": null,
+      "confirmed_contact_reason": null,
+      "mission_crisis_reason": null,
+      "shot_revealed": false,
+      "exposed": false,
       "detected": false,
+      "confirmed_contact": false,
       "enemy_positions": [
         [
           6,
@@ -1998,6 +2159,11 @@
         null,
         null,
         null
+      ],
+      "enemy_tasks": [
+        "patrol",
+        "patrol",
+        "patrol"
       ],
       "visible_tiles": [
         [
@@ -2108,7 +2274,7 @@
     {
       "turn": 10,
       "player_pos": [
-        11,
+        10,
         13
       ],
       "target_pos": [
@@ -2117,8 +2283,18 @@
       ],
       "target_alive": true,
       "player_alive": true,
+      "mission_crisis": false,
       "alerted": false,
+      "local_alert": false,
+      "alert_stage": "calm",
+      "alert_reason": "none",
+      "local_alert_reason": null,
+      "confirmed_contact_reason": null,
+      "mission_crisis_reason": null,
+      "shot_revealed": false,
+      "exposed": false,
       "detected": false,
+      "confirmed_contact": false,
       "enemy_positions": [
         [
           5,
@@ -2156,6 +2332,11 @@
         null,
         null,
         null
+      ],
+      "enemy_tasks": [
+        "patrol",
+        "patrol",
+        "patrol"
       ],
       "visible_tiles": [
         [
@@ -2213,12 +2394,12 @@
           ]
         ]
       ],
-      "text": "....................\n....#...............\n....#.........#.....\n....#G........#.....\n....#..####......T..\n....................\n.....c......#....c..\n............#.......\n......####..#..G....\n.........G..#.......\n..cc......cc...###..\n....................\n.............c......\n...........P...cc...\n..................x.\n...................."
+      "text": "....................\n....#...............\n....#.........#.....\n....#G........#.....\n....#..####......T..\n....................\n.....c......#....c..\n............#.......\n......####..#..G....\n.........G..#.......\n..cc......cc...###..\n....................\n.............c......\n..........P....cc...\n..................x.\n...................."
     },
     {
       "turn": 11,
       "player_pos": [
-        12,
+        10,
         13
       ],
       "target_pos": [
@@ -2227,8 +2408,18 @@
       ],
       "target_alive": true,
       "player_alive": true,
+      "mission_crisis": false,
       "alerted": false,
+      "local_alert": false,
+      "alert_stage": "calm",
+      "alert_reason": "none",
+      "local_alert_reason": null,
+      "confirmed_contact_reason": null,
+      "mission_crisis_reason": null,
+      "shot_revealed": false,
+      "exposed": false,
       "detected": false,
+      "confirmed_contact": false,
       "enemy_positions": [
         [
           5,
@@ -2266,6 +2457,11 @@
         null,
         null,
         null
+      ],
+      "enemy_tasks": [
+        "patrol",
+        "patrol",
+        "patrol"
       ],
       "visible_tiles": [
         [
@@ -2371,13 +2567,13 @@
           ]
         ]
       ],
-      "text": "....................\n....#...............\n....#G........#.....\n....#.........#.....\n....#..####.........\n.................T..\n.....c......#....c..\n............#.......\n......####..#.G.....\n..........G.#.......\n..cc......cc...###..\n....................\n.............c......\n............P..cc...\n..................x.\n...................."
+      "text": "....................\n....#...............\n....#G........#.....\n....#.........#.....\n....#..####.........\n.................T..\n.....c......#....c..\n............#.......\n......####..#.G.....\n..........G.#.......\n..cc......cc...###..\n....................\n.............c......\n..........P....cc...\n..................x.\n...................."
     },
     {
       "turn": 12,
       "player_pos": [
-        12,
-        12
+        10,
+        13
       ],
       "target_pos": [
         17,
@@ -2385,8 +2581,18 @@
       ],
       "target_alive": true,
       "player_alive": true,
+      "mission_crisis": false,
       "alerted": true,
+      "local_alert": true,
+      "alert_stage": "local_investigation",
+      "alert_reason": "gunshot_noise",
+      "local_alert_reason": "gunshot_noise",
+      "confirmed_contact_reason": null,
+      "mission_crisis_reason": null,
+      "shot_revealed": true,
+      "exposed": false,
       "detected": false,
+      "confirmed_contact": false,
       "enemy_positions": [
         [
           5,
@@ -2394,7 +2600,7 @@
         ],
         [
           10,
-          8
+          9
         ],
         [
           14,
@@ -2408,7 +2614,7 @@
         ],
         [
           0,
-          -1
+          1
         ],
         [
           0,
@@ -2417,16 +2623,24 @@
       ],
       "enemy_awareness": [
         "unaware",
-        "unaware",
-        "suspicious"
+        "alerted",
+        "alerted"
       ],
       "enemy_goals": [
         null,
-        null,
         [
-          12,
-          12
+          10,
+          14
+        ],
+        [
+          10,
+          14
         ]
+      ],
+      "enemy_tasks": [
+        "patrol",
+        "search_origin",
+        "search_origin"
       ],
       "visible_tiles": [
         [
@@ -2442,43 +2656,47 @@
         [
           [
             8,
-            5
+            12
           ],
           [
             9,
-            5
+            11
           ],
           [
             9,
-            6
+            12
           ],
           [
             10,
-            5
+            9
           ],
           [
             10,
-            6
+            10
           ],
           [
             10,
-            7
+            11
           ],
           [
             10,
-            8
+            12
+          ],
+          [
+            10,
+            13
           ],
           [
             11,
-            5
+            11
           ],
           [
             11,
-            6
+            12
           ],
           [
             12,
-            5
+            12
           ]
         ],
         [
@@ -2532,22 +2750,32 @@
           ]
         ]
       ],
-      "text": "....................\n....#G..............\n....#.........#.....\n....#.........#.....\n....#..####.........\n....................\n.....c......#....T..\n............#.......\n......####G.#.G.....\n............#.......\n..cc......cc...###..\n....................\n............Pc......\n...............cc...\n..................x.\n...................."
+      "text": "....................\n....#G..............\n....#.........#.....\n....#.........#.....\n....#..####.........\n....................\n.....c......#....T..\n............#.......\n......####..#.G.....\n..........G.#.......\n..cc......cc...###..\n....................\n.............c......\n..........P....cc...\n..................x.\n...................."
     },
     {
       "turn": 13,
       "player_pos": [
-        12,
-        12
+        11,
+        13
       ],
       "target_pos": [
-        17,
+        18,
         6
       ],
       "target_alive": true,
-      "player_alive": false,
+      "player_alive": true,
+      "mission_crisis": false,
       "alerted": true,
-      "detected": true,
+      "local_alert": true,
+      "alert_stage": "local_investigation",
+      "alert_reason": "gunshot_noise",
+      "local_alert_reason": "gunshot_noise",
+      "confirmed_contact_reason": null,
+      "mission_crisis_reason": null,
+      "shot_revealed": true,
+      "exposed": false,
+      "detected": false,
+      "confirmed_contact": false,
       "enemy_positions": [
         [
           6,
@@ -2555,11 +2783,11 @@
         ],
         [
           10,
-          8
+          9
         ],
         [
           14,
-          9
+          8
         ]
       ],
       "enemy_facings": [
@@ -2579,18 +2807,23 @@
       "enemy_awareness": [
         "unaware",
         "alerted",
-        "engage"
+        "alerted"
       ],
       "enemy_goals": [
         null,
         [
-          12,
-          12
+          10,
+          14
         ],
         [
-          12,
-          12
+          10,
+          14
         ]
+      ],
+      "enemy_tasks": [
+        "patrol",
+        "search_origin",
+        "search_origin"
       ],
       "visible_tiles": [
         [
@@ -2654,19 +2887,15 @@
         [
           [
             8,
-            11
-          ],
-          [
-            9,
-            10
+            12
           ],
           [
             9,
             11
           ],
           [
-            10,
-            8
+            9,
+            12
           ],
           [
             10,
@@ -2685,15 +2914,225 @@
             12
           ],
           [
-            11,
-            10
+            10,
+            13
           ],
           [
             11,
             11
           ],
           [
+            11,
+            12
+          ],
+          [
             12,
+            12
+          ]
+        ],
+        [
+          [
+            11,
+            12
+          ],
+          [
+            12,
+            11
+          ],
+          [
+            12,
+            12
+          ],
+          [
+            13,
+            10
+          ],
+          [
+            13,
+            11
+          ],
+          [
+            13,
+            12
+          ],
+          [
+            14,
+            8
+          ],
+          [
+            14,
+            9
+          ],
+          [
+            14,
+            10
+          ],
+          [
+            14,
+            11
+          ],
+          [
+            14,
+            12
+          ],
+          [
+            14,
+            13
+          ]
+        ]
+      ],
+      "text": "....................\n....#.G.............\n....#.........#.....\n....#.........#.....\n....#..####.........\n....................\n.....c......#....cT.\n............#.......\n......####..#.G.....\n..........G.#.......\n..cc......cc...###..\n....................\n.............c......\n...........P...cc...\n..................x.\n...................."
+    },
+    {
+      "turn": 14,
+      "player_pos": [
+        11,
+        13
+      ],
+      "target_pos": [
+        18,
+        6
+      ],
+      "target_alive": false,
+      "player_alive": true,
+      "mission_crisis": true,
+      "alerted": true,
+      "local_alert": true,
+      "alert_stage": "mission_crisis",
+      "alert_reason": "target_down",
+      "local_alert_reason": "target_down",
+      "confirmed_contact_reason": null,
+      "mission_crisis_reason": "target_down",
+      "shot_revealed": true,
+      "exposed": false,
+      "detected": false,
+      "confirmed_contact": false,
+      "enemy_positions": [
+        [
+          7,
+          1
+        ],
+        [
+          11,
+          9
+        ],
+        [
+          14,
+          9
+        ]
+      ],
+      "enemy_facings": [
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "enemy_awareness": [
+        "investigating",
+        "investigating",
+        "investigating"
+      ],
+      "enemy_goals": [
+        [
+          10,
+          3
+        ],
+        [
+          18,
+          6
+        ],
+        [
+          17,
+          14
+        ]
+      ],
+      "enemy_tasks": [
+        "hold_angle",
+        "protect_vip",
+        "guard_exit"
+      ],
+      "visible_tiles": [
+        [
+          [
+            7,
+            1
+          ],
+          [
+            8,
+            1
+          ],
+          [
+            9,
+            0
+          ],
+          [
+            9,
+            1
+          ],
+          [
+            9,
+            2
+          ],
+          [
+            10,
+            0
+          ],
+          [
+            10,
+            1
+          ],
+          [
+            10,
+            2
+          ],
+          [
+            10,
+            3
+          ],
+          [
+            11,
+            0
+          ],
+          [
+            11,
+            1
+          ],
+          [
+            11,
+            2
+          ],
+          [
+            11,
+            3
+          ],
+          [
+            11,
+            4
+          ],
+          [
+            12,
+            1
+          ]
+        ],
+        [
+          [
+            11,
+            9
+          ],
+          [
+            13,
+            10
+          ],
+          [
+            14,
             11
           ]
         ],
@@ -2756,7 +3195,519 @@
           ]
         ]
       ],
-      "text": "....................\n....#.G.............\n....#.........#.....\n....#.........#.....\n....#..####.........\n....................\n.....c......#....T..\n............#.......\n......####G.#.......\n............#.G.....\n..cc......cc...###..\n....................\n............Pc......\n...............cc...\n..................x.\n...................."
+      "text": "....................\n....#..G............\n....#.........#.....\n....#.........#.....\n....#..####.........\n....................\n.....c......#....c..\n............#.......\n......####..#.......\n...........G#.G.....\n..cc......cc...###..\n....................\n.............c......\n...........P...cc...\n..................x.\n...................."
+    },
+    {
+      "turn": 15,
+      "player_pos": [
+        11,
+        14
+      ],
+      "target_pos": [
+        18,
+        6
+      ],
+      "target_alive": false,
+      "player_alive": true,
+      "mission_crisis": true,
+      "alerted": true,
+      "local_alert": true,
+      "alert_stage": "mission_crisis",
+      "alert_reason": "target_down",
+      "local_alert_reason": "target_down",
+      "confirmed_contact_reason": null,
+      "mission_crisis_reason": "target_down",
+      "shot_revealed": true,
+      "exposed": false,
+      "detected": false,
+      "confirmed_contact": false,
+      "enemy_positions": [
+        [
+          8,
+          1
+        ],
+        [
+          11,
+          10
+        ],
+        [
+          14,
+          10
+        ]
+      ],
+      "enemy_facings": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "enemy_awareness": [
+        "investigating",
+        "investigating",
+        "investigating"
+      ],
+      "enemy_goals": [
+        [
+          10,
+          3
+        ],
+        [
+          18,
+          6
+        ],
+        [
+          17,
+          14
+        ]
+      ],
+      "enemy_tasks": [
+        "hold_angle",
+        "protect_vip",
+        "guard_exit"
+      ],
+      "visible_tiles": [
+        [
+          [
+            8,
+            1
+          ],
+          [
+            9,
+            1
+          ],
+          [
+            10,
+            0
+          ],
+          [
+            10,
+            1
+          ],
+          [
+            10,
+            2
+          ],
+          [
+            11,
+            0
+          ],
+          [
+            11,
+            1
+          ],
+          [
+            11,
+            2
+          ],
+          [
+            11,
+            3
+          ],
+          [
+            12,
+            0
+          ],
+          [
+            12,
+            1
+          ],
+          [
+            12,
+            2
+          ],
+          [
+            12,
+            3
+          ],
+          [
+            12,
+            4
+          ],
+          [
+            13,
+            1
+          ]
+        ],
+        [
+          [
+            9,
+            13
+          ],
+          [
+            10,
+            12
+          ],
+          [
+            10,
+            13
+          ],
+          [
+            11,
+            10
+          ],
+          [
+            11,
+            11
+          ],
+          [
+            11,
+            12
+          ],
+          [
+            11,
+            13
+          ],
+          [
+            11,
+            14
+          ],
+          [
+            12,
+            12
+          ],
+          [
+            12,
+            13
+          ],
+          [
+            13,
+            13
+          ]
+        ],
+        [
+          [
+            11,
+            14
+          ],
+          [
+            12,
+            13
+          ],
+          [
+            12,
+            14
+          ],
+          [
+            13,
+            12
+          ],
+          [
+            13,
+            13
+          ],
+          [
+            13,
+            14
+          ],
+          [
+            14,
+            10
+          ],
+          [
+            14,
+            11
+          ],
+          [
+            14,
+            12
+          ],
+          [
+            14,
+            13
+          ],
+          [
+            14,
+            14
+          ],
+          [
+            14,
+            15
+          ],
+          [
+            15,
+            12
+          ],
+          [
+            15,
+            13
+          ],
+          [
+            15,
+            14
+          ],
+          [
+            16,
+            13
+          ],
+          [
+            16,
+            14
+          ],
+          [
+            17,
+            14
+          ]
+        ]
+      ],
+      "text": "....................\n....#...G...........\n....#.........#.....\n....#.........#.....\n....#..####.........\n....................\n.....c......#....c..\n............#.......\n......####..#.......\n............#.......\n..cc......cG..G###..\n....................\n.............c......\n...............cc...\n...........P......x.\n...................."
+    },
+    {
+      "turn": 16,
+      "player_pos": [
+        11,
+        15
+      ],
+      "target_pos": [
+        18,
+        6
+      ],
+      "target_alive": false,
+      "player_alive": false,
+      "mission_crisis": true,
+      "alerted": true,
+      "local_alert": true,
+      "alert_stage": "mission_crisis",
+      "alert_reason": "target_down",
+      "local_alert_reason": "sustained_visual_contact",
+      "confirmed_contact_reason": "visual_contact",
+      "mission_crisis_reason": "target_down",
+      "shot_revealed": true,
+      "exposed": true,
+      "detected": true,
+      "confirmed_contact": true,
+      "enemy_positions": [
+        [
+          9,
+          1
+        ],
+        [
+          12,
+          10
+        ],
+        [
+          14,
+          11
+        ]
+      ],
+      "enemy_facings": [
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "enemy_awareness": [
+        "investigating",
+        "suspicious",
+        "engage"
+      ],
+      "enemy_goals": [
+        [
+          10,
+          3
+        ],
+        [
+          11,
+          15
+        ],
+        [
+          11,
+          15
+        ]
+      ],
+      "enemy_tasks": [
+        "hold_angle",
+        "protect_vip",
+        "engage"
+      ],
+      "visible_tiles": [
+        [
+          [
+            9,
+            1
+          ],
+          [
+            10,
+            1
+          ],
+          [
+            11,
+            0
+          ],
+          [
+            11,
+            1
+          ],
+          [
+            11,
+            2
+          ],
+          [
+            12,
+            0
+          ],
+          [
+            12,
+            1
+          ],
+          [
+            12,
+            2
+          ],
+          [
+            12,
+            3
+          ],
+          [
+            13,
+            0
+          ],
+          [
+            13,
+            1
+          ],
+          [
+            13,
+            2
+          ],
+          [
+            13,
+            3
+          ],
+          [
+            13,
+            4
+          ],
+          [
+            14,
+            1
+          ]
+        ],
+        [
+          [
+            12,
+            10
+          ],
+          [
+            13,
+            10
+          ],
+          [
+            14,
+            9
+          ],
+          [
+            14,
+            10
+          ],
+          [
+            14,
+            11
+          ],
+          [
+            15,
+            8
+          ],
+          [
+            15,
+            9
+          ],
+          [
+            15,
+            11
+          ],
+          [
+            15,
+            12
+          ]
+        ],
+        [
+          [
+            11,
+            15
+          ],
+          [
+            12,
+            14
+          ],
+          [
+            12,
+            15
+          ],
+          [
+            13,
+            13
+          ],
+          [
+            13,
+            14
+          ],
+          [
+            13,
+            15
+          ],
+          [
+            14,
+            11
+          ],
+          [
+            14,
+            12
+          ],
+          [
+            14,
+            13
+          ],
+          [
+            14,
+            14
+          ],
+          [
+            14,
+            15
+          ],
+          [
+            15,
+            13
+          ],
+          [
+            15,
+            14
+          ],
+          [
+            15,
+            15
+          ],
+          [
+            16,
+            14
+          ],
+          [
+            16,
+            15
+          ],
+          [
+            17,
+            15
+          ]
+        ]
+      ],
+      "text": "....................\n....#....G..........\n....#.........#.....\n....#.........#.....\n....#..####.........\n....................\n.....c......#....c..\n............#.......\n......####..#.......\n............#.......\n..cc......ccG..###..\n..............G.....\n.............c......\n...............cc...\n..................x.\n...........P........"
     }
   ]
 }
