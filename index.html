@@ -398,6 +398,18 @@
       return sequence.join(' -> ');
     }
 
+    function formatPressurePlan(replay) {
+      const observed = replay.result.pressure_event_observed_turns || {};
+      const activated = replay.result.pressure_event_activation_turns || {};
+      return (replay.mission.pressure_events || []).map((event) => {
+        const configured = event.configured_turn ?? '-';
+        const semantics = event.turn_semantics || (event.trigger ? 'triggered' : 'absolute');
+        const observedTurn = observed[event.event_id];
+        const activatedTurn = activated[event.event_id];
+        return `${event.event_id} cfg ${configured} ${semantics} obs ${observedTurn ?? '-'} act ${activatedTurn ?? '-'}`;
+      }).join(' | ') || '-';
+    }
+
     function renderStats(replay) {
       const localFrame = firstFrameMatching(replay, (frame) => frame.local_alert || frame.alert_stage === 'local_investigation');
       const postShotThreatFrame = firstFrameMatching(replay, (frame) => frame.alert_stage === 'post_shot_threat');
@@ -423,7 +435,7 @@
         'Escalation Path': summarizeEscalationPath(replay),
         'Mission Crisis': replay.frames?.some((frame) => frame.mission_crisis) ?? false,
         Alerted: replay.frames?.some((frame) => frame.alerted) ?? false,
-        'Mission Pressure': (replay.mission.pressure_events || []).map((event) => `${event.event_id}@${event.turn}`).join(', ') || '-',
+        'Mission Pressure': formatPressurePlan(replay),
         'Security Pressure': replay.result.security_pressure ?? false,
         'Pressure Stage': replay.result.pressure_stage || '-',
         'Pressure Turn': pressureFrame?.turn ?? '-',
@@ -459,10 +471,13 @@
         'Target Escaping': replay.frames?.some((frame) => frame.target_escaping) ?? false,
         'Target Escape Start': replay.result.target_escape_start_turn ?? escapeFrame?.turn ?? '-',
         'Target Escape Turn': replay.result.target_escape_turn ?? '-',
-        'Target Escape Cause': replay.result.target_escape_reason || escapeFrame?.target_escape_reason || '-',
+        'Target Escape Start Cause': replay.result.target_escape_start_reason || escapeFrame?.target_escape_reason || '-',
+        'Target Escape Final Cause': replay.result.target_escape_reason || '-',
         'Player Alive': replay.result.player_alive,
         'Target Alive': replay.result.target_alive,
-        Extracted: replay.result.extracted,
+        'Ended On Extraction': replay.result.ended_on_extraction ?? replay.result.stood_on_extraction ?? replay.result.reached_extraction ?? replay.result.extracted,
+        'Reached Extraction At Any Point': replay.result.reached_extraction ?? replay.result.ended_on_extraction ?? replay.result.extracted,
+        'Objective Extracted': replay.result.objective_extracted ?? replay.result.extracted,
         Seed: replay.seed,
         Provenance: formatProvenance(replay.provenance),
       };

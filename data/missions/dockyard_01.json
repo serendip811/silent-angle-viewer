@@ -23,11 +23,12 @@
         "base_accuracy": 0.74,
         "noise_radius": 7,
         "aim_bonus_per_turn": 0.08,
-        "breath_bonus": 0.12
+        "breath_bonus": 0.12,
+        "reload_time": 2
       },
       "pressure_events": [
-        {"event_id": "exit_secure_timer", "turn": 20, "event_type": "secure_exit", "reason": "exit_secured", "trigger": "post_shot_threat", "trigger_delay": 1, "trigger_reason": "post_shot_lockdown"},
-        {"event_id": "vip_departure_timer", "turn": 28, "event_type": "vip_departure", "reason": "vip_departure_timer", "trigger": "vip_threat", "trigger_delay": 1, "trigger_reason": "vip_threat"}
+        {"event_id": "exit_secure_timer", "turn": 20, "event_type": "secure_exit", "reason": "exit_secured", "trigger": "security_response", "trigger_delay": 1, "trigger_reason": "security_response"},
+        {"event_id": "vip_departure_timer", "turn": 31, "event_type": "vip_departure", "reason": "vip_departure_timer", "trigger": "vip_threat", "trigger_delay": 1, "trigger_reason": "vip_threat"}
       ],
       "target": {
         "route": [[15, 4], [17, 4], [17, 6], [15, 6]],
@@ -85,11 +86,12 @@
         "base_accuracy": 0.74,
         "noise_radius": 7,
         "aim_bonus_per_turn": 0.08,
-        "breath_bonus": 0.12
+        "breath_bonus": 0.12,
+        "reload_time": 2
       },
       "pressure_events": [
-        {"event_id": "exit_secure_timer", "turn": 20, "event_type": "secure_exit", "reason": "exit_secured", "trigger": "post_shot_threat", "trigger_delay": 1, "trigger_reason": "post_shot_lockdown"},
-        {"event_id": "vip_departure_timer", "turn": 28, "event_type": "vip_departure", "reason": "vip_departure_timer", "trigger": "vip_threat", "trigger_delay": 1, "trigger_reason": "vip_threat"}
+        {"event_id": "exit_secure_timer", "turn": 20, "event_type": "secure_exit", "reason": "exit_secured", "trigger": "security_response", "trigger_delay": 1, "trigger_reason": "security_response"},
+        {"event_id": "vip_departure_timer", "turn": 31, "event_type": "vip_departure", "reason": "vip_departure_timer", "trigger": "vip_threat", "trigger_delay": 1, "trigger_reason": "vip_threat"}
       ],
       "target": {
         "route": [[15, 4], [17, 4], [17, 6], [15, 6]],
@@ -147,11 +149,12 @@
         "base_accuracy": 0.74,
         "noise_radius": 7,
         "aim_bonus_per_turn": 0.08,
-        "breath_bonus": 0.12
+        "breath_bonus": 0.12,
+        "reload_time": 2
       },
       "pressure_events": [
-        {"event_id": "exit_secure_timer", "turn": 20, "event_type": "secure_exit", "reason": "exit_secured", "trigger": "post_shot_threat", "trigger_delay": 1, "trigger_reason": "post_shot_lockdown"},
-        {"event_id": "vip_departure_timer", "turn": 28, "event_type": "vip_departure", "reason": "vip_departure_timer", "trigger": "vip_threat", "trigger_delay": 1, "trigger_reason": "vip_threat"}
+        {"event_id": "exit_secure_timer", "turn": 20, "event_type": "secure_exit", "reason": "exit_secured", "trigger": "security_response", "trigger_delay": 1, "trigger_reason": "security_response"},
+        {"event_id": "vip_departure_timer", "turn": 31, "event_type": "vip_departure", "reason": "vip_departure_timer", "trigger": "vip_threat", "trigger_delay": 1, "trigger_reason": "vip_threat"}
       ],
       "target": {
         "route": [[15, 4], [17, 4], [17, 6], [15, 6]],
@@ -209,11 +212,12 @@
         "base_accuracy": 0.74,
         "noise_radius": 7,
         "aim_bonus_per_turn": 0.08,
-        "breath_bonus": 0.12
+        "breath_bonus": 0.12,
+        "reload_time": 2
       },
       "pressure_events": [
-        {"event_id": "exit_secure_timer", "turn": 20, "event_type": "secure_exit", "reason": "exit_secured", "trigger": "post_shot_threat", "trigger_delay": 1, "trigger_reason": "post_shot_lockdown"},
-        {"event_id": "vip_departure_timer", "turn": 28, "event_type": "vip_departure", "reason": "vip_departure_timer", "trigger": "vip_threat", "trigger_delay": 1, "trigger_reason": "vip_threat"}
+        {"event_id": "exit_secure_timer", "turn": 20, "event_type": "secure_exit", "reason": "exit_secured", "trigger": "security_response", "trigger_delay": 1, "trigger_reason": "security_response"},
+        {"event_id": "vip_departure_timer", "turn": 31, "event_type": "vip_departure", "reason": "vip_departure_timer", "trigger": "vip_threat", "trigger_delay": 1, "trigger_reason": "vip_threat"}
       ],
       "target": {
         "route": [[15, 4], [17, 4], [17, 6], [15, 6]],
@@ -271,11 +275,12 @@
         "base_accuracy": 0.74,
         "noise_radius": 7,
         "aim_bonus_per_turn": 0.08,
-        "breath_bonus": 0.12
+        "breath_bonus": 0.12,
+        "reload_time": 2
       },
       "pressure_events": [
-        {"event_id": "exit_secure_timer", "turn": 20, "event_type": "secure_exit", "reason": "exit_secured", "trigger": "post_shot_threat", "trigger_delay": 1, "trigger_reason": "post_shot_lockdown"},
-        {"event_id": "vip_departure_timer", "turn": 28, "event_type": "vip_departure", "reason": "vip_departure_timer", "trigger": "vip_threat", "trigger_delay": 1, "trigger_reason": "vip_threat"}
+        {"event_id": "exit_secure_timer", "turn": 20, "event_type": "secure_exit", "reason": "exit_secured", "trigger": "security_response", "trigger_delay": 1, "trigger_reason": "security_response"},
+        {"event_id": "vip_departure_timer", "turn": 31, "event_type": "vip_departure", "reason": "vip_departure_timer", "trigger": "vip_threat", "trigger_delay": 1, "trigger_reason": "vip_threat"}
       ],
       "target": {
         "route": [[15, 4], [17, 4], [17, 6], [15, 6]],
@@ -333,11 +338,12 @@
         "base_accuracy": 0.74,
         "noise_radius": 7,
         "aim_bonus_per_turn": 0.08,
-        "breath_bonus": 0.12
+        "breath_bonus": 0.12,
+        "reload_time": 2
       },
       "pressure_events": [
-        {"event_id": "exit_secure_timer", "turn": 20, "event_type": "secure_exit", "reason": "exit_secured", "trigger": "post_shot_threat", "trigger_delay": 1, "trigger_reason": "post_shot_lockdown"},
-        {"event_id": "vip_departure_timer", "turn": 28, "event_type": "vip_departure", "reason": "vip_departure_timer", "trigger": "vip_threat", "trigger_delay": 1, "trigger_reason": "vip_threat"}
+        {"event_id": "exit_secure_timer", "turn": 20, "event_type": "secure_exit", "reason": "exit_secured", "trigger": "security_response", "trigger_delay": 1, "trigger_reason": "security_response"},
+        {"event_id": "vip_departure_timer", "turn": 31, "event_type": "vip_departure", "reason": "vip_departure_timer", "trigger": "vip_threat", "trigger_delay": 1, "trigger_reason": "vip_threat"}
       ],
       "target": {
         "route": [[15, 4], [17, 4], [17, 6], [15, 6]],
@@ -395,11 +401,12 @@
         "base_accuracy": 0.69,
         "noise_radius": 7,
         "aim_bonus_per_turn": 0.08,
-        "breath_bonus": 0.1
+        "breath_bonus": 0.1,
+        "reload_time": 2
       },
       "pressure_events": [
-        {"event_id": "exit_secure_timer", "turn": 20, "event_type": "secure_exit", "reason": "exit_secured", "trigger": "post_shot_threat", "trigger_delay": 1, "trigger_reason": "post_shot_lockdown"},
-        {"event_id": "vip_departure_timer", "turn": 28, "event_type": "vip_departure", "reason": "vip_departure_timer", "trigger": "vip_threat", "trigger_delay": 1, "trigger_reason": "vip_threat"}
+        {"event_id": "exit_secure_timer", "turn": 20, "event_type": "secure_exit", "reason": "exit_secured", "trigger": "security_response", "trigger_delay": 1, "trigger_reason": "security_response"},
+        {"event_id": "vip_departure_timer", "turn": 31, "event_type": "vip_departure", "reason": "vip_departure_timer", "trigger": "vip_threat", "trigger_delay": 1, "trigger_reason": "vip_threat"}
       ],
       "target": {
         "route": [[15, 4], [17, 4], [17, 6], [15, 6]],
