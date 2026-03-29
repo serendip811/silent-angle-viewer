@@ -1,7 +1,15 @@
 {
-  "simulation_version": "2026-03-28-range-bands-v1",
+  "simulation_version": "2026-03-29-pressure-role-gating-v51",
+  "provenance": {
+    "mode": "replay",
+    "simulation_version": "2026-03-29-pressure-role-gating-v51",
+    "mission_id": "dockyard_01",
+    "variant_id": "baseline",
+    "time_limit": 55,
+    "seed": 1000
+  },
   "mission": {
-    "simulation_version": "2026-03-28-range-bands-v1",
+    "simulation_version": "2026-03-29-pressure-role-gating-v51",
     "mission_id": "dockyard_01",
     "variant_id": "baseline",
     "width": 20,
@@ -139,6 +147,30 @@
         6
       ]
     ],
+    "primary_objective": "eliminate_target_and_extract",
+    "optional_objectives": [
+      {
+        "objective_id": "avoid_full_alert",
+        "description": "Avoid full alert escalation",
+        "objective_type": "avoid_alert_stage",
+        "threshold": null,
+        "stage": "mission_crisis"
+      },
+      {
+        "objective_id": "remain_undetected",
+        "description": "Avoid confirmed player detection",
+        "objective_type": "avoid_detection",
+        "threshold": null,
+        "stage": null
+      },
+      {
+        "objective_id": "finish_under_par",
+        "description": "Finish under the mission par time",
+        "objective_type": "finish_under_turns",
+        "threshold": 42,
+        "stage": null
+      }
+    ],
     "weapon": {
       "name": "marksman_rifle",
       "effective_range": 8,
@@ -148,6 +180,29 @@
       "aim_bonus_per_turn": 0.08,
       "breath_bonus": 0.12
     },
+    "pressure_events": [
+      {
+        "event_id": "exit_secure_timer",
+        "turn": 20,
+        "event_type": "secure_exit",
+        "reason": "exit_secured",
+        "trigger": "post_shot_threat",
+        "trigger_delay": 1,
+        "trigger_reason": "post_shot_lockdown",
+        "fallback_to_turn": false
+      },
+      {
+        "event_id": "vip_departure_timer",
+        "turn": 28,
+        "event_type": "vip_departure",
+        "reason": "vip_departure_timer",
+        "trigger": "vip_threat",
+        "trigger_delay": 1,
+        "trigger_reason": "vip_threat",
+        "fallback_to_turn": false
+      }
+    ],
+    "vip_departure_turn": 28,
     "target": {
       "route": [
         [
@@ -311,7 +366,7 @@
     "risk_tolerance": 8.3,
     "aim_threshold": 2,
     "preferred_range_bias": 0.82,
-    "aim_confidence_bonus": -0.03,
+    "aim_confidence_bonus": -0.12,
     "breath_discipline": 0.75,
     "shot_patience": 0.12,
     "extraction_risk_bias": 1.6,
@@ -321,20 +376,77 @@
   "seed": 1000,
   "result": {
     "agent": "standard",
-    "success": true,
-    "failure_reason": null,
-    "turns": 28,
+    "success": false,
+    "failure_reason": "target_escaped",
+    "turns": 32,
     "shot_revealed": true,
-    "reveal_turn": 11,
-    "exposed": true,
-    "exposure_turn": 17,
-    "detected": true,
-    "detection_turn": 17,
+    "reveal_turn": 22,
+    "exposed": false,
+    "exposure_turn": null,
+    "detected": false,
+    "detection_turn": null,
     "shot_fired": true,
-    "shot_hit": true,
-    "target_killed": true,
-    "extracted": true,
-    "post_shot_death": false
+    "shot_turn": 22,
+    "shot_hit": false,
+    "target_down_turn": null,
+    "target_killed": false,
+    "extracted": false,
+    "player_alive": true,
+    "target_alive": true,
+    "target_escape_start_turn": 24,
+    "target_escape_turn": 32,
+    "target_escape_reason": "vip_threat",
+    "post_shot_death": false,
+    "final_alert_stage": "post_shot_threat",
+    "highest_alert_stage": "post_shot_threat",
+    "final_alert_reason": "vip_threat",
+    "mission_crisis": false,
+    "confirmed_contact": false,
+    "security_pressure": true,
+    "pressure_stage": "exit_secured",
+    "pressure_reason": "exit_secured",
+    "soft_pressure_triggered": true,
+    "soft_pressure_turn": 24,
+    "soft_pressure_reason": "vip_threat",
+    "pressure_events_triggered": [
+      "exit_secure_timer",
+      "vip_departure_timer"
+    ],
+    "triggered_pressure_effects": [
+      "secure_exit"
+    ],
+    "active_pressure_effects": [
+      "secure_exit"
+    ],
+    "optional_objectives_achieved": 3,
+    "optional_objectives_completed": 0,
+    "optional_objectives_total": 3,
+    "optional_objective_results": [
+      {
+        "objective_id": "avoid_full_alert",
+        "description": "Avoid full alert escalation",
+        "condition_met": true,
+        "achieved": true,
+        "completed": false,
+        "detail": "primary_failed; highest_alert_stage=post_shot_threat"
+      },
+      {
+        "objective_id": "remain_undetected",
+        "description": "Avoid confirmed player detection",
+        "condition_met": true,
+        "achieved": true,
+        "completed": false,
+        "detail": "primary_failed; undetected"
+      },
+      {
+        "objective_id": "finish_under_par",
+        "description": "Finish under the mission par time",
+        "condition_met": true,
+        "achieved": true,
+        "completed": false,
+        "detail": "primary_failed; turns=32/42"
+      }
+    ]
   },
   "frames": [
     {
@@ -354,13 +466,34 @@
       "local_alert": false,
       "alert_stage": "calm",
       "alert_reason": "none",
+      "security_pressure": false,
+      "pressure_stage": "none",
+      "pressure_reason": "none",
       "local_alert_reason": null,
       "confirmed_contact_reason": null,
       "mission_crisis_reason": null,
+      "soft_pressure_active": false,
+      "soft_pressure_turn": null,
+      "soft_pressure_reason": null,
+      "active_pressure_events": [],
+      "active_pressure_effects": [],
+      "pressure_events_triggered_this_turn": [],
+      "pressure_effects_activated_this_turn": [],
+      "player_shot_fired": false,
+      "shot_fired_this_turn": false,
+      "player_shot_hit": false,
+      "shot_hit_this_turn": false,
       "shot_revealed": false,
+      "shot_revealed_this_turn": false,
       "exposed": false,
+      "exposed_this_turn": false,
       "detected": false,
+      "detected_this_turn": false,
       "confirmed_contact": false,
+      "target_escaping": false,
+      "target_escape_started_this_turn": false,
+      "target_escape_reason": null,
+      "alert_stage_changed": false,
       "enemy_positions": [
         [
           5,
@@ -591,13 +724,34 @@
       "local_alert": false,
       "alert_stage": "calm",
       "alert_reason": "none",
+      "security_pressure": false,
+      "pressure_stage": "none",
+      "pressure_reason": "none",
       "local_alert_reason": null,
       "confirmed_contact_reason": null,
       "mission_crisis_reason": null,
+      "soft_pressure_active": false,
+      "soft_pressure_turn": null,
+      "soft_pressure_reason": null,
+      "active_pressure_events": [],
+      "active_pressure_effects": [],
+      "pressure_events_triggered_this_turn": [],
+      "pressure_effects_activated_this_turn": [],
+      "player_shot_fired": false,
+      "shot_fired_this_turn": false,
+      "player_shot_hit": false,
+      "shot_hit_this_turn": false,
       "shot_revealed": false,
+      "shot_revealed_this_turn": false,
       "exposed": false,
+      "exposed_this_turn": false,
       "detected": false,
+      "detected_this_turn": false,
       "confirmed_contact": false,
+      "target_escaping": false,
+      "target_escape_started_this_turn": false,
+      "target_escape_reason": null,
+      "alert_stage_changed": false,
       "enemy_positions": [
         [
           6,
@@ -778,8 +932,8 @@
     {
       "turn": 2,
       "player_pos": [
-        3,
-        13
+        2,
+        12
       ],
       "target_pos": [
         17,
@@ -792,13 +946,34 @@
       "local_alert": false,
       "alert_stage": "calm",
       "alert_reason": "none",
+      "security_pressure": false,
+      "pressure_stage": "none",
+      "pressure_reason": "none",
       "local_alert_reason": null,
       "confirmed_contact_reason": null,
       "mission_crisis_reason": null,
+      "soft_pressure_active": false,
+      "soft_pressure_turn": null,
+      "soft_pressure_reason": null,
+      "active_pressure_events": [],
+      "active_pressure_effects": [],
+      "pressure_events_triggered_this_turn": [],
+      "pressure_effects_activated_this_turn": [],
+      "player_shot_fired": false,
+      "shot_fired_this_turn": false,
+      "player_shot_hit": false,
+      "shot_hit_this_turn": false,
       "shot_revealed": false,
+      "shot_revealed_this_turn": false,
       "exposed": false,
+      "exposed_this_turn": false,
       "detected": false,
+      "detected_this_turn": false,
       "confirmed_contact": false,
+      "target_escaping": false,
+      "target_escape_started_this_turn": false,
+      "target_escape_reason": null,
+      "alert_stage_changed": false,
       "enemy_positions": [
         [
           7,
@@ -950,13 +1125,13 @@
           ]
         ]
       ],
-      "text": "....................\n....#..G............\n....#.........#.....\n....#.........#.....\n....#..####......T..\n....................\n.....c....G.#....c..\n............#.......\n......####..#.......\n............#.......\n..cc......cc...###..\n....................\n.............c...G..\n...P...........cc...\n..................x.\n...................."
+      "text": "....................\n....#..G............\n....#.........#.....\n....#.........#.....\n....#..####......T..\n....................\n.....c....G.#....c..\n............#.......\n......####..#.......\n............#.......\n..cc......cc...###..\n....................\n..P..........c...G..\n...............cc...\n..................x.\n...................."
     },
     {
       "turn": 3,
       "player_pos": [
-        4,
-        13
+        3,
+        12
       ],
       "target_pos": [
         17,
@@ -969,13 +1144,34 @@
       "local_alert": false,
       "alert_stage": "calm",
       "alert_reason": "none",
+      "security_pressure": false,
+      "pressure_stage": "none",
+      "pressure_reason": "none",
       "local_alert_reason": null,
       "confirmed_contact_reason": null,
       "mission_crisis_reason": null,
+      "soft_pressure_active": false,
+      "soft_pressure_turn": null,
+      "soft_pressure_reason": null,
+      "active_pressure_events": [],
+      "active_pressure_effects": [],
+      "pressure_events_triggered_this_turn": [],
+      "pressure_effects_activated_this_turn": [],
+      "player_shot_fired": false,
+      "shot_fired_this_turn": false,
+      "player_shot_hit": false,
+      "shot_hit_this_turn": false,
       "shot_revealed": false,
+      "shot_revealed_this_turn": false,
       "exposed": false,
+      "exposed_this_turn": false,
       "detected": false,
+      "detected_this_turn": false,
       "confirmed_contact": false,
+      "target_escaping": false,
+      "target_escape_started_this_turn": false,
+      "target_escape_reason": null,
+      "alert_stage_changed": false,
       "enemy_positions": [
         [
           8,
@@ -1107,13 +1303,13 @@
           ]
         ]
       ],
-      "text": "....................\n....#...G...........\n....#.........#.....\n....#.........#.....\n....#..####.........\n.................T..\n.....c.....G#....c..\n............#.......\n......####..#.......\n............#.......\n..cc......cc...###..\n....................\n.............c....G.\n....P..........cc...\n..................x.\n...................."
+      "text": "....................\n....#...G...........\n....#.........#.....\n....#.........#.....\n....#..####.........\n.................T..\n.....c.....G#....c..\n............#.......\n......####..#.......\n............#.......\n..cc......cc...###..\n....................\n...P.........c....G.\n...............cc...\n..................x.\n...................."
     },
     {
       "turn": 4,
       "player_pos": [
-        5,
-        13
+        4,
+        12
       ],
       "target_pos": [
         17,
@@ -1126,13 +1322,34 @@
       "local_alert": false,
       "alert_stage": "calm",
       "alert_reason": "none",
+      "security_pressure": false,
+      "pressure_stage": "none",
+      "pressure_reason": "none",
       "local_alert_reason": null,
       "confirmed_contact_reason": null,
       "mission_crisis_reason": null,
+      "soft_pressure_active": false,
+      "soft_pressure_turn": null,
+      "soft_pressure_reason": null,
+      "active_pressure_events": [],
+      "active_pressure_effects": [],
+      "pressure_events_triggered_this_turn": [],
+      "pressure_effects_activated_this_turn": [],
+      "player_shot_fired": false,
+      "shot_fired_this_turn": false,
+      "player_shot_hit": false,
+      "shot_hit_this_turn": false,
       "shot_revealed": false,
+      "shot_revealed_this_turn": false,
       "exposed": false,
+      "exposed_this_turn": false,
       "detected": false,
+      "detected_this_turn": false,
       "confirmed_contact": false,
+      "target_escaping": false,
+      "target_escape_started_this_turn": false,
+      "target_escape_reason": null,
+      "alert_stage_changed": false,
       "enemy_positions": [
         [
           9,
@@ -1241,16 +1458,8 @@
         ],
         [
           [
-            9,
-            10
-          ],
-          [
             10,
             9
-          ],
-          [
-            10,
-            10
           ],
           [
             11,
@@ -1263,28 +1472,12 @@
           [
             11,
             9
-          ],
-          [
-            11,
-            10
-          ],
-          [
-            11,
-            11
           ]
         ],
         [
           [
             17,
-            7
-          ],
-          [
-            17,
             8
-          ],
-          [
-            18,
-            6
           ],
           [
             18,
@@ -1320,13 +1513,13 @@
           ]
         ]
       ],
-      "text": "....................\n....#....G..........\n....#.........#.....\n....#.........#.....\n....#..####.........\n....................\n.....c......#....T..\n...........G#.......\n......####..#.......\n............#.......\n..cc......cc...###..\n..................G.\n.............c......\n.....P.........cc...\n..................x.\n...................."
+      "text": "....................\n....#....G..........\n....#.........#.....\n....#.........#.....\n....#..####.........\n....................\n.....c......#....T..\n...........G#.......\n......####..#.......\n............#.......\n..cc......cc...###..\n..................G.\n....P........c......\n...............cc...\n..................x.\n...................."
     },
     {
       "turn": 5,
       "player_pos": [
-        6,
-        13
+        5,
+        12
       ],
       "target_pos": [
         16,
@@ -1339,13 +1532,34 @@
       "local_alert": false,
       "alert_stage": "calm",
       "alert_reason": "none",
+      "security_pressure": false,
+      "pressure_stage": "none",
+      "pressure_reason": "none",
       "local_alert_reason": null,
       "confirmed_contact_reason": null,
       "mission_crisis_reason": null,
+      "soft_pressure_active": false,
+      "soft_pressure_turn": null,
+      "soft_pressure_reason": null,
+      "active_pressure_events": [],
+      "active_pressure_effects": [],
+      "pressure_events_triggered_this_turn": [],
+      "pressure_effects_activated_this_turn": [],
+      "player_shot_fired": false,
+      "shot_fired_this_turn": false,
+      "player_shot_hit": false,
+      "shot_hit_this_turn": false,
       "shot_revealed": false,
+      "shot_revealed_this_turn": false,
       "exposed": false,
+      "exposed_this_turn": false,
       "detected": false,
+      "detected_this_turn": false,
       "confirmed_contact": false,
+      "target_escaping": false,
+      "target_escape_started_this_turn": false,
+      "target_escape_reason": null,
+      "alert_stage_changed": false,
       "enemy_positions": [
         [
           9,
@@ -1410,10 +1624,6 @@
             10
           ],
           [
-            10,
-            11
-          ],
-          [
             11,
             8
           ],
@@ -1424,10 +1634,6 @@
           [
             11,
             10
-          ],
-          [
-            11,
-            11
           ],
           [
             11,
@@ -1445,15 +1651,7 @@
           ],
           [
             16,
-            6
-          ],
-          [
-            16,
             7
-          ],
-          [
-            17,
-            6
           ],
           [
             17,
@@ -1466,10 +1664,6 @@
           [
             18,
             5
-          ],
-          [
-            18,
-            6
           ],
           [
             18,
@@ -1501,13 +1695,13 @@
           ]
         ]
       ],
-      "text": "....................\n....#...............\n....#....G....#.....\n....#.........#.....\n....#..####.........\n....................\n.....c......#...Tc..\n............#.......\n......####.G#.......\n............#.......\n..cc......cc...###G.\n....................\n.............c......\n......P........cc...\n..................x.\n...................."
+      "text": "....................\n....#...............\n....#....G....#.....\n....#.........#.....\n....#..####.........\n....................\n.....c......#...Tc..\n............#.......\n......####.G#.......\n............#.......\n..cc......cc...###G.\n....................\n.....P.......c......\n...............cc...\n..................x.\n...................."
     },
     {
       "turn": 6,
       "player_pos": [
-        7,
-        13
+        6,
+        12
       ],
       "target_pos": [
         15,
@@ -1520,13 +1714,34 @@
       "local_alert": false,
       "alert_stage": "calm",
       "alert_reason": "none",
+      "security_pressure": false,
+      "pressure_stage": "none",
+      "pressure_reason": "none",
       "local_alert_reason": null,
       "confirmed_contact_reason": null,
       "mission_crisis_reason": null,
+      "soft_pressure_active": false,
+      "soft_pressure_turn": null,
+      "soft_pressure_reason": null,
+      "active_pressure_events": [],
+      "active_pressure_effects": [],
+      "pressure_events_triggered_this_turn": [],
+      "pressure_effects_activated_this_turn": [],
+      "player_shot_fired": false,
+      "shot_fired_this_turn": false,
+      "player_shot_hit": false,
+      "shot_hit_this_turn": false,
       "shot_revealed": false,
+      "shot_revealed_this_turn": false,
       "exposed": false,
+      "exposed_this_turn": false,
       "detected": false,
+      "detected_this_turn": false,
       "confirmed_contact": false,
+      "target_escaping": false,
+      "target_escape_started_this_turn": false,
+      "target_escape_reason": null,
+      "alert_stage_changed": false,
       "enemy_positions": [
         [
           9,
@@ -1613,14 +1828,6 @@
           [
             12,
             11
-          ],
-          [
-            12,
-            12
-          ],
-          [
-            13,
-            12
           ]
         ],
         [
@@ -1631,18 +1838,6 @@
           [
             16,
             5
-          ],
-          [
-            16,
-            6
-          ],
-          [
-            17,
-            5
-          ],
-          [
-            17,
-            6
           ],
           [
             17,
@@ -1686,12 +1881,12 @@
           ]
         ]
       ],
-      "text": "....................\n....#...............\n....#.........#.....\n....#....G....#.....\n....#..####.........\n....................\n.....c......#..T.c..\n............#.......\n......####..#.......\n...........G#.....G.\n..cc......cc...###..\n....................\n.............c......\n.......P.......cc...\n..................x.\n...................."
+      "text": "....................\n....#...............\n....#.........#.....\n....#....G....#.....\n....#..####.........\n....................\n.....c......#..T.c..\n............#.......\n......####..#.......\n...........G#.....G.\n..cc......cc...###..\n....................\n......P......c......\n...............cc...\n..................x.\n...................."
     },
     {
       "turn": 7,
       "player_pos": [
-        8,
+        6,
         13
       ],
       "target_pos": [
@@ -1705,13 +1900,34 @@
       "local_alert": false,
       "alert_stage": "calm",
       "alert_reason": "none",
+      "security_pressure": false,
+      "pressure_stage": "none",
+      "pressure_reason": "none",
       "local_alert_reason": null,
       "confirmed_contact_reason": null,
       "mission_crisis_reason": null,
+      "soft_pressure_active": false,
+      "soft_pressure_turn": null,
+      "soft_pressure_reason": null,
+      "active_pressure_events": [],
+      "active_pressure_effects": [],
+      "pressure_events_triggered_this_turn": [],
+      "pressure_effects_activated_this_turn": [],
+      "player_shot_fired": false,
+      "shot_fired_this_turn": false,
+      "player_shot_hit": false,
+      "shot_hit_this_turn": false,
       "shot_revealed": false,
+      "shot_revealed_this_turn": false,
       "exposed": false,
+      "exposed_this_turn": false,
       "detected": false,
+      "detected_this_turn": false,
       "confirmed_contact": false,
+      "target_escaping": false,
+      "target_escape_started_this_turn": false,
+      "target_escape_reason": null,
+      "alert_stage_changed": false,
       "enemy_positions": [
         [
           8,
@@ -1891,12 +2107,12 @@
           ]
         ]
       ],
-      "text": "....................\n....#...............\n....#.........#.....\n....#...G.....#.....\n....#..####.........\n...............T....\n.....c......#....c..\n............#.......\n......####..#.....G.\n..........G.#.......\n..cc......cc...###..\n....................\n.............c......\n........P......cc...\n..................x.\n...................."
+      "text": "....................\n....#...............\n....#.........#.....\n....#...G.....#.....\n....#..####.........\n...............T....\n.....c......#....c..\n............#.......\n......####..#.....G.\n..........G.#.......\n..cc......cc...###..\n....................\n.............c......\n......P........cc...\n..................x.\n...................."
     },
     {
       "turn": 8,
       "player_pos": [
-        9,
+        7,
         13
       ],
       "target_pos": [
@@ -1910,13 +2126,34 @@
       "local_alert": false,
       "alert_stage": "calm",
       "alert_reason": "none",
+      "security_pressure": false,
+      "pressure_stage": "none",
+      "pressure_reason": "none",
       "local_alert_reason": null,
       "confirmed_contact_reason": null,
       "mission_crisis_reason": null,
+      "soft_pressure_active": false,
+      "soft_pressure_turn": null,
+      "soft_pressure_reason": null,
+      "active_pressure_events": [],
+      "active_pressure_effects": [],
+      "pressure_events_triggered_this_turn": [],
+      "pressure_effects_activated_this_turn": [],
+      "player_shot_fired": false,
+      "shot_fired_this_turn": false,
+      "player_shot_hit": false,
+      "shot_hit_this_turn": false,
       "shot_revealed": false,
+      "shot_revealed_this_turn": false,
       "exposed": false,
+      "exposed_this_turn": false,
       "detected": false,
+      "detected_this_turn": false,
       "confirmed_contact": false,
+      "target_escaping": false,
+      "target_escape_started_this_turn": false,
+      "target_escape_reason": null,
+      "alert_stage_changed": false,
       "enemy_positions": [
         [
           7,
@@ -2096,13 +2333,13 @@
           ]
         ]
       ],
-      "text": "....................\n....#...............\n....#.........#.....\n....#..G......#.....\n....#..####....T....\n....................\n.....c......#....c..\n............#.......\n......####..#....G..\n.........G..#.......\n..cc......cc...###..\n....................\n.............c......\n.........P.....cc...\n..................x.\n...................."
+      "text": "....................\n....#...............\n....#.........#.....\n....#..G......#.....\n....#..####....T....\n....................\n.....c......#....c..\n............#.......\n......####..#....G..\n.........G..#.......\n..cc......cc...###..\n....................\n.............c......\n.......P.......cc...\n..................x.\n...................."
     },
     {
       "turn": 9,
       "player_pos": [
-        10,
-        13
+        7,
+        12
       ],
       "target_pos": [
         16,
@@ -2115,13 +2352,34 @@
       "local_alert": false,
       "alert_stage": "calm",
       "alert_reason": "none",
+      "security_pressure": false,
+      "pressure_stage": "none",
+      "pressure_reason": "none",
       "local_alert_reason": null,
       "confirmed_contact_reason": null,
       "mission_crisis_reason": null,
+      "soft_pressure_active": false,
+      "soft_pressure_turn": null,
+      "soft_pressure_reason": null,
+      "active_pressure_events": [],
+      "active_pressure_effects": [],
+      "pressure_events_triggered_this_turn": [],
+      "pressure_effects_activated_this_turn": [],
+      "player_shot_fired": false,
+      "shot_fired_this_turn": false,
+      "player_shot_hit": false,
+      "shot_hit_this_turn": false,
       "shot_revealed": false,
+      "shot_revealed_this_turn": false,
       "exposed": false,
+      "exposed_this_turn": false,
       "detected": false,
+      "detected_this_turn": false,
       "confirmed_contact": false,
+      "target_escaping": false,
+      "target_escape_started_this_turn": false,
+      "target_escape_reason": null,
+      "alert_stage_changed": false,
       "enemy_positions": [
         [
           6,
@@ -2221,10 +2479,6 @@
           ],
           [
             12,
-            10
-          ],
-          [
-            12,
             11
           ],
           [
@@ -2269,13 +2523,13 @@
           ]
         ]
       ],
-      "text": "....................\n....#...............\n....#.........#.....\n....#.G.......#.....\n....#..####.....T...\n....................\n.....c......#....c..\n............#.......\n......####..#...G...\n........G...#.......\n..cc......cc...###..\n....................\n.............c......\n..........P....cc...\n..................x.\n...................."
+      "text": "....................\n....#...............\n....#.........#.....\n....#.G.......#.....\n....#..####.....T...\n....................\n.....c......#....c..\n............#.......\n......####..#...G...\n........G...#.......\n..cc......cc...###..\n....................\n.......P.....c......\n...............cc...\n..................x.\n...................."
     },
     {
       "turn": 10,
       "player_pos": [
-        10,
-        13
+        8,
+        12
       ],
       "target_pos": [
         17,
@@ -2288,13 +2542,34 @@
       "local_alert": false,
       "alert_stage": "calm",
       "alert_reason": "none",
+      "security_pressure": false,
+      "pressure_stage": "none",
+      "pressure_reason": "none",
       "local_alert_reason": null,
       "confirmed_contact_reason": null,
       "mission_crisis_reason": null,
+      "soft_pressure_active": false,
+      "soft_pressure_turn": null,
+      "soft_pressure_reason": null,
+      "active_pressure_events": [],
+      "active_pressure_effects": [],
+      "pressure_events_triggered_this_turn": [],
+      "pressure_effects_activated_this_turn": [],
+      "player_shot_fired": false,
+      "shot_fired_this_turn": false,
+      "player_shot_hit": false,
+      "shot_hit_this_turn": false,
       "shot_revealed": false,
+      "shot_revealed_this_turn": false,
       "exposed": false,
+      "exposed_this_turn": false,
       "detected": false,
+      "detected_this_turn": false,
       "confirmed_contact": false,
+      "target_escaping": false,
+      "target_escape_started_this_turn": false,
+      "target_escape_reason": null,
+      "alert_stage_changed": false,
       "enemy_positions": [
         [
           5,
@@ -2361,18 +2636,6 @@
         ],
         [
           [
-            11,
-            10
-          ],
-          [
-            11,
-            11
-          ],
-          [
-            12,
-            10
-          ],
-          [
             13,
             7
           ],
@@ -2394,12 +2657,12 @@
           ]
         ]
       ],
-      "text": "....................\n....#...............\n....#.........#.....\n....#G........#.....\n....#..####......T..\n....................\n.....c......#....c..\n............#.......\n......####..#..G....\n.........G..#.......\n..cc......cc...###..\n....................\n.............c......\n..........P....cc...\n..................x.\n...................."
+      "text": "....................\n....#...............\n....#.........#.....\n....#G........#.....\n....#..####......T..\n....................\n.....c......#....c..\n............#.......\n......####..#..G....\n.........G..#.......\n..cc......cc...###..\n....................\n........P....c......\n...............cc...\n..................x.\n...................."
     },
     {
       "turn": 11,
       "player_pos": [
-        10,
+        8,
         13
       ],
       "target_pos": [
@@ -2409,28 +2672,49 @@
       "target_alive": true,
       "player_alive": true,
       "mission_crisis": false,
-      "alerted": true,
-      "local_alert": true,
-      "alert_stage": "local_investigation",
-      "alert_reason": "gunshot_noise",
-      "local_alert_reason": "gunshot_noise",
+      "alerted": false,
+      "local_alert": false,
+      "alert_stage": "calm",
+      "alert_reason": "none",
+      "security_pressure": false,
+      "pressure_stage": "none",
+      "pressure_reason": "none",
+      "local_alert_reason": null,
       "confirmed_contact_reason": null,
       "mission_crisis_reason": null,
-      "shot_revealed": true,
+      "soft_pressure_active": false,
+      "soft_pressure_turn": null,
+      "soft_pressure_reason": null,
+      "active_pressure_events": [],
+      "active_pressure_effects": [],
+      "pressure_events_triggered_this_turn": [],
+      "pressure_effects_activated_this_turn": [],
+      "player_shot_fired": false,
+      "shot_fired_this_turn": false,
+      "player_shot_hit": false,
+      "shot_hit_this_turn": false,
+      "shot_revealed": false,
+      "shot_revealed_this_turn": false,
       "exposed": false,
+      "exposed_this_turn": false,
       "detected": false,
+      "detected_this_turn": false,
       "confirmed_contact": false,
+      "target_escaping": false,
+      "target_escape_started_this_turn": false,
+      "target_escape_reason": null,
+      "alert_stage_changed": false,
       "enemy_positions": [
         [
           5,
           2
         ],
         [
-          9,
+          10,
           9
         ],
         [
-          15,
+          14,
           8
         ]
       ],
@@ -2441,7 +2725,7 @@
         ],
         [
           0,
-          1
+          -1
         ],
         [
           0,
@@ -2450,24 +2734,18 @@
       ],
       "enemy_awareness": [
         "unaware",
-        "alerted",
-        "suspicious"
+        "unaware",
+        "unaware"
       ],
       "enemy_goals": [
         null,
-        [
-          10,
-          14
-        ],
-        [
-          10,
-          14
-        ]
+        null,
+        null
       ],
       "enemy_tasks": [
         "patrol",
-        "search_origin",
-        "search_origin"
+        "patrol",
+        "patrol"
       ],
       "visible_tiles": [
         [
@@ -2490,62 +2768,62 @@
         ],
         [
           [
-            7,
-            12
-          ],
-          [
-            8,
-            11
-          ],
-          [
-            8,
-            12
-          ],
-          [
             9,
+            6
+          ],
+          [
+            10,
+            5
+          ],
+          [
+            10,
+            6
+          ],
+          [
+            10,
+            7
+          ],
+          [
+            10,
+            8
+          ],
+          [
+            10,
             9
           ],
           [
-            9,
-            10
-          ],
-          [
-            9,
-            11
-          ],
-          [
-            9,
-            12
-          ],
-          [
-            9,
-            13
-          ],
-          [
-            10,
-            11
-          ],
-          [
-            10,
-            12
+            11,
+            6
           ],
           [
             11,
-            12
+            7
           ]
         ],
         [
           [
-            12,
+            11,
             12
+          ],
+          [
+            12,
+            11
+          ],
+          [
+            13,
+            10
           ],
           [
             13,
             11
           ],
           [
-            13,
-            12
+            14,
+            8
+          ],
+          [
+            14,
+            9
           ],
           [
             14,
@@ -2554,28 +2832,16 @@
           [
             14,
             11
-          ],
-          [
-            14,
-            12
-          ],
-          [
-            15,
-            8
-          ],
-          [
-            15,
-            9
           ]
         ]
       ],
-      "text": "....................\n....#...............\n....#G........#.....\n....#.........#.....\n....#..####.........\n.................T..\n.....c......#....c..\n............#.......\n......####..#..G....\n.........G..#.......\n..cc......cc...###..\n....................\n.............c......\n..........P....cc...\n..................x.\n...................."
+      "text": "....................\n....#...............\n....#G........#.....\n....#.........#.....\n....#..####.........\n.................T..\n.....c......#....c..\n............#.......\n......####..#.G.....\n..........G.#.......\n..cc......cc...###..\n....................\n.............c......\n........P......cc...\n..................x.\n...................."
     },
     {
       "turn": 12,
       "player_pos": [
-        11,
-        13
+        8,
+        14
       ],
       "target_pos": [
         17,
@@ -2584,29 +2850,50 @@
       "target_alive": true,
       "player_alive": true,
       "mission_crisis": false,
-      "alerted": true,
-      "local_alert": true,
-      "alert_stage": "local_investigation",
-      "alert_reason": "gunshot_noise",
-      "local_alert_reason": "gunshot_noise",
+      "alerted": false,
+      "local_alert": false,
+      "alert_stage": "calm",
+      "alert_reason": "none",
+      "security_pressure": false,
+      "pressure_stage": "none",
+      "pressure_reason": "none",
+      "local_alert_reason": null,
       "confirmed_contact_reason": null,
       "mission_crisis_reason": null,
-      "shot_revealed": true,
+      "soft_pressure_active": false,
+      "soft_pressure_turn": null,
+      "soft_pressure_reason": null,
+      "active_pressure_events": [],
+      "active_pressure_effects": [],
+      "pressure_events_triggered_this_turn": [],
+      "pressure_effects_activated_this_turn": [],
+      "player_shot_fired": false,
+      "shot_fired_this_turn": false,
+      "player_shot_hit": false,
+      "shot_hit_this_turn": false,
+      "shot_revealed": false,
+      "shot_revealed_this_turn": false,
       "exposed": false,
+      "exposed_this_turn": false,
       "detected": false,
+      "detected_this_turn": false,
       "confirmed_contact": false,
+      "target_escaping": false,
+      "target_escape_started_this_turn": false,
+      "target_escape_reason": null,
+      "alert_stage_changed": false,
       "enemy_positions": [
         [
           5,
           1
         ],
         [
-          9,
-          9
+          10,
+          8
         ],
         [
-          15,
-          8
+          14,
+          9
         ]
       ],
       "enemy_facings": [
@@ -2616,7 +2903,7 @@
         ],
         [
           0,
-          1
+          -1
         ],
         [
           0,
@@ -2625,24 +2912,18 @@
       ],
       "enemy_awareness": [
         "unaware",
-        "alerted",
-        "investigating"
+        "unaware",
+        "unaware"
       ],
       "enemy_goals": [
         null,
-        [
-          10,
-          14
-        ],
-        [
-          10,
-          14
-        ]
+        null,
+        null
       ],
       "enemy_tasks": [
         "patrol",
-        "search_origin",
-        "search_origin"
+        "patrol",
+        "patrol"
       ],
       "visible_tiles": [
         [
@@ -2657,95 +2938,1873 @@
         ],
         [
           [
-            7,
-            12
-          ],
-          [
             8,
-            11
-          ],
-          [
-            8,
-            12
+            5
           ],
           [
             9,
-            9
+            5
           ],
           [
             9,
-            10
-          ],
-          [
-            9,
-            11
-          ],
-          [
-            9,
-            12
-          ],
-          [
-            9,
-            13
+            6
           ],
           [
             10,
-            11
+            5
           ],
           [
             10,
-            12
+            6
+          ],
+          [
+            10,
+            7
+          ],
+          [
+            10,
+            8
           ],
           [
             11,
+            5
+          ],
+          [
+            11,
+            6
+          ],
+          [
+            12,
+            5
+          ]
+        ],
+        [
+          [
+            11,
+            13
+          ],
+          [
+            12,
+            13
+          ],
+          [
+            13,
+            11
+          ],
+          [
+            14,
+            9
+          ],
+          [
+            14,
+            10
+          ],
+          [
+            14,
+            11
+          ],
+          [
+            14,
             12
+          ],
+          [
+            14,
+            14
+          ],
+          [
+            15,
+            12
+          ]
+        ]
+      ],
+      "text": "....................\n....#G..............\n....#.........#.....\n....#.........#.....\n....#..####.........\n....................\n.....c......#....T..\n............#.......\n......####G.#.......\n............#.G.....\n..cc......cc...###..\n....................\n.............c......\n...............cc...\n........P.........x.\n...................."
+    },
+    {
+      "turn": 13,
+      "player_pos": [
+        9,
+        14
+      ],
+      "target_pos": [
+        16,
+        6
+      ],
+      "target_alive": true,
+      "player_alive": true,
+      "mission_crisis": false,
+      "alerted": false,
+      "local_alert": false,
+      "alert_stage": "calm",
+      "alert_reason": "none",
+      "security_pressure": false,
+      "pressure_stage": "none",
+      "pressure_reason": "none",
+      "local_alert_reason": null,
+      "confirmed_contact_reason": null,
+      "mission_crisis_reason": null,
+      "soft_pressure_active": false,
+      "soft_pressure_turn": null,
+      "soft_pressure_reason": null,
+      "active_pressure_events": [],
+      "active_pressure_effects": [],
+      "pressure_events_triggered_this_turn": [],
+      "pressure_effects_activated_this_turn": [],
+      "player_shot_fired": false,
+      "shot_fired_this_turn": false,
+      "player_shot_hit": false,
+      "shot_hit_this_turn": false,
+      "shot_revealed": false,
+      "shot_revealed_this_turn": false,
+      "exposed": false,
+      "exposed_this_turn": false,
+      "detected": false,
+      "detected_this_turn": false,
+      "confirmed_contact": false,
+      "target_escaping": false,
+      "target_escape_started_this_turn": false,
+      "target_escape_reason": null,
+      "alert_stage_changed": false,
+      "enemy_positions": [
+        [
+          6,
+          1
+        ],
+        [
+          10,
+          7
+        ],
+        [
+          14,
+          10
+        ]
+      ],
+      "enemy_facings": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          -1
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "enemy_awareness": [
+        "unaware",
+        "unaware",
+        "unaware"
+      ],
+      "enemy_goals": [
+        null,
+        null,
+        null
+      ],
+      "enemy_tasks": [
+        "patrol",
+        "patrol",
+        "patrol"
+      ],
+      "visible_tiles": [
+        [
+          [
+            6,
+            1
+          ],
+          [
+            7,
+            1
+          ],
+          [
+            8,
+            0
+          ],
+          [
+            8,
+            1
+          ],
+          [
+            8,
+            2
+          ],
+          [
+            9,
+            0
+          ],
+          [
+            9,
+            1
+          ],
+          [
+            9,
+            2
+          ],
+          [
+            9,
+            3
+          ],
+          [
+            10,
+            0
+          ],
+          [
+            10,
+            1
+          ],
+          [
+            10,
+            2
+          ],
+          [
+            10,
+            3
+          ],
+          [
+            11,
+            1
+          ]
+        ],
+        [
+          [
+            9,
+            5
+          ],
+          [
+            10,
+            5
+          ],
+          [
+            10,
+            6
+          ],
+          [
+            10,
+            7
+          ],
+          [
+            11,
+            4
+          ],
+          [
+            11,
+            5
+          ],
+          [
+            12,
+            4
+          ]
+        ],
+        [
+          [
+            11,
+            14
+          ],
+          [
+            12,
+            13
+          ],
+          [
+            12,
+            14
+          ],
+          [
+            13,
+            12
+          ],
+          [
+            13,
+            13
+          ],
+          [
+            13,
+            14
+          ],
+          [
+            14,
+            10
+          ],
+          [
+            14,
+            11
+          ],
+          [
+            14,
+            12
+          ],
+          [
+            14,
+            13
+          ],
+          [
+            14,
+            14
+          ],
+          [
+            14,
+            15
+          ],
+          [
+            15,
+            12
+          ],
+          [
+            17,
+            14
+          ]
+        ]
+      ],
+      "text": "....................\n....#.G.............\n....#.........#.....\n....#.........#.....\n....#..####.........\n....................\n.....c......#...Tc..\n..........G.#.......\n......####..#.......\n............#.......\n..cc......cc..G###..\n....................\n.............c......\n...............cc...\n.........P........x.\n...................."
+    },
+    {
+      "turn": 14,
+      "player_pos": [
+        9,
+        13
+      ],
+      "target_pos": [
+        15,
+        6
+      ],
+      "target_alive": true,
+      "player_alive": true,
+      "mission_crisis": false,
+      "alerted": false,
+      "local_alert": false,
+      "alert_stage": "calm",
+      "alert_reason": "none",
+      "security_pressure": false,
+      "pressure_stage": "none",
+      "pressure_reason": "none",
+      "local_alert_reason": null,
+      "confirmed_contact_reason": null,
+      "mission_crisis_reason": null,
+      "soft_pressure_active": false,
+      "soft_pressure_turn": null,
+      "soft_pressure_reason": null,
+      "active_pressure_events": [],
+      "active_pressure_effects": [],
+      "pressure_events_triggered_this_turn": [],
+      "pressure_effects_activated_this_turn": [],
+      "player_shot_fired": false,
+      "shot_fired_this_turn": false,
+      "player_shot_hit": false,
+      "shot_hit_this_turn": false,
+      "shot_revealed": false,
+      "shot_revealed_this_turn": false,
+      "exposed": false,
+      "exposed_this_turn": false,
+      "detected": false,
+      "detected_this_turn": false,
+      "confirmed_contact": false,
+      "target_escaping": false,
+      "target_escape_started_this_turn": false,
+      "target_escape_reason": null,
+      "alert_stage_changed": false,
+      "enemy_positions": [
+        [
+          7,
+          1
+        ],
+        [
+          9,
+          7
+        ],
+        [
+          14,
+          11
+        ]
+      ],
+      "enemy_facings": [
+        [
+          1,
+          0
+        ],
+        [
+          -1,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "enemy_awareness": [
+        "unaware",
+        "unaware",
+        "unaware"
+      ],
+      "enemy_goals": [
+        null,
+        null,
+        null
+      ],
+      "enemy_tasks": [
+        "patrol",
+        "patrol",
+        "patrol"
+      ],
+      "visible_tiles": [
+        [
+          [
+            7,
+            1
+          ],
+          [
+            8,
+            1
+          ],
+          [
+            9,
+            0
+          ],
+          [
+            9,
+            1
+          ],
+          [
+            9,
+            2
+          ],
+          [
+            10,
+            0
+          ],
+          [
+            10,
+            1
+          ],
+          [
+            10,
+            2
+          ],
+          [
+            10,
+            3
+          ],
+          [
+            11,
+            0
+          ],
+          [
+            11,
+            1
+          ],
+          [
+            11,
+            2
+          ],
+          [
+            11,
+            3
+          ],
+          [
+            11,
+            4
+          ],
+          [
+            12,
+            1
+          ]
+        ],
+        [
+          [
+            6,
+            5
+          ],
+          [
+            6,
+            7
+          ],
+          [
+            7,
+            6
+          ],
+          [
+            7,
+            7
+          ],
+          [
+            8,
+            7
+          ],
+          [
+            9,
+            7
+          ]
+        ],
+        [
+          [
+            11,
+            15
+          ],
+          [
+            12,
+            14
+          ],
+          [
+            12,
+            15
+          ],
+          [
+            13,
+            13
+          ],
+          [
+            13,
+            14
+          ],
+          [
+            13,
+            15
+          ],
+          [
+            14,
+            11
+          ],
+          [
+            14,
+            12
+          ],
+          [
+            14,
+            13
+          ],
+          [
+            14,
+            14
+          ],
+          [
+            14,
+            15
+          ],
+          [
+            15,
+            13
+          ],
+          [
+            15,
+            14
+          ],
+          [
+            15,
+            15
+          ],
+          [
+            16,
+            15
+          ],
+          [
+            17,
+            15
+          ]
+        ]
+      ],
+      "text": "....................\n....#..G............\n....#.........#.....\n....#.........#.....\n....#..####.........\n....................\n.....c......#..T.c..\n.........G..#.......\n......####..#.......\n............#.......\n..cc......cc...###..\n..............G.....\n.............c......\n.........P.....cc...\n..................x.\n...................."
+    },
+    {
+      "turn": 15,
+      "player_pos": [
+        9,
+        12
+      ],
+      "target_pos": [
+        15,
+        5
+      ],
+      "target_alive": true,
+      "player_alive": true,
+      "mission_crisis": false,
+      "alerted": false,
+      "local_alert": false,
+      "alert_stage": "calm",
+      "alert_reason": "none",
+      "security_pressure": false,
+      "pressure_stage": "none",
+      "pressure_reason": "none",
+      "local_alert_reason": null,
+      "confirmed_contact_reason": null,
+      "mission_crisis_reason": null,
+      "soft_pressure_active": false,
+      "soft_pressure_turn": null,
+      "soft_pressure_reason": null,
+      "active_pressure_events": [],
+      "active_pressure_effects": [],
+      "pressure_events_triggered_this_turn": [],
+      "pressure_effects_activated_this_turn": [],
+      "player_shot_fired": false,
+      "shot_fired_this_turn": false,
+      "player_shot_hit": false,
+      "shot_hit_this_turn": false,
+      "shot_revealed": false,
+      "shot_revealed_this_turn": false,
+      "exposed": false,
+      "exposed_this_turn": false,
+      "detected": false,
+      "detected_this_turn": false,
+      "confirmed_contact": false,
+      "target_escaping": false,
+      "target_escape_started_this_turn": false,
+      "target_escape_reason": null,
+      "alert_stage_changed": false,
+      "enemy_positions": [
+        [
+          8,
+          1
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          15,
+          11
+        ]
+      ],
+      "enemy_facings": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          -1
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "enemy_awareness": [
+        "unaware",
+        "unaware",
+        "unaware"
+      ],
+      "enemy_goals": [
+        null,
+        null,
+        null
+      ],
+      "enemy_tasks": [
+        "patrol",
+        "patrol",
+        "patrol"
+      ],
+      "visible_tiles": [
+        [
+          [
+            8,
+            1
+          ],
+          [
+            9,
+            1
+          ],
+          [
+            10,
+            0
+          ],
+          [
+            10,
+            1
+          ],
+          [
+            10,
+            2
+          ],
+          [
+            11,
+            0
+          ],
+          [
+            11,
+            1
+          ],
+          [
+            11,
+            2
+          ],
+          [
+            11,
+            3
+          ],
+          [
+            12,
+            0
+          ],
+          [
+            12,
+            1
+          ],
+          [
+            12,
+            2
+          ],
+          [
+            12,
+            3
+          ],
+          [
+            12,
+            4
+          ],
+          [
+            13,
+            1
+          ]
+        ],
+        [
+          [
+            6,
+            4
+          ],
+          [
+            7,
+            5
+          ],
+          [
+            8,
+            5
+          ],
+          [
+            8,
+            6
+          ],
+          [
+            8,
+            7
+          ],
+          [
+            9,
+            5
           ]
         ],
         [
           [
             12,
-            12
+            15
           ],
           [
             13,
-            11
+            14
           ],
           [
             13,
-            12
+            15
           ],
           [
             14,
+            13
+          ],
+          [
+            14,
+            14
+          ],
+          [
+            14,
+            15
+          ],
+          [
+            15,
+            11
+          ],
+          [
+            15,
+            12
+          ],
+          [
+            15,
+            13
+          ],
+          [
+            15,
+            14
+          ],
+          [
+            15,
+            15
+          ],
+          [
+            16,
+            13
+          ],
+          [
+            16,
+            14
+          ],
+          [
+            16,
+            15
+          ],
+          [
+            17,
+            14
+          ],
+          [
+            17,
+            15
+          ],
+          [
+            18,
+            15
+          ]
+        ]
+      ],
+      "text": "....................\n....#...G...........\n....#.........#.....\n....#.........#.....\n....#..####.........\n...............T....\n.....c......#....c..\n........G...#.......\n......####..#.......\n............#.......\n..cc......cc...###..\n...............G....\n.........P...c......\n...............cc...\n..................x.\n...................."
+    },
+    {
+      "turn": 16,
+      "player_pos": [
+        10,
+        12
+      ],
+      "target_pos": [
+        15,
+        4
+      ],
+      "target_alive": true,
+      "player_alive": true,
+      "mission_crisis": false,
+      "alerted": false,
+      "local_alert": false,
+      "alert_stage": "calm",
+      "alert_reason": "none",
+      "security_pressure": false,
+      "pressure_stage": "none",
+      "pressure_reason": "none",
+      "local_alert_reason": null,
+      "confirmed_contact_reason": null,
+      "mission_crisis_reason": null,
+      "soft_pressure_active": false,
+      "soft_pressure_turn": null,
+      "soft_pressure_reason": null,
+      "active_pressure_events": [],
+      "active_pressure_effects": [],
+      "pressure_events_triggered_this_turn": [],
+      "pressure_effects_activated_this_turn": [],
+      "player_shot_fired": false,
+      "shot_fired_this_turn": false,
+      "player_shot_hit": false,
+      "shot_hit_this_turn": false,
+      "shot_revealed": false,
+      "shot_revealed_this_turn": false,
+      "exposed": false,
+      "exposed_this_turn": false,
+      "detected": false,
+      "detected_this_turn": false,
+      "confirmed_contact": false,
+      "target_escaping": false,
+      "target_escape_started_this_turn": false,
+      "target_escape_reason": null,
+      "alert_stage_changed": false,
+      "enemy_positions": [
+        [
+          9,
+          1
+        ],
+        [
+          8,
+          6
+        ],
+        [
+          15,
+          12
+        ]
+      ],
+      "enemy_facings": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          -1
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "enemy_awareness": [
+        "unaware",
+        "unaware",
+        "unaware"
+      ],
+      "enemy_goals": [
+        null,
+        null,
+        null
+      ],
+      "enemy_tasks": [
+        "patrol",
+        "patrol",
+        "patrol"
+      ],
+      "visible_tiles": [
+        [
+          [
+            9,
+            1
+          ],
+          [
+            10,
+            1
+          ],
+          [
+            11,
+            0
+          ],
+          [
+            11,
+            1
+          ],
+          [
+            11,
+            2
+          ],
+          [
+            12,
+            0
+          ],
+          [
+            12,
+            1
+          ],
+          [
+            12,
+            2
+          ],
+          [
+            12,
+            3
+          ],
+          [
+            13,
+            0
+          ],
+          [
+            13,
+            1
+          ],
+          [
+            13,
+            2
+          ],
+          [
+            13,
+            3
+          ],
+          [
+            13,
+            4
+          ],
+          [
+            14,
+            1
+          ]
+        ],
+        [
+          [
+            8,
+            5
+          ],
+          [
+            8,
+            6
+          ]
+        ],
+        [
+          [
+            13,
+            15
+          ],
+          [
+            14,
+            14
+          ],
+          [
+            14,
+            15
+          ],
+          [
+            15,
+            12
+          ],
+          [
+            15,
+            13
+          ],
+          [
+            15,
+            14
+          ],
+          [
+            15,
+            15
+          ],
+          [
+            16,
+            14
+          ],
+          [
+            16,
+            15
+          ],
+          [
+            17,
+            15
+          ]
+        ]
+      ],
+      "text": "....................\n....#....G..........\n....#.........#.....\n....#.........#.....\n....#..####....T....\n....................\n.....c..G...#....c..\n............#.......\n......####..#.......\n............#.......\n..cc......cc...###..\n....................\n..........P..c.G....\n...............cc...\n..................x.\n...................."
+    },
+    {
+      "turn": 17,
+      "player_pos": [
+        11,
+        12
+      ],
+      "target_pos": [
+        16,
+        4
+      ],
+      "target_alive": true,
+      "player_alive": true,
+      "mission_crisis": false,
+      "alerted": false,
+      "local_alert": false,
+      "alert_stage": "calm",
+      "alert_reason": "none",
+      "security_pressure": false,
+      "pressure_stage": "none",
+      "pressure_reason": "none",
+      "local_alert_reason": null,
+      "confirmed_contact_reason": null,
+      "mission_crisis_reason": null,
+      "soft_pressure_active": false,
+      "soft_pressure_turn": null,
+      "soft_pressure_reason": null,
+      "active_pressure_events": [],
+      "active_pressure_effects": [],
+      "pressure_events_triggered_this_turn": [],
+      "pressure_effects_activated_this_turn": [],
+      "player_shot_fired": false,
+      "shot_fired_this_turn": false,
+      "player_shot_hit": false,
+      "shot_hit_this_turn": false,
+      "shot_revealed": false,
+      "shot_revealed_this_turn": false,
+      "exposed": false,
+      "exposed_this_turn": false,
+      "detected": false,
+      "detected_this_turn": false,
+      "confirmed_contact": false,
+      "target_escaping": false,
+      "target_escape_started_this_turn": false,
+      "target_escape_reason": null,
+      "alert_stage_changed": false,
+      "enemy_positions": [
+        [
+          9,
+          2
+        ],
+        [
+          9,
+          6
+        ],
+        [
+          16,
+          12
+        ]
+      ],
+      "enemy_facings": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "enemy_awareness": [
+        "unaware",
+        "unaware",
+        "unaware"
+      ],
+      "enemy_goals": [
+        null,
+        null,
+        null
+      ],
+      "enemy_tasks": [
+        "patrol",
+        "patrol",
+        "patrol"
+      ],
+      "visible_tiles": [
+        [
+          [
+            9,
+            2
+          ],
+          [
+            9,
+            3
+          ]
+        ],
+        [
+          [
+            9,
+            6
+          ],
+          [
+            10,
+            6
+          ],
+          [
+            11,
+            5
+          ],
+          [
+            11,
+            6
+          ],
+          [
+            11,
+            7
+          ],
+          [
+            12,
+            4
+          ],
+          [
+            12,
+            5
+          ]
+        ],
+        [
+          [
+            16,
+            12
+          ],
+          [
+            17,
+            12
+          ],
+          [
+            18,
+            11
+          ],
+          [
+            18,
+            12
+          ],
+          [
+            18,
+            13
+          ],
+          [
+            19,
             10
           ],
           [
-            14,
+            19,
             11
           ],
           [
-            14,
+            19,
             12
           ],
           [
-            15,
+            19,
+            13
+          ],
+          [
+            19,
+            14
+          ]
+        ]
+      ],
+      "text": "....................\n....#...............\n....#....G....#.....\n....#.........#.....\n....#..####.....T...\n....................\n.....c...G..#....c..\n............#.......\n......####..#.......\n............#.......\n..cc......cc...###..\n....................\n...........P.c..G...\n...............cc...\n..................x.\n...................."
+    },
+    {
+      "turn": 18,
+      "player_pos": [
+        12,
+        12
+      ],
+      "target_pos": [
+        17,
+        4
+      ],
+      "target_alive": true,
+      "player_alive": true,
+      "mission_crisis": false,
+      "alerted": false,
+      "local_alert": false,
+      "alert_stage": "calm",
+      "alert_reason": "none",
+      "security_pressure": false,
+      "pressure_stage": "none",
+      "pressure_reason": "none",
+      "local_alert_reason": null,
+      "confirmed_contact_reason": null,
+      "mission_crisis_reason": null,
+      "soft_pressure_active": false,
+      "soft_pressure_turn": null,
+      "soft_pressure_reason": null,
+      "active_pressure_events": [],
+      "active_pressure_effects": [],
+      "pressure_events_triggered_this_turn": [],
+      "pressure_effects_activated_this_turn": [],
+      "player_shot_fired": false,
+      "shot_fired_this_turn": false,
+      "player_shot_hit": false,
+      "shot_hit_this_turn": false,
+      "shot_revealed": false,
+      "shot_revealed_this_turn": false,
+      "exposed": false,
+      "exposed_this_turn": false,
+      "detected": false,
+      "detected_this_turn": false,
+      "confirmed_contact": false,
+      "target_escaping": false,
+      "target_escape_started_this_turn": false,
+      "target_escape_reason": null,
+      "alert_stage_changed": false,
+      "enemy_positions": [
+        [
+          9,
+          3
+        ],
+        [
+          10,
+          6
+        ],
+        [
+          17,
+          12
+        ]
+      ],
+      "enemy_facings": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "enemy_awareness": [
+        "unaware",
+        "unaware",
+        "unaware"
+      ],
+      "enemy_goals": [
+        null,
+        null,
+        null
+      ],
+      "enemy_tasks": [
+        "patrol",
+        "patrol",
+        "patrol"
+      ],
+      "visible_tiles": [
+        [
+          [
+            9,
+            3
+          ]
+        ],
+        [
+          [
+            10,
+            6
+          ],
+          [
+            11,
+            6
+          ],
+          [
+            12,
+            5
+          ],
+          [
+            13,
+            4
+          ],
+          [
+            13,
+            5
+          ]
+        ],
+        [
+          [
+            17,
+            12
+          ],
+          [
+            18,
+            12
+          ],
+          [
+            19,
+            11
+          ],
+          [
+            19,
+            12
+          ],
+          [
+            19,
+            13
+          ]
+        ]
+      ],
+      "text": "....................\n....#...............\n....#.........#.....\n....#....G....#.....\n....#..####......T..\n....................\n.....c....G.#....c..\n............#.......\n......####..#.......\n............#.......\n..cc......cc...###..\n....................\n............Pc...G..\n...............cc...\n..................x.\n...................."
+    },
+    {
+      "turn": 19,
+      "player_pos": [
+        13,
+        12
+      ],
+      "target_pos": [
+        17,
+        5
+      ],
+      "target_alive": true,
+      "player_alive": true,
+      "mission_crisis": false,
+      "alerted": false,
+      "local_alert": false,
+      "alert_stage": "calm",
+      "alert_reason": "none",
+      "security_pressure": false,
+      "pressure_stage": "none",
+      "pressure_reason": "none",
+      "local_alert_reason": null,
+      "confirmed_contact_reason": null,
+      "mission_crisis_reason": null,
+      "soft_pressure_active": false,
+      "soft_pressure_turn": null,
+      "soft_pressure_reason": null,
+      "active_pressure_events": [],
+      "active_pressure_effects": [],
+      "pressure_events_triggered_this_turn": [],
+      "pressure_effects_activated_this_turn": [],
+      "player_shot_fired": false,
+      "shot_fired_this_turn": false,
+      "player_shot_hit": false,
+      "shot_hit_this_turn": false,
+      "shot_revealed": false,
+      "shot_revealed_this_turn": false,
+      "exposed": false,
+      "exposed_this_turn": false,
+      "detected": false,
+      "detected_this_turn": false,
+      "confirmed_contact": false,
+      "target_escaping": false,
+      "target_escape_started_this_turn": false,
+      "target_escape_reason": null,
+      "alert_stage_changed": false,
+      "enemy_positions": [
+        [
+          8,
+          3
+        ],
+        [
+          11,
+          6
+        ],
+        [
+          18,
+          12
+        ]
+      ],
+      "enemy_facings": [
+        [
+          -1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "enemy_awareness": [
+        "unaware",
+        "unaware",
+        "unaware"
+      ],
+      "enemy_goals": [
+        null,
+        null,
+        null
+      ],
+      "enemy_tasks": [
+        "patrol",
+        "patrol",
+        "patrol"
+      ],
+      "visible_tiles": [
+        [
+          [
+            4,
+            0
+          ],
+          [
+            5,
+            1
+          ],
+          [
+            5,
+            2
+          ],
+          [
+            5,
+            3
+          ],
+          [
+            5,
+            4
+          ],
+          [
+            6,
+            2
+          ],
+          [
+            6,
+            3
+          ],
+          [
+            7,
+            3
+          ],
+          [
+            8,
+            3
+          ]
+        ],
+        [
+          [
+            11,
+            6
+          ],
+          [
+            13,
+            5
+          ],
+          [
+            14,
+            4
+          ]
+        ],
+        [
+          [
+            18,
+            12
+          ],
+          [
+            19,
+            12
+          ]
+        ]
+      ],
+      "text": "....................\n....#...............\n....#.........#.....\n....#...G.....#.....\n....#..####.........\n.................T..\n.....c.....G#....c..\n............#.......\n......####..#.......\n............#.......\n..cc......cc...###..\n....................\n.............P....G.\n...............cc...\n..................x.\n...................."
+    },
+    {
+      "turn": 20,
+      "player_pos": [
+        13,
+        12
+      ],
+      "target_pos": [
+        17,
+        6
+      ],
+      "target_alive": true,
+      "player_alive": true,
+      "mission_crisis": false,
+      "alerted": false,
+      "local_alert": false,
+      "alert_stage": "calm",
+      "alert_reason": "none",
+      "security_pressure": false,
+      "pressure_stage": "none",
+      "pressure_reason": "none",
+      "local_alert_reason": null,
+      "confirmed_contact_reason": null,
+      "mission_crisis_reason": null,
+      "soft_pressure_active": false,
+      "soft_pressure_turn": null,
+      "soft_pressure_reason": null,
+      "active_pressure_events": [],
+      "active_pressure_effects": [],
+      "pressure_events_triggered_this_turn": [],
+      "pressure_effects_activated_this_turn": [],
+      "player_shot_fired": false,
+      "shot_fired_this_turn": false,
+      "player_shot_hit": false,
+      "shot_hit_this_turn": false,
+      "shot_revealed": false,
+      "shot_revealed_this_turn": false,
+      "exposed": false,
+      "exposed_this_turn": false,
+      "detected": false,
+      "detected_this_turn": false,
+      "confirmed_contact": false,
+      "target_escaping": false,
+      "target_escape_started_this_turn": false,
+      "target_escape_reason": null,
+      "alert_stage_changed": false,
+      "enemy_positions": [
+        [
+          7,
+          3
+        ],
+        [
+          11,
+          7
+        ],
+        [
+          18,
+          11
+        ]
+      ],
+      "enemy_facings": [
+        [
+          -1,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          -1
+        ]
+      ],
+      "enemy_awareness": [
+        "unaware",
+        "unaware",
+        "unaware"
+      ],
+      "enemy_goals": [
+        null,
+        null,
+        null
+      ],
+      "enemy_tasks": [
+        "patrol",
+        "patrol",
+        "patrol"
+      ],
+      "visible_tiles": [
+        [
+          [
+            3,
+            5
+          ],
+          [
+            3,
+            6
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            5,
+            2
+          ],
+          [
+            5,
+            3
+          ],
+          [
+            5,
+            4
+          ],
+          [
+            6,
+            3
+          ],
+          [
+            7,
+            3
+          ]
+        ],
+        [
+          [
+            10,
+            9
+          ],
+          [
+            11,
+            7
+          ],
+          [
+            11,
             8
           ],
           [
-            15,
+            11,
+            9
+          ]
+        ],
+        [
+          [
+            17,
+            8
+          ],
+          [
+            18,
+            7
+          ],
+          [
+            18,
+            8
+          ],
+          [
+            18,
+            9
+          ],
+          [
+            18,
+            10
+          ],
+          [
+            18,
+            11
+          ],
+          [
+            19,
+            7
+          ],
+          [
+            19,
+            8
+          ],
+          [
+            19,
             9
           ]
         ]
       ],
-      "text": "....................\n....#G..............\n....#.........#.....\n....#.........#.....\n....#..####.........\n....................\n.....c......#....T..\n............#.......\n......####..#..G....\n.........G..#.......\n..cc......cc...###..\n....................\n.............c......\n...........P...cc...\n..................x.\n...................."
+      "text": "....................\n....#...............\n....#.........#.....\n....#..G......#.....\n....#..####.........\n....................\n.....c......#....T..\n...........G#.......\n......####..#.......\n............#.......\n..cc......cc...###..\n..................G.\n.............P......\n...............cc...\n..................x.\n...................."
     },
     {
-      "turn": 13,
+      "turn": 21,
       "player_pos": [
-        11,
-        13
+        13,
+        12
       ],
       "target_pos": [
-        18,
+        16,
+        6
+      ],
+      "target_alive": true,
+      "player_alive": true,
+      "mission_crisis": false,
+      "alerted": false,
+      "local_alert": false,
+      "alert_stage": "calm",
+      "alert_reason": "none",
+      "security_pressure": false,
+      "pressure_stage": "none",
+      "pressure_reason": "none",
+      "local_alert_reason": null,
+      "confirmed_contact_reason": null,
+      "mission_crisis_reason": null,
+      "soft_pressure_active": false,
+      "soft_pressure_turn": null,
+      "soft_pressure_reason": null,
+      "active_pressure_events": [],
+      "active_pressure_effects": [],
+      "pressure_events_triggered_this_turn": [],
+      "pressure_effects_activated_this_turn": [],
+      "player_shot_fired": false,
+      "shot_fired_this_turn": false,
+      "player_shot_hit": false,
+      "shot_hit_this_turn": false,
+      "shot_revealed": false,
+      "shot_revealed_this_turn": false,
+      "exposed": false,
+      "exposed_this_turn": false,
+      "detected": false,
+      "detected_this_turn": false,
+      "confirmed_contact": false,
+      "target_escaping": false,
+      "target_escape_started_this_turn": false,
+      "target_escape_reason": null,
+      "alert_stage_changed": false,
+      "enemy_positions": [
+        [
+          6,
+          3
+        ],
+        [
+          11,
+          8
+        ],
+        [
+          18,
+          10
+        ]
+      ],
+      "enemy_facings": [
+        [
+          -1,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          -1
+        ]
+      ],
+      "enemy_awareness": [
+        "unaware",
+        "unaware",
+        "unaware"
+      ],
+      "enemy_goals": [
+        null,
+        null,
+        null
+      ],
+      "enemy_tasks": [
+        "patrol",
+        "patrol",
+        "patrol"
+      ],
+      "visible_tiles": [
+        [
+          [
+            2,
+            6
+          ],
+          [
+            5,
+            3
+          ],
+          [
+            6,
+            3
+          ]
+        ],
+        [
+          [
+            9,
+            11
+          ],
+          [
+            10,
+            10
+          ],
+          [
+            11,
+            8
+          ],
+          [
+            11,
+            9
+          ],
+          [
+            11,
+            10
+          ],
+          [
+            11,
+            12
+          ],
+          [
+            12,
+            11
+          ]
+        ],
+        [
+          [
+            15,
+            6
+          ],
+          [
+            16,
+            7
+          ],
+          [
+            17,
+            7
+          ],
+          [
+            17,
+            8
+          ],
+          [
+            18,
+            5
+          ],
+          [
+            18,
+            7
+          ],
+          [
+            18,
+            8
+          ],
+          [
+            18,
+            9
+          ],
+          [
+            18,
+            10
+          ],
+          [
+            19,
+            6
+          ],
+          [
+            19,
+            7
+          ],
+          [
+            19,
+            8
+          ]
+        ]
+      ],
+      "text": "....................\n....#...............\n....#.........#.....\n....#.G.......#.....\n....#..####.........\n....................\n.....c......#...Tc..\n............#.......\n......####.G#.......\n............#.......\n..cc......cc...###G.\n....................\n.............P......\n...............cc...\n..................x.\n...................."
+    },
+    {
+      "turn": 22,
+      "player_pos": [
+        13,
+        12
+      ],
+      "target_pos": [
+        15,
         6
       ],
       "target_alive": true,
@@ -2753,27 +4812,48 @@
       "mission_crisis": false,
       "alerted": true,
       "local_alert": true,
-      "alert_stage": "local_investigation",
+      "alert_stage": "post_shot_threat",
       "alert_reason": "gunshot_noise",
+      "security_pressure": false,
+      "pressure_stage": "none",
+      "pressure_reason": "none",
       "local_alert_reason": "gunshot_noise",
       "confirmed_contact_reason": null,
       "mission_crisis_reason": null,
+      "soft_pressure_active": false,
+      "soft_pressure_turn": null,
+      "soft_pressure_reason": null,
+      "active_pressure_events": [],
+      "active_pressure_effects": [],
+      "pressure_events_triggered_this_turn": [],
+      "pressure_effects_activated_this_turn": [],
+      "player_shot_fired": true,
+      "shot_fired_this_turn": true,
+      "player_shot_hit": false,
+      "shot_hit_this_turn": false,
       "shot_revealed": true,
+      "shot_revealed_this_turn": true,
       "exposed": false,
+      "exposed_this_turn": false,
       "detected": false,
+      "detected_this_turn": false,
       "confirmed_contact": false,
+      "target_escaping": false,
+      "target_escape_started_this_turn": false,
+      "target_escape_reason": null,
+      "alert_stage_changed": true,
       "enemy_positions": [
         [
-          6,
-          1
+          7,
+          3
         ],
         [
-          9,
-          9
-        ],
-        [
-          14,
+          11,
           8
+        ],
+        [
+          18,
+          10
         ]
       ],
       "enemy_facings": [
@@ -2791,55 +4871,38 @@
         ]
       ],
       "enemy_awareness": [
-        "unaware",
         "investigating",
-        "investigating"
+        "alerted",
+        "alerted"
       ],
       "enemy_goals": [
-        null,
         [
           10,
-          14
+          3
         ],
         [
-          10,
-          14
+          13,
+          13
+        ],
+        [
+          13,
+          13
         ]
       ],
       "enemy_tasks": [
-        "patrol",
+        "hold_angle",
         "search_origin",
         "search_origin"
       ],
       "visible_tiles": [
         [
           [
-            6,
-            1
-          ],
-          [
             7,
-            1
+            3
           ],
           [
             8,
-            0
-          ],
-          [
-            8,
-            1
-          ],
-          [
-            8,
-            2
-          ],
-          [
-            9,
-            0
-          ],
-          [
-            9,
-            1
+            3
           ],
           [
             9,
@@ -2848,10 +4911,6 @@
           [
             9,
             3
-          ],
-          [
-            10,
-            0
           ],
           [
             10,
@@ -2867,559 +4926,148 @@
           ],
           [
             11,
+            0
+          ],
+          [
+            11,
             1
+          ],
+          [
+            11,
+            2
+          ],
+          [
+            11,
+            3
+          ],
+          [
+            12,
+            3
           ]
         ],
         [
           [
-            7,
-            12
-          ],
-          [
-            8,
+            9,
             11
           ],
           [
-            8,
-            12
-          ],
-          [
-            9,
-            9
-          ],
-          [
-            9,
+            10,
             10
           ],
           [
-            9,
-            11
+            11,
+            8
           ],
           [
-            9,
-            12
+            11,
+            9
           ],
           [
-            9,
-            13
-          ],
-          [
-            10,
-            11
-          ],
-          [
-            10,
-            12
+            11,
+            10
           ],
           [
             11,
             12
+          ],
+          [
+            12,
+            11
           ]
         ],
         [
           [
-            10,
-            11
-          ],
-          [
-            13,
-            8
+            14,
+            7
           ],
           [
             14,
             8
-          ]
-        ]
-      ],
-      "text": "....................\n....#.G.............\n....#.........#.....\n....#.........#.....\n....#..####.........\n....................\n.....c......#....cT.\n............#.......\n......####..#.G.....\n.........G..#.......\n..cc......cc...###..\n....................\n.............c......\n...........P...cc...\n..................x.\n...................."
-    },
-    {
-      "turn": 14,
-      "player_pos": [
-        11,
-        13
-      ],
-      "target_pos": [
-        18,
-        6
-      ],
-      "target_alive": false,
-      "player_alive": true,
-      "mission_crisis": true,
-      "alerted": true,
-      "local_alert": true,
-      "alert_stage": "mission_crisis",
-      "alert_reason": "target_down",
-      "local_alert_reason": "target_down",
-      "confirmed_contact_reason": null,
-      "mission_crisis_reason": "target_down",
-      "shot_revealed": true,
-      "exposed": false,
-      "detected": false,
-      "confirmed_contact": false,
-      "enemy_positions": [
-        [
-          7,
-          1
-        ],
-        [
-          10,
-          9
-        ],
-        [
-          14,
-          9
-        ]
-      ],
-      "enemy_facings": [
-        [
-          1,
-          0
-        ],
-        [
-          1,
-          0
-        ],
-        [
-          0,
-          1
-        ]
-      ],
-      "enemy_awareness": [
-        "investigating",
-        "investigating",
-        "investigating"
-      ],
-      "enemy_goals": [
-        [
-          10,
-          3
-        ],
-        [
-          18,
-          6
-        ],
-        [
-          17,
-          14
-        ]
-      ],
-      "enemy_tasks": [
-        "hold_angle",
-        "protect_vip",
-        "guard_exit"
-      ],
-      "visible_tiles": [
-        [
-          [
-            7,
-            1
-          ],
-          [
-            8,
-            1
-          ],
-          [
-            9,
-            0
-          ],
-          [
-            9,
-            1
-          ],
-          [
-            9,
-            2
-          ],
-          [
-            10,
-            0
-          ],
-          [
-            10,
-            1
-          ],
-          [
-            10,
-            2
-          ],
-          [
-            10,
-            3
-          ],
-          [
-            11,
-            0
-          ],
-          [
-            11,
-            1
-          ],
-          [
-            11,
-            2
-          ],
-          [
-            11,
-            3
-          ],
-          [
-            11,
-            4
-          ],
-          [
-            12,
-            1
-          ]
-        ],
-        [
-          [
-            10,
-            9
-          ],
-          [
-            11,
-            9
-          ],
-          [
-            12,
-            10
-          ],
-          [
-            13,
-            10
-          ],
-          [
-            13,
-            11
-          ]
-        ],
-        [
-          [
-            11,
-            13
-          ],
-          [
-            12,
-            12
-          ],
-          [
-            12,
-            13
-          ],
-          [
-            13,
-            11
-          ],
-          [
-            13,
-            12
-          ],
-          [
-            13,
-            13
-          ],
-          [
-            14,
-            9
-          ],
-          [
-            14,
-            10
-          ],
-          [
-            14,
-            11
-          ],
-          [
-            14,
-            12
-          ],
-          [
-            14,
-            13
-          ],
-          [
-            14,
-            14
           ],
           [
             15,
-            12
+            8
           ],
           [
-            15,
-            13
+            16,
+            9
+          ],
+          [
+            16,
+            11
+          ],
+          [
+            18,
+            10
           ]
         ]
       ],
-      "text": "....................\n....#..G............\n....#.........#.....\n....#.........#.....\n....#..####.........\n....................\n.....c......#....c..\n............#.......\n......####..#.......\n..........G.#.G.....\n..cc......cc...###..\n....................\n.............c......\n...........P...cc...\n..................x.\n...................."
+      "text": "....................\n....#...............\n....#.........#.....\n....#..G......#.....\n....#..####.........\n....................\n.....c......#..T.c..\n............#.......\n......####.G#.......\n............#.......\n..cc......cc...###G.\n....................\n.............P......\n...............cc...\n..................x.\n...................."
     },
     {
-      "turn": 15,
+      "turn": 23,
       "player_pos": [
-        10,
+        13,
         13
       ],
       "target_pos": [
-        18,
-        6
+        15,
+        5
       ],
-      "target_alive": false,
+      "target_alive": true,
       "player_alive": true,
-      "mission_crisis": true,
+      "mission_crisis": false,
       "alerted": true,
       "local_alert": true,
-      "alert_stage": "mission_crisis",
-      "alert_reason": "target_down",
-      "local_alert_reason": "target_down",
+      "alert_stage": "post_shot_threat",
+      "alert_reason": "gunshot_noise",
+      "security_pressure": true,
+      "pressure_stage": "exit_secured",
+      "pressure_reason": "exit_secured",
+      "local_alert_reason": "gunshot_noise",
       "confirmed_contact_reason": null,
-      "mission_crisis_reason": "target_down",
+      "mission_crisis_reason": null,
+      "soft_pressure_active": false,
+      "soft_pressure_turn": null,
+      "soft_pressure_reason": null,
+      "active_pressure_events": [
+        "exit_secure_timer"
+      ],
+      "active_pressure_effects": [
+        "secure_exit"
+      ],
+      "pressure_events_triggered_this_turn": [
+        "exit_secure_timer"
+      ],
+      "pressure_effects_activated_this_turn": [
+        "secure_exit"
+      ],
+      "player_shot_fired": true,
+      "shot_fired_this_turn": false,
+      "player_shot_hit": false,
+      "shot_hit_this_turn": false,
       "shot_revealed": true,
+      "shot_revealed_this_turn": false,
       "exposed": false,
+      "exposed_this_turn": false,
       "detected": false,
+      "detected_this_turn": false,
       "confirmed_contact": false,
+      "target_escaping": false,
+      "target_escape_started_this_turn": false,
+      "target_escape_reason": null,
+      "alert_stage_changed": false,
       "enemy_positions": [
         [
           8,
-          1
-        ],
-        [
-          11,
-          9
-        ],
-        [
-          14,
-          10
-        ]
-      ],
-      "enemy_facings": [
-        [
-          1,
-          0
-        ],
-        [
-          1,
-          0
-        ],
-        [
-          0,
-          1
-        ]
-      ],
-      "enemy_awareness": [
-        "investigating",
-        "investigating",
-        "investigating"
-      ],
-      "enemy_goals": [
-        [
-          10,
           3
         ],
         [
-          18,
-          6
-        ],
-        [
-          17,
-          14
-        ]
-      ],
-      "enemy_tasks": [
-        "hold_angle",
-        "protect_vip",
-        "guard_exit"
-      ],
-      "visible_tiles": [
-        [
-          [
-            8,
-            1
-          ],
-          [
-            9,
-            1
-          ],
-          [
-            10,
-            0
-          ],
-          [
-            10,
-            1
-          ],
-          [
-            10,
-            2
-          ],
-          [
-            11,
-            0
-          ],
-          [
-            11,
-            1
-          ],
-          [
-            11,
-            2
-          ],
-          [
-            11,
-            3
-          ],
-          [
-            12,
-            0
-          ],
-          [
-            12,
-            1
-          ],
-          [
-            12,
-            2
-          ],
-          [
-            12,
-            3
-          ],
-          [
-            12,
-            4
-          ],
-          [
-            13,
-            1
-          ]
-        ],
-        [
-          [
-            11,
-            9
-          ],
-          [
-            13,
-            10
-          ],
-          [
-            14,
-            11
-          ]
-        ],
-        [
-          [
-            11,
-            14
-          ],
-          [
-            12,
-            13
-          ],
-          [
-            12,
-            14
-          ],
-          [
-            13,
-            12
-          ],
-          [
-            13,
-            13
-          ],
-          [
-            13,
-            14
-          ],
-          [
-            14,
-            10
-          ],
-          [
-            14,
-            11
-          ],
-          [
-            14,
-            12
-          ],
-          [
-            14,
-            13
-          ],
-          [
-            14,
-            14
-          ],
-          [
-            14,
-            15
-          ],
-          [
-            15,
-            12
-          ],
-          [
-            15,
-            13
-          ],
-          [
-            15,
-            14
-          ],
-          [
-            16,
-            13
-          ],
-          [
-            16,
-            14
-          ],
-          [
-            17,
-            14
-          ]
-        ]
-      ],
-      "text": "....................\n....#...G...........\n....#.........#.....\n....#.........#.....\n....#..####.........\n....................\n.....c......#....c..\n............#.......\n......####..#.......\n...........G#.......\n..cc......cc..G###..\n....................\n.............c......\n..........P....cc...\n..................x.\n...................."
-    },
-    {
-      "turn": 16,
-      "player_pos": [
-        10,
-        12
-      ],
-      "target_pos": [
-        18,
-        6
-      ],
-      "target_alive": false,
-      "player_alive": true,
-      "mission_crisis": true,
-      "alerted": true,
-      "local_alert": true,
-      "alert_stage": "mission_crisis",
-      "alert_reason": "target_down",
-      "local_alert_reason": "target_down",
-      "confirmed_contact_reason": null,
-      "mission_crisis_reason": "target_down",
-      "shot_revealed": true,
-      "exposed": false,
-      "detected": false,
-      "confirmed_contact": false,
-      "enemy_positions": [
-        [
-          9,
-          1
-        ],
-        [
           11,
-          10
+          8
         ],
         [
-          14,
+          18,
           11
         ]
       ],
@@ -3439,7 +5087,7 @@
       ],
       "enemy_awareness": [
         "investigating",
-        "investigating",
+        "alerted",
         "investigating"
       ],
       "enemy_goals": [
@@ -3448,8 +5096,8 @@
           3
         ],
         [
-          18,
-          6
+          13,
+          13
         ],
         [
           17,
@@ -3458,22 +5106,26 @@
       ],
       "enemy_tasks": [
         "hold_angle",
-        "protect_vip",
+        "search_origin",
         "guard_exit"
       ],
       "visible_tiles": [
         [
           [
+            8,
+            3
+          ],
+          [
             9,
-            1
+            3
           ],
           [
             10,
-            1
+            2
           ],
           [
-            11,
-            0
+            10,
+            3
           ],
           [
             11,
@@ -3482,6 +5134,10 @@
           [
             11,
             2
+          ],
+          [
+            11,
+            3
           ],
           [
             12,
@@ -3501,41 +5157,25 @@
           ],
           [
             13,
-            0
-          ],
-          [
-            13,
-            1
-          ],
-          [
-            13,
-            2
-          ],
-          [
-            13,
             3
-          ],
-          [
-            13,
-            4
-          ],
-          [
-            14,
-            1
           ]
         ],
         [
           [
             9,
-            13
+            11
           ],
           [
             10,
-            12
+            10
           ],
           [
-            10,
-            13
+            11,
+            8
+          ],
+          [
+            11,
+            9
           ],
           [
             11,
@@ -3543,93 +5183,17 @@
           ],
           [
             11,
+            12
+          ],
+          [
+            12,
             11
-          ],
-          [
-            11,
-            12
-          ],
-          [
-            11,
-            13
-          ],
-          [
-            11,
-            14
-          ],
-          [
-            12,
-            12
-          ],
-          [
-            12,
-            13
-          ],
-          [
-            13,
-            13
           ]
         ],
         [
           [
-            11,
-            15
-          ],
-          [
-            12,
-            14
-          ],
-          [
-            12,
-            15
-          ],
-          [
-            13,
-            13
-          ],
-          [
-            13,
-            14
-          ],
-          [
-            13,
-            15
-          ],
-          [
-            14,
-            11
-          ],
-          [
-            14,
-            12
-          ],
-          [
-            14,
-            13
-          ],
-          [
-            14,
-            14
-          ],
-          [
-            14,
-            15
-          ],
-          [
-            15,
-            13
-          ],
-          [
-            15,
-            14
-          ],
-          [
             15,
             15
-          ],
-          [
-            16,
-            14
           ],
           [
             16,
@@ -3637,47 +5201,115 @@
           ],
           [
             17,
+            13
+          ],
+          [
+            17,
+            14
+          ],
+          [
+            17,
+            15
+          ],
+          [
+            18,
+            11
+          ],
+          [
+            18,
+            12
+          ],
+          [
+            18,
+            13
+          ],
+          [
+            18,
+            14
+          ],
+          [
+            18,
+            15
+          ],
+          [
+            19,
+            13
+          ],
+          [
+            19,
+            14
+          ],
+          [
+            19,
             15
           ]
         ]
       ],
-      "text": "....................\n....#....G..........\n....#.........#.....\n....#.........#.....\n....#..####.........\n....................\n.....c......#....c..\n............#.......\n......####..#.......\n............#.......\n..cc......cG...###..\n..............G.....\n..........P..c......\n...............cc...\n..................x.\n...................."
+      "text": "....................\n....#...............\n....#.........#.....\n....#...G.....#.....\n....#..####.........\n...............T....\n.....c......#....c..\n............#.......\n......####.G#.......\n............#.......\n..cc......cc...###..\n..................G.\n.............c......\n.............P.cc...\n..................x.\n...................."
     },
     {
-      "turn": 17,
+      "turn": 24,
       "player_pos": [
-        11,
-        12
+        13,
+        14
       ],
       "target_pos": [
-        18,
-        6
+        16,
+        5
       ],
-      "target_alive": false,
+      "target_alive": true,
       "player_alive": true,
-      "mission_crisis": true,
+      "mission_crisis": false,
       "alerted": true,
       "local_alert": true,
-      "alert_stage": "mission_crisis",
-      "alert_reason": "target_down",
-      "local_alert_reason": "target_down",
-      "confirmed_contact_reason": "visual_contact",
-      "mission_crisis_reason": "target_down",
+      "alert_stage": "post_shot_threat",
+      "alert_reason": "vip_threat",
+      "security_pressure": true,
+      "pressure_stage": "exit_secured",
+      "pressure_reason": "exit_secured",
+      "local_alert_reason": "gunshot_noise",
+      "confirmed_contact_reason": null,
+      "mission_crisis_reason": null,
+      "soft_pressure_active": true,
+      "soft_pressure_turn": 24,
+      "soft_pressure_reason": "vip_threat",
+      "active_pressure_events": [
+        "exit_secure_timer",
+        "vip_departure_timer"
+      ],
+      "active_pressure_effects": [
+        "secure_exit"
+      ],
+      "pressure_events_triggered_this_turn": [
+        "vip_departure_timer"
+      ],
+      "pressure_effects_activated_this_turn": [],
+      "player_shot_fired": true,
+      "shot_fired_this_turn": false,
+      "player_shot_hit": false,
+      "shot_hit_this_turn": false,
       "shot_revealed": true,
-      "exposed": true,
-      "detected": true,
-      "confirmed_contact": true,
+      "shot_revealed_this_turn": false,
+      "exposed": false,
+      "exposed_this_turn": false,
+      "detected": false,
+      "detected_this_turn": false,
+      "confirmed_contact": false,
+      "target_escaping": true,
+      "target_escape_started_this_turn": true,
+      "target_escape_reason": "vip_threat",
+      "alert_stage_changed": false,
       "enemy_positions": [
         [
-          10,
-          1
+          9,
+          3
         ],
         [
-          10,
-          10
+          11,
+          7
         ],
         [
-          15,
+          17,
           11
         ]
       ],
@@ -3691,13 +5323,13 @@
           -1
         ],
         [
-          1,
+          -1,
           0
         ]
       ],
       "enemy_awareness": [
         "investigating",
-        "engage",
+        "investigating",
         "investigating"
       ],
       "enemy_goals": [
@@ -3706,8 +5338,8 @@
           3
         ],
         [
-          11,
-          12
+          15,
+          5
         ],
         [
           17,
@@ -3716,22 +5348,26 @@
       ],
       "enemy_tasks": [
         "hold_angle",
-        "engage",
+        "protect_vip",
         "guard_exit"
       ],
       "visible_tiles": [
         [
           [
+            9,
+            3
+          ],
+          [
             10,
-            1
+            3
           ],
           [
             11,
-            1
+            2
           ],
           [
-            12,
-            0
+            11,
+            3
           ],
           [
             12,
@@ -3740,6 +5376,14 @@
           [
             12,
             2
+          ],
+          [
+            12,
+            3
+          ],
+          [
+            12,
+            4
           ],
           [
             13,
@@ -3758,56 +5402,64 @@
             3
           ],
           [
-            14,
-            0
+            13,
+            4
+          ]
+        ],
+        [
+          [
+            10,
+            5
           ],
           [
-            14,
-            1
+            11,
+            3
           ],
           [
-            14,
+            11,
             4
           ],
           [
-            15,
-            1
-          ]
-        ],
-        [
+            11,
+            5
+          ],
           [
-            10,
+            11,
             6
           ],
           [
-            10,
-            7
-          ],
-          [
-            10,
-            8
-          ],
-          [
-            10,
-            9
-          ],
-          [
-            10,
-            10
-          ],
-          [
             11,
             7
           ],
           [
-            11,
-            8
+            12,
+            4
           ]
         ],
         [
           [
+            12,
+            11
+          ],
+          [
+            13,
+            14
+          ],
+          [
+            14,
+            11
+          ],
+          [
+            14,
+            12
+          ],
+          [
             15,
             11
+          ],
+          [
+            15,
+            12
           ],
           [
             16,
@@ -3816,108 +5468,102 @@
           [
             17,
             11
-          ],
-          [
-            17,
-            12
-          ],
-          [
-            18,
-            11
-          ],
-          [
-            18,
-            12
-          ],
-          [
-            18,
-            13
-          ],
-          [
-            19,
-            11
-          ],
-          [
-            19,
-            12
-          ],
-          [
-            19,
-            13
-          ],
-          [
-            19,
-            14
           ]
         ]
       ],
-      "text": "....................\n....#.....G.........\n....#.........#.....\n....#.........#.....\n....#..####.........\n....................\n.....c......#....c..\n............#.......\n......####..#.......\n............#.......\n..cc......Gc...###..\n...............G....\n...........P.c......\n...............cc...\n..................x.\n...................."
+      "text": "....................\n....#...............\n....#.........#.....\n....#....G....#.....\n....#..####.........\n................T...\n.....c......#....c..\n...........G#.......\n......####..#.......\n............#.......\n..cc......cc...###..\n.................G..\n.............c......\n...............cc...\n.............P....x.\n...................."
     },
     {
-      "turn": 18,
+      "turn": 25,
       "player_pos": [
-        11,
-        13
+        14,
+        14
       ],
       "target_pos": [
-        18,
-        6
+        17,
+        5
       ],
-      "target_alive": false,
+      "target_alive": true,
       "player_alive": true,
-      "mission_crisis": true,
+      "mission_crisis": false,
       "alerted": true,
       "local_alert": true,
-      "alert_stage": "mission_crisis",
-      "alert_reason": "target_down",
-      "local_alert_reason": "target_down",
-      "confirmed_contact_reason": "visual_contact",
-      "mission_crisis_reason": "target_down",
+      "alert_stage": "post_shot_threat",
+      "alert_reason": "vip_threat",
+      "security_pressure": true,
+      "pressure_stage": "exit_secured",
+      "pressure_reason": "exit_secured",
+      "local_alert_reason": "gunshot_noise",
+      "confirmed_contact_reason": null,
+      "mission_crisis_reason": null,
+      "soft_pressure_active": true,
+      "soft_pressure_turn": 24,
+      "soft_pressure_reason": "vip_threat",
+      "active_pressure_events": [
+        "exit_secure_timer",
+        "vip_departure_timer"
+      ],
+      "active_pressure_effects": [
+        "secure_exit"
+      ],
+      "pressure_events_triggered_this_turn": [],
+      "pressure_effects_activated_this_turn": [],
+      "player_shot_fired": true,
+      "shot_fired_this_turn": false,
+      "player_shot_hit": false,
+      "shot_hit_this_turn": false,
       "shot_revealed": true,
-      "exposed": true,
-      "detected": true,
-      "confirmed_contact": true,
+      "shot_revealed_this_turn": false,
+      "exposed": false,
+      "exposed_this_turn": false,
+      "detected": false,
+      "detected_this_turn": false,
+      "confirmed_contact": false,
+      "target_escaping": true,
+      "target_escape_started_this_turn": false,
+      "target_escape_reason": "vip_threat",
+      "alert_stage_changed": false,
       "enemy_positions": [
         [
           10,
-          2
+          3
         ],
         [
           11,
-          10
+          6
+        ],
+        [
+          17,
+          12
+        ]
+      ],
+      "enemy_facings": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          -1
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "enemy_awareness": [
+        "investigating",
+        "investigating",
+        "investigating"
+      ],
+      "enemy_goals": [
+        [
+          10,
+          3
         ],
         [
           16,
-          11
-        ]
-      ],
-      "enemy_facings": [
-        [
-          0,
-          1
-        ],
-        [
-          1,
-          0
-        ],
-        [
-          1,
-          0
-        ]
-      ],
-      "enemy_awareness": [
-        "investigating",
-        "investigating",
-        "investigating"
-      ],
-      "enemy_goals": [
-        [
-          10,
-          3
-        ],
-        [
-          18,
-          6
+          5
         ],
         [
           17,
@@ -3933,10 +5579,72 @@
         [
           [
             10,
+            3
+          ],
+          [
+            11,
+            3
+          ],
+          [
+            12,
             2
           ],
           [
-            10,
+            12,
+            3
+          ],
+          [
+            12,
+            4
+          ],
+          [
+            13,
+            1
+          ],
+          [
+            13,
+            2
+          ],
+          [
+            13,
+            3
+          ],
+          [
+            13,
+            4
+          ],
+          [
+            13,
+            5
+          ],
+          [
+            14,
+            0
+          ],
+          [
+            14,
+            1
+          ],
+          [
+            14,
+            4
+          ],
+          [
+            14,
+            5
+          ],
+          [
+            14,
+            6
+          ]
+        ],
+        [
+          [
+            11,
+            2
+          ],
+          [
+            11,
             3
           ],
           [
@@ -3953,353 +5661,15 @@
           ],
           [
             12,
-            5
-          ],
-          [
-            13,
-            6
-          ]
-        ],
-        [
-          [
-            11,
-            10
-          ],
-          [
-            12,
-            10
-          ],
-          [
-            13,
-            10
-          ],
-          [
-            13,
-            11
-          ],
-          [
-            14,
-            9
-          ],
-          [
-            14,
-            10
-          ],
-          [
-            14,
-            11
-          ],
-          [
-            14,
-            12
-          ]
-        ],
-        [
-          [
-            16,
-            11
-          ],
-          [
-            17,
-            11
-          ],
-          [
-            18,
-            11
-          ],
-          [
-            18,
-            12
-          ],
-          [
-            19,
-            10
-          ],
-          [
-            19,
-            11
-          ],
-          [
-            19,
-            12
-          ],
-          [
-            19,
-            13
-          ]
-        ]
-      ],
-      "text": "....................\n....#...............\n....#.....G...#.....\n....#.........#.....\n....#..####.........\n....................\n.....c......#....c..\n............#.......\n......####..#.......\n............#.......\n..cc......cG...###..\n................G...\n.............c......\n...........P...cc...\n..................x.\n...................."
-    },
-    {
-      "turn": 19,
-      "player_pos": [
-        11,
-        14
-      ],
-      "target_pos": [
-        18,
-        6
-      ],
-      "target_alive": false,
-      "player_alive": true,
-      "mission_crisis": true,
-      "alerted": true,
-      "local_alert": true,
-      "alert_stage": "mission_crisis",
-      "alert_reason": "target_down",
-      "local_alert_reason": "target_down",
-      "confirmed_contact_reason": "visual_contact",
-      "mission_crisis_reason": "target_down",
-      "shot_revealed": true,
-      "exposed": true,
-      "detected": true,
-      "confirmed_contact": true,
-      "enemy_positions": [
-        [
-          10,
-          3
-        ],
-        [
-          12,
-          10
-        ],
-        [
-          17,
-          11
-        ]
-      ],
-      "enemy_facings": [
-        [
-          0,
-          1
-        ],
-        [
-          1,
-          0
-        ],
-        [
-          1,
-          0
-        ]
-      ],
-      "enemy_awareness": [
-        "investigating",
-        "investigating",
-        "investigating"
-      ],
-      "enemy_goals": [
-        [
-          10,
-          3
-        ],
-        [
-          18,
-          6
-        ],
-        [
-          17,
-          14
-        ]
-      ],
-      "enemy_tasks": [
-        "hold_angle",
-        "protect_vip",
-        "guard_exit"
-      ],
-      "visible_tiles": [
-        [
-          [
-            10,
             3
           ],
           [
-            11,
-            5
-          ]
-        ],
-        [
-          [
             12,
-            10
+            4
           ],
           [
             13,
-            10
-          ],
-          [
-            14,
-            9
-          ],
-          [
-            14,
-            10
-          ],
-          [
-            14,
-            11
-          ],
-          [
-            15,
-            8
-          ],
-          [
-            15,
-            9
-          ],
-          [
-            15,
-            11
-          ],
-          [
-            15,
-            12
-          ]
-        ],
-        [
-          [
-            17,
-            11
-          ],
-          [
-            18,
-            11
-          ],
-          [
-            19,
-            10
-          ],
-          [
-            19,
-            11
-          ],
-          [
-            19,
-            12
-          ]
-        ]
-      ],
-      "text": "....................\n....#...............\n....#.........#.....\n....#.....G...#.....\n....#..####.........\n....................\n.....c......#....c..\n............#.......\n......####..#.......\n............#.......\n..cc......ccG..###..\n.................G..\n.............c......\n...............cc...\n...........P......x.\n...................."
-    },
-    {
-      "turn": 20,
-      "player_pos": [
-        12,
-        14
-      ],
-      "target_pos": [
-        18,
-        6
-      ],
-      "target_alive": false,
-      "player_alive": true,
-      "mission_crisis": true,
-      "alerted": true,
-      "local_alert": true,
-      "alert_stage": "mission_crisis",
-      "alert_reason": "target_down",
-      "local_alert_reason": "target_down",
-      "confirmed_contact_reason": "visual_contact",
-      "mission_crisis_reason": "target_down",
-      "shot_revealed": true,
-      "exposed": true,
-      "detected": true,
-      "confirmed_contact": true,
-      "enemy_positions": [
-        [
-          10,
-          3
-        ],
-        [
-          13,
-          10
-        ],
-        [
-          17,
-          12
-        ]
-      ],
-      "enemy_facings": [
-        [
-          0,
-          1
-        ],
-        [
-          1,
-          0
-        ],
-        [
-          0,
-          1
-        ]
-      ],
-      "enemy_awareness": [
-        "alerted",
-        "investigating",
-        "investigating"
-      ],
-      "enemy_goals": [
-        [
-          10,
-          3
-        ],
-        [
-          18,
-          6
-        ],
-        [
-          17,
-          14
-        ]
-      ],
-      "enemy_tasks": [
-        "hold_angle",
-        "protect_vip",
-        "guard_exit"
-      ],
-      "visible_tiles": [
-        [
-          [
-            10,
             3
-          ],
-          [
-            11,
-            5
-          ]
-        ],
-        [
-          [
-            13,
-            10
-          ],
-          [
-            14,
-            10
-          ],
-          [
-            15,
-            9
-          ],
-          [
-            15,
-            11
-          ],
-          [
-            16,
-            8
-          ],
-          [
-            16,
-            9
-          ],
-          [
-            16,
-            11
-          ],
-          [
-            16,
-            12
           ]
         ],
         [
@@ -4345,40 +5715,66 @@
           ]
         ]
       ],
-      "text": "....................\n....#...............\n....#.........#.....\n....#.....G...#.....\n....#..####.........\n....................\n.....c......#....c..\n............#.......\n......####..#.......\n............#.......\n..cc......cc.G.###..\n....................\n.............c...G..\n...............cc...\n............P.....x.\n...................."
+      "text": "....................\n....#...............\n....#.........#.....\n....#.....G...#.....\n....#..####.........\n.................T..\n.....c.....G#....c..\n............#.......\n......####..#.......\n............#.......\n..cc......cc...###..\n....................\n.............c...G..\n...............cc...\n..............P...x.\n...................."
     },
     {
-      "turn": 21,
+      "turn": 26,
       "player_pos": [
-        13,
-        14
+        14,
+        13
       ],
       "target_pos": [
-        18,
+        17,
         6
       ],
-      "target_alive": false,
+      "target_alive": true,
       "player_alive": true,
-      "mission_crisis": true,
+      "mission_crisis": false,
       "alerted": true,
       "local_alert": true,
-      "alert_stage": "mission_crisis",
-      "alert_reason": "target_down",
-      "local_alert_reason": "target_down",
-      "confirmed_contact_reason": "visual_contact",
-      "mission_crisis_reason": "target_down",
+      "alert_stage": "post_shot_threat",
+      "alert_reason": "vip_threat",
+      "security_pressure": true,
+      "pressure_stage": "exit_secured",
+      "pressure_reason": "exit_secured",
+      "local_alert_reason": "gunshot_noise",
+      "confirmed_contact_reason": null,
+      "mission_crisis_reason": null,
+      "soft_pressure_active": true,
+      "soft_pressure_turn": 24,
+      "soft_pressure_reason": "vip_threat",
+      "active_pressure_events": [
+        "exit_secure_timer",
+        "vip_departure_timer"
+      ],
+      "active_pressure_effects": [
+        "secure_exit"
+      ],
+      "pressure_events_triggered_this_turn": [],
+      "pressure_effects_activated_this_turn": [],
+      "player_shot_fired": true,
+      "shot_fired_this_turn": false,
+      "player_shot_hit": false,
+      "shot_hit_this_turn": false,
       "shot_revealed": true,
-      "exposed": true,
-      "detected": true,
-      "confirmed_contact": true,
+      "shot_revealed_this_turn": false,
+      "exposed": false,
+      "exposed_this_turn": false,
+      "detected": false,
+      "detected_this_turn": false,
+      "confirmed_contact": false,
+      "target_escaping": true,
+      "target_escape_started_this_turn": false,
+      "target_escape_reason": "vip_threat",
+      "alert_stage_changed": false,
       "enemy_positions": [
         [
           10,
           3
         ],
         [
-          14,
-          10
+          11,
+          5
         ],
         [
           17,
@@ -4387,12 +5783,12 @@
       ],
       "enemy_facings": [
         [
-          0,
-          1
-        ],
-        [
           1,
           0
+        ],
+        [
+          0,
+          -1
         ],
         [
           0,
@@ -4410,8 +5806,8 @@
           3
         ],
         [
-          18,
-          6
+          17,
+          5
         ],
         [
           17,
@@ -4431,29 +5827,97 @@
           ],
           [
             11,
+            3
+          ],
+          [
+            12,
+            2
+          ],
+          [
+            12,
+            3
+          ],
+          [
+            12,
+            4
+          ],
+          [
+            13,
+            1
+          ],
+          [
+            13,
+            2
+          ],
+          [
+            13,
+            3
+          ],
+          [
+            13,
+            4
+          ],
+          [
+            13,
             5
+          ],
+          [
+            14,
+            0
+          ],
+          [
+            14,
+            1
+          ],
+          [
+            14,
+            4
+          ],
+          [
+            14,
+            5
+          ],
+          [
+            14,
+            6
           ]
         ],
         [
           [
-            14,
-            10
+            10,
+            2
           ],
           [
-            16,
-            9
+            11,
+            1
           ],
           [
-            16,
-            11
+            11,
+            2
           ],
           [
-            17,
-            8
+            11,
+            3
           ],
           [
-            17,
-            12
+            11,
+            4
+          ],
+          [
+            11,
+            5
+          ],
+          [
+            12,
+            2
+          ],
+          [
+            12,
+            3
+          ],
+          [
+            13,
+            2
           ]
         ],
         [
@@ -4479,40 +5943,66 @@
           ]
         ]
       ],
-      "text": "....................\n....#...............\n....#.........#.....\n....#.....G...#.....\n....#..####.........\n....................\n.....c......#....c..\n............#.......\n......####..#.......\n............#.......\n..cc......cc..G###..\n....................\n.............c......\n...............ccG..\n.............P....x.\n...................."
+      "text": "....................\n....#...............\n....#.........#.....\n....#.....G...#.....\n....#..####.........\n...........G........\n.....c......#....T..\n............#.......\n......####..#.......\n............#.......\n..cc......cc...###..\n....................\n.............c......\n..............PccG..\n..................x.\n...................."
     },
     {
-      "turn": 22,
+      "turn": 27,
       "player_pos": [
-        14,
-        14
+        15,
+        13
       ],
       "target_pos": [
         18,
         6
       ],
-      "target_alive": false,
+      "target_alive": true,
       "player_alive": true,
-      "mission_crisis": true,
+      "mission_crisis": false,
       "alerted": true,
       "local_alert": true,
-      "alert_stage": "mission_crisis",
-      "alert_reason": "target_down",
-      "local_alert_reason": "target_down",
-      "confirmed_contact_reason": "visual_contact",
-      "mission_crisis_reason": "target_down",
+      "alert_stage": "post_shot_threat",
+      "alert_reason": "vip_threat",
+      "security_pressure": true,
+      "pressure_stage": "exit_secured",
+      "pressure_reason": "exit_secured",
+      "local_alert_reason": "gunshot_noise",
+      "confirmed_contact_reason": null,
+      "mission_crisis_reason": null,
+      "soft_pressure_active": true,
+      "soft_pressure_turn": 24,
+      "soft_pressure_reason": "vip_threat",
+      "active_pressure_events": [
+        "exit_secure_timer",
+        "vip_departure_timer"
+      ],
+      "active_pressure_effects": [
+        "secure_exit"
+      ],
+      "pressure_events_triggered_this_turn": [],
+      "pressure_effects_activated_this_turn": [],
+      "player_shot_fired": true,
+      "shot_fired_this_turn": false,
+      "player_shot_hit": false,
+      "shot_hit_this_turn": false,
       "shot_revealed": true,
-      "exposed": true,
-      "detected": true,
-      "confirmed_contact": true,
+      "shot_revealed_this_turn": false,
+      "exposed": false,
+      "exposed_this_turn": false,
+      "detected": false,
+      "detected_this_turn": false,
+      "confirmed_contact": false,
+      "target_escaping": true,
+      "target_escape_started_this_turn": false,
+      "target_escape_reason": "vip_threat",
+      "alert_stage_changed": false,
       "enemy_positions": [
         [
           10,
           3
         ],
         [
-          14,
-          9
+          12,
+          5
         ],
         [
           17,
@@ -4521,12 +6011,12 @@
       ],
       "enemy_facings": [
         [
-          0,
-          1
+          1,
+          0
         ],
         [
-          0,
-          -1
+          1,
+          0
         ],
         [
           0,
@@ -4544,6 +6034,230 @@
           3
         ],
         [
+          17,
+          6
+        ],
+        [
+          17,
+          14
+        ]
+      ],
+      "enemy_tasks": [
+        "hold_angle",
+        "protect_vip",
+        "guard_exit"
+      ],
+      "visible_tiles": [
+        [
+          [
+            10,
+            3
+          ],
+          [
+            11,
+            3
+          ],
+          [
+            12,
+            2
+          ],
+          [
+            12,
+            3
+          ],
+          [
+            12,
+            4
+          ],
+          [
+            13,
+            1
+          ],
+          [
+            13,
+            2
+          ],
+          [
+            13,
+            3
+          ],
+          [
+            13,
+            4
+          ],
+          [
+            13,
+            5
+          ],
+          [
+            14,
+            0
+          ],
+          [
+            14,
+            1
+          ],
+          [
+            14,
+            4
+          ],
+          [
+            14,
+            5
+          ],
+          [
+            14,
+            6
+          ]
+        ],
+        [
+          [
+            12,
+            5
+          ],
+          [
+            13,
+            5
+          ],
+          [
+            14,
+            4
+          ],
+          [
+            14,
+            5
+          ],
+          [
+            14,
+            6
+          ],
+          [
+            15,
+            3
+          ],
+          [
+            15,
+            4
+          ],
+          [
+            15,
+            5
+          ],
+          [
+            15,
+            6
+          ],
+          [
+            15,
+            7
+          ],
+          [
+            16,
+            5
+          ]
+        ],
+        [
+          [
+            17,
+            14
+          ],
+          [
+            17,
+            15
+          ]
+        ]
+      ],
+      "text": "....................\n....#...............\n....#.........#.....\n....#.....G...#.....\n....#..####.........\n............G.......\n.....c......#....cT.\n............#.......\n......####..#.......\n............#.......\n..cc......cc...###..\n....................\n.............c......\n...............Pc...\n.................Gx.\n...................."
+    },
+    {
+      "turn": 28,
+      "player_pos": [
+        16,
+        13
+      ],
+      "target_pos": [
+        18,
+        5
+      ],
+      "target_alive": true,
+      "player_alive": true,
+      "mission_crisis": false,
+      "alerted": true,
+      "local_alert": true,
+      "alert_stage": "post_shot_threat",
+      "alert_reason": "vip_threat",
+      "security_pressure": true,
+      "pressure_stage": "exit_secured",
+      "pressure_reason": "exit_secured",
+      "local_alert_reason": "gunshot_noise",
+      "confirmed_contact_reason": null,
+      "mission_crisis_reason": null,
+      "soft_pressure_active": true,
+      "soft_pressure_turn": 24,
+      "soft_pressure_reason": "vip_threat",
+      "active_pressure_events": [
+        "exit_secure_timer",
+        "vip_departure_timer"
+      ],
+      "active_pressure_effects": [
+        "secure_exit"
+      ],
+      "pressure_events_triggered_this_turn": [],
+      "pressure_effects_activated_this_turn": [],
+      "player_shot_fired": true,
+      "shot_fired_this_turn": false,
+      "player_shot_hit": false,
+      "shot_hit_this_turn": false,
+      "shot_revealed": true,
+      "shot_revealed_this_turn": false,
+      "exposed": false,
+      "exposed_this_turn": false,
+      "detected": false,
+      "detected_this_turn": false,
+      "confirmed_contact": false,
+      "target_escaping": true,
+      "target_escape_started_this_turn": false,
+      "target_escape_reason": "vip_threat",
+      "alert_stage_changed": false,
+      "enemy_positions": [
+        [
+          10,
+          3
+        ],
+        [
+          13,
+          5
+        ],
+        [
+          17,
+          14
+        ]
+      ],
+      "enemy_facings": [
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "enemy_awareness": [
+        "alerted",
+        "investigating",
+        "alerted"
+      ],
+      "enemy_goals": [
+        [
+          10,
+          3
+        ],
+        [
           18,
           6
         ],
@@ -4565,49 +6279,97 @@
           ],
           [
             11,
+            3
+          ],
+          [
+            12,
+            2
+          ],
+          [
+            12,
+            3
+          ],
+          [
+            12,
+            4
+          ],
+          [
+            13,
+            1
+          ],
+          [
+            13,
+            2
+          ],
+          [
+            13,
+            3
+          ],
+          [
+            13,
+            4
+          ],
+          [
+            13,
             5
+          ],
+          [
+            14,
+            0
+          ],
+          [
+            14,
+            1
+          ],
+          [
+            14,
+            4
+          ],
+          [
+            14,
+            5
+          ],
+          [
+            14,
+            6
           ]
         ],
         [
           [
             13,
-            6
-          ],
-          [
-            13,
-            7
+            5
           ],
           [
             14,
             5
           ],
           [
-            14,
-            6
+            15,
+            4
           ],
           [
-            14,
-            7
-          ],
-          [
-            14,
-            8
-          ],
-          [
-            14,
-            9
+            15,
+            5
           ],
           [
             15,
             6
-          ],
-          [
-            15,
-            7
           ],
           [
             16,
-            6
+            3
+          ],
+          [
+            16,
+            4
+          ],
+          [
+            16,
+            5
+          ],
+          [
+            16,
+            7
           ]
         ],
         [
@@ -4621,32 +6383,270 @@
           ]
         ]
       ],
-      "text": "....................\n....#...............\n....#.........#.....\n....#.....G...#.....\n....#..####.........\n....................\n.....c......#....c..\n............#.......\n......####..#.......\n............#.G.....\n..cc......cc...###..\n....................\n.............c......\n...............cc...\n..............P..Gx.\n...................."
+      "text": "....................\n....#...............\n....#.........#.....\n....#.....G...#.....\n....#..####.........\n.............G....T.\n.....c......#....c..\n............#.......\n......####..#.......\n............#.......\n..cc......cc...###..\n....................\n.............c......\n...............cP...\n.................Gx.\n...................."
     },
     {
-      "turn": 23,
+      "turn": 29,
       "player_pos": [
-        15,
-        14
+        17,
+        13
       ],
       "target_pos": [
         18,
-        6
+        4
       ],
-      "target_alive": false,
+      "target_alive": true,
       "player_alive": true,
-      "mission_crisis": true,
+      "mission_crisis": false,
       "alerted": true,
       "local_alert": true,
-      "alert_stage": "mission_crisis",
-      "alert_reason": "target_down",
-      "local_alert_reason": "target_down",
-      "confirmed_contact_reason": "visual_contact",
-      "mission_crisis_reason": "target_down",
+      "alert_stage": "post_shot_threat",
+      "alert_reason": "vip_threat",
+      "security_pressure": true,
+      "pressure_stage": "exit_secured",
+      "pressure_reason": "exit_secured",
+      "local_alert_reason": "gunshot_noise",
+      "confirmed_contact_reason": null,
+      "mission_crisis_reason": null,
+      "soft_pressure_active": true,
+      "soft_pressure_turn": 24,
+      "soft_pressure_reason": "vip_threat",
+      "active_pressure_events": [
+        "exit_secure_timer",
+        "vip_departure_timer"
+      ],
+      "active_pressure_effects": [
+        "secure_exit"
+      ],
+      "pressure_events_triggered_this_turn": [],
+      "pressure_effects_activated_this_turn": [],
+      "player_shot_fired": true,
+      "shot_fired_this_turn": false,
+      "player_shot_hit": false,
+      "shot_hit_this_turn": false,
       "shot_revealed": true,
-      "exposed": true,
-      "detected": true,
-      "confirmed_contact": true,
+      "shot_revealed_this_turn": false,
+      "exposed": false,
+      "exposed_this_turn": false,
+      "detected": false,
+      "detected_this_turn": false,
+      "confirmed_contact": false,
+      "target_escaping": true,
+      "target_escape_started_this_turn": false,
+      "target_escape_reason": "vip_threat",
+      "alert_stage_changed": false,
+      "enemy_positions": [
+        [
+          10,
+          3
+        ],
+        [
+          14,
+          5
+        ],
+        [
+          17,
+          14
+        ]
+      ],
+      "enemy_facings": [
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "enemy_awareness": [
+        "alerted",
+        "investigating",
+        "alerted"
+      ],
+      "enemy_goals": [
+        [
+          10,
+          3
+        ],
+        [
+          18,
+          5
+        ],
+        [
+          17,
+          14
+        ]
+      ],
+      "enemy_tasks": [
+        "hold_angle",
+        "protect_vip",
+        "guard_exit"
+      ],
+      "visible_tiles": [
+        [
+          [
+            10,
+            3
+          ],
+          [
+            11,
+            3
+          ],
+          [
+            12,
+            2
+          ],
+          [
+            12,
+            3
+          ],
+          [
+            12,
+            4
+          ],
+          [
+            13,
+            1
+          ],
+          [
+            13,
+            2
+          ],
+          [
+            13,
+            3
+          ],
+          [
+            13,
+            4
+          ],
+          [
+            13,
+            5
+          ],
+          [
+            14,
+            0
+          ],
+          [
+            14,
+            1
+          ],
+          [
+            14,
+            4
+          ],
+          [
+            14,
+            5
+          ],
+          [
+            14,
+            6
+          ]
+        ],
+        [
+          [
+            14,
+            5
+          ],
+          [
+            15,
+            5
+          ],
+          [
+            16,
+            4
+          ],
+          [
+            16,
+            5
+          ],
+          [
+            16,
+            6
+          ],
+          [
+            17,
+            3
+          ],
+          [
+            17,
+            4
+          ],
+          [
+            18,
+            5
+          ]
+        ],
+        [
+          [
+            17,
+            14
+          ],
+          [
+            17,
+            15
+          ]
+        ]
+      ],
+      "text": "....................\n....#...............\n....#.........#.....\n....#.....G...#.....\n....#..####.......T.\n..............G.....\n.....c......#....c..\n............#.......\n......####..#.......\n............#.......\n..cc......cc...###..\n....................\n.............c......\n...............ccP..\n.................Gx.\n...................."
+    },
+    {
+      "turn": 30,
+      "player_pos": [
+        18,
+        13
+      ],
+      "target_pos": [
+        18,
+        3
+      ],
+      "target_alive": true,
+      "player_alive": true,
+      "mission_crisis": false,
+      "alerted": true,
+      "local_alert": true,
+      "alert_stage": "post_shot_threat",
+      "alert_reason": "vip_threat",
+      "security_pressure": true,
+      "pressure_stage": "exit_secured",
+      "pressure_reason": "exit_secured",
+      "local_alert_reason": "gunshot_noise",
+      "confirmed_contact_reason": null,
+      "mission_crisis_reason": null,
+      "soft_pressure_active": true,
+      "soft_pressure_turn": 24,
+      "soft_pressure_reason": "vip_threat",
+      "active_pressure_events": [
+        "exit_secure_timer",
+        "vip_departure_timer"
+      ],
+      "active_pressure_effects": [
+        "secure_exit"
+      ],
+      "pressure_events_triggered_this_turn": [],
+      "pressure_effects_activated_this_turn": [],
+      "player_shot_fired": true,
+      "shot_fired_this_turn": false,
+      "player_shot_hit": false,
+      "shot_hit_this_turn": false,
+      "shot_revealed": true,
+      "shot_revealed_this_turn": false,
+      "exposed": false,
+      "exposed_this_turn": false,
+      "detected": false,
+      "detected_this_turn": false,
+      "confirmed_contact": false,
+      "target_escaping": true,
+      "target_escape_started_this_turn": false,
+      "target_escape_reason": "vip_threat",
+      "alert_stage_changed": false,
       "enemy_positions": [
         [
           10,
@@ -4654,7 +6654,7 @@
         ],
         [
           15,
-          9
+          5
         ],
         [
           17,
@@ -4663,8 +6663,8 @@
       ],
       "enemy_facings": [
         [
-          0,
-          1
+          1,
+          0
         ],
         [
           1,
@@ -4687,7 +6687,7 @@
         ],
         [
           18,
-          6
+          4
         ],
         [
           17,
@@ -4707,41 +6707,101 @@
           ],
           [
             11,
+            3
+          ],
+          [
+            12,
+            2
+          ],
+          [
+            12,
+            3
+          ],
+          [
+            12,
+            4
+          ],
+          [
+            13,
+            1
+          ],
+          [
+            13,
+            2
+          ],
+          [
+            13,
+            3
+          ],
+          [
+            13,
+            4
+          ],
+          [
+            13,
             5
+          ],
+          [
+            14,
+            0
+          ],
+          [
+            14,
+            1
+          ],
+          [
+            14,
+            4
+          ],
+          [
+            14,
+            5
+          ],
+          [
+            14,
+            6
           ]
         ],
         [
           [
             15,
-            9
+            5
           ],
           [
             16,
-            9
+            5
           ],
           [
             17,
-            8
+            4
           ],
           [
             17,
-            9
+            5
+          ],
+          [
+            17,
+            6
+          ],
+          [
+            18,
+            3
+          ],
+          [
+            18,
+            4
+          ],
+          [
+            18,
+            5
           ],
           [
             18,
             7
           ],
           [
-            18,
-            8
-          ],
-          [
-            18,
-            9
-          ],
-          [
             19,
-            9
+            5
           ]
         ],
         [
@@ -4755,32 +6815,58 @@
           ]
         ]
       ],
-      "text": "....................\n....#...............\n....#.........#.....\n....#.....G...#.....\n....#..####.........\n....................\n.....c......#....c..\n............#.......\n......####..#.......\n............#..G....\n..cc......cc...###..\n....................\n.............c......\n...............cc...\n...............P.Gx.\n...................."
+      "text": "....................\n....#...............\n....#.........#.....\n....#.....G...#...T.\n....#..####.........\n...............G....\n.....c......#....c..\n............#.......\n......####..#.......\n............#.......\n..cc......cc...###..\n....................\n.............c......\n...............cc.P.\n.................Gx.\n...................."
     },
     {
-      "turn": 24,
+      "turn": 31,
       "player_pos": [
-        15,
-        13
+        18,
+        14
       ],
       "target_pos": [
         18,
-        6
+        2
       ],
-      "target_alive": false,
+      "target_alive": true,
       "player_alive": true,
-      "mission_crisis": true,
+      "mission_crisis": false,
       "alerted": true,
       "local_alert": true,
-      "alert_stage": "mission_crisis",
-      "alert_reason": "target_down",
-      "local_alert_reason": "target_down",
-      "confirmed_contact_reason": "visual_contact",
-      "mission_crisis_reason": "target_down",
+      "alert_stage": "post_shot_threat",
+      "alert_reason": "vip_threat",
+      "security_pressure": true,
+      "pressure_stage": "exit_secured",
+      "pressure_reason": "exit_secured",
+      "local_alert_reason": "gunshot_noise",
+      "confirmed_contact_reason": null,
+      "mission_crisis_reason": null,
+      "soft_pressure_active": true,
+      "soft_pressure_turn": 24,
+      "soft_pressure_reason": "vip_threat",
+      "active_pressure_events": [
+        "exit_secure_timer",
+        "vip_departure_timer"
+      ],
+      "active_pressure_effects": [
+        "secure_exit"
+      ],
+      "pressure_events_triggered_this_turn": [],
+      "pressure_effects_activated_this_turn": [],
+      "player_shot_fired": true,
+      "shot_fired_this_turn": false,
+      "player_shot_hit": false,
+      "shot_hit_this_turn": false,
       "shot_revealed": true,
-      "exposed": true,
-      "detected": true,
-      "confirmed_contact": true,
+      "shot_revealed_this_turn": false,
+      "exposed": false,
+      "exposed_this_turn": false,
+      "detected": false,
+      "detected_this_turn": false,
+      "confirmed_contact": false,
+      "target_escaping": true,
+      "target_escape_started_this_turn": false,
+      "target_escape_reason": "vip_threat",
+      "alert_stage_changed": false,
       "enemy_positions": [
         [
           10,
@@ -4788,7 +6874,7 @@
         ],
         [
           16,
-          9
+          5
         ],
         [
           17,
@@ -4797,8 +6883,8 @@
       ],
       "enemy_facings": [
         [
-          0,
-          1
+          1,
+          0
         ],
         [
           1,
@@ -4821,7 +6907,7 @@
         ],
         [
           18,
-          6
+          3
         ],
         [
           17,
@@ -4841,41 +6927,101 @@
           ],
           [
             11,
+            3
+          ],
+          [
+            12,
+            2
+          ],
+          [
+            12,
+            3
+          ],
+          [
+            12,
+            4
+          ],
+          [
+            13,
+            1
+          ],
+          [
+            13,
+            2
+          ],
+          [
+            13,
+            3
+          ],
+          [
+            13,
+            4
+          ],
+          [
+            13,
             5
+          ],
+          [
+            14,
+            0
+          ],
+          [
+            14,
+            1
+          ],
+          [
+            14,
+            4
+          ],
+          [
+            14,
+            5
+          ],
+          [
+            14,
+            6
           ]
         ],
         [
           [
             16,
-            9
+            5
           ],
           [
             17,
-            9
+            5
           ],
           [
             18,
-            8
+            4
           ],
           [
             18,
-            9
+            5
+          ],
+          [
+            18,
+            6
+          ],
+          [
+            19,
+            3
+          ],
+          [
+            19,
+            4
+          ],
+          [
+            19,
+            5
+          ],
+          [
+            19,
+            6
           ],
           [
             19,
             7
-          ],
-          [
-            19,
-            8
-          ],
-          [
-            19,
-            9
-          ],
-          [
-            19,
-            10
           ]
         ],
         [
@@ -4889,32 +7035,58 @@
           ]
         ]
       ],
-      "text": "....................\n....#...............\n....#.........#.....\n....#.....G...#.....\n....#..####.........\n....................\n.....c......#....c..\n............#.......\n......####..#.......\n............#...G...\n..cc......cc...###..\n....................\n.............c......\n...............Pc...\n.................Gx.\n...................."
+      "text": "....................\n....#...............\n....#.........#...T.\n....#.....G...#.....\n....#..####.........\n................G...\n.....c......#....c..\n............#.......\n......####..#.......\n............#.......\n..cc......cc...###..\n....................\n.............c......\n...............cc...\n.................GP.\n...................."
     },
     {
-      "turn": 25,
+      "turn": 32,
       "player_pos": [
-        16,
-        13
+        18,
+        15
       ],
       "target_pos": [
         18,
-        6
+        1
       ],
-      "target_alive": false,
+      "target_alive": true,
       "player_alive": true,
-      "mission_crisis": true,
+      "mission_crisis": false,
       "alerted": true,
       "local_alert": true,
-      "alert_stage": "mission_crisis",
-      "alert_reason": "target_down",
-      "local_alert_reason": "target_down",
-      "confirmed_contact_reason": "visual_contact",
-      "mission_crisis_reason": "target_down",
+      "alert_stage": "post_shot_threat",
+      "alert_reason": "vip_threat",
+      "security_pressure": true,
+      "pressure_stage": "exit_secured",
+      "pressure_reason": "exit_secured",
+      "local_alert_reason": "gunshot_noise",
+      "confirmed_contact_reason": null,
+      "mission_crisis_reason": null,
+      "soft_pressure_active": true,
+      "soft_pressure_turn": 24,
+      "soft_pressure_reason": "vip_threat",
+      "active_pressure_events": [
+        "exit_secure_timer",
+        "vip_departure_timer"
+      ],
+      "active_pressure_effects": [
+        "secure_exit"
+      ],
+      "pressure_events_triggered_this_turn": [],
+      "pressure_effects_activated_this_turn": [],
+      "player_shot_fired": true,
+      "shot_fired_this_turn": false,
+      "player_shot_hit": false,
+      "shot_hit_this_turn": false,
       "shot_revealed": true,
-      "exposed": true,
-      "detected": true,
-      "confirmed_contact": true,
+      "shot_revealed_this_turn": false,
+      "exposed": false,
+      "exposed_this_turn": false,
+      "detected": false,
+      "detected_this_turn": false,
+      "confirmed_contact": false,
+      "target_escaping": true,
+      "target_escape_started_this_turn": false,
+      "target_escape_reason": "vip_threat",
+      "alert_stage_changed": false,
       "enemy_positions": [
         [
           10,
@@ -4922,7 +7094,7 @@
         ],
         [
           17,
-          9
+          5
         ],
         [
           17,
@@ -4931,8 +7103,8 @@
       ],
       "enemy_facings": [
         [
-          0,
-          1
+          1,
+          0
         ],
         [
           1,
@@ -4955,7 +7127,7 @@
         ],
         [
           18,
-          6
+          2
         ],
         [
           17,
@@ -4975,273 +7147,73 @@
           ],
           [
             11,
-            5
-          ]
-        ],
-        [
-          [
-            17,
-            9
-          ],
-          [
-            18,
-            9
-          ],
-          [
-            19,
-            8
-          ],
-          [
-            19,
-            9
-          ],
-          [
-            19,
-            10
-          ]
-        ],
-        [
-          [
-            17,
-            14
-          ],
-          [
-            17,
-            15
-          ]
-        ]
-      ],
-      "text": "....................\n....#...............\n....#.........#.....\n....#.....G...#.....\n....#..####.........\n....................\n.....c......#....c..\n............#.......\n......####..#.......\n............#....G..\n..cc......cc...###..\n....................\n.............c......\n...............cP...\n.................Gx.\n...................."
-    },
-    {
-      "turn": 26,
-      "player_pos": [
-        17,
-        13
-      ],
-      "target_pos": [
-        18,
-        6
-      ],
-      "target_alive": false,
-      "player_alive": true,
-      "mission_crisis": true,
-      "alerted": true,
-      "local_alert": true,
-      "alert_stage": "mission_crisis",
-      "alert_reason": "target_down",
-      "local_alert_reason": "target_down",
-      "confirmed_contact_reason": "visual_contact",
-      "mission_crisis_reason": "target_down",
-      "shot_revealed": true,
-      "exposed": true,
-      "detected": true,
-      "confirmed_contact": true,
-      "enemy_positions": [
-        [
-          10,
-          3
-        ],
-        [
-          18,
-          9
-        ],
-        [
-          17,
-          14
-        ]
-      ],
-      "enemy_facings": [
-        [
-          0,
-          1
-        ],
-        [
-          1,
-          0
-        ],
-        [
-          0,
-          1
-        ]
-      ],
-      "enemy_awareness": [
-        "alerted",
-        "investigating",
-        "alerted"
-      ],
-      "enemy_goals": [
-        [
-          10,
-          3
-        ],
-        [
-          18,
-          6
-        ],
-        [
-          17,
-          14
-        ]
-      ],
-      "enemy_tasks": [
-        "hold_angle",
-        "protect_vip",
-        "guard_exit"
-      ],
-      "visible_tiles": [
-        [
-          [
-            10,
             3
           ],
           [
-            11,
-            5
-          ]
-        ],
-        [
-          [
-            18,
-            9
+            12,
+            2
           ],
           [
-            19,
-            9
-          ]
-        ],
-        [
-          [
-            17,
-            14
-          ],
-          [
-            17,
-            15
-          ]
-        ]
-      ],
-      "text": "....................\n....#...............\n....#.........#.....\n....#.....G...#.....\n....#..####.........\n....................\n.....c......#....c..\n............#.......\n......####..#.......\n............#.....G.\n..cc......cc...###..\n....................\n.............c......\n...............ccP..\n.................Gx.\n...................."
-    },
-    {
-      "turn": 27,
-      "player_pos": [
-        18,
-        13
-      ],
-      "target_pos": [
-        18,
-        6
-      ],
-      "target_alive": false,
-      "player_alive": true,
-      "mission_crisis": true,
-      "alerted": true,
-      "local_alert": true,
-      "alert_stage": "mission_crisis",
-      "alert_reason": "target_down",
-      "local_alert_reason": "target_down",
-      "confirmed_contact_reason": "visual_contact",
-      "mission_crisis_reason": "target_down",
-      "shot_revealed": true,
-      "exposed": true,
-      "detected": true,
-      "confirmed_contact": true,
-      "enemy_positions": [
-        [
-          10,
-          3
-        ],
-        [
-          18,
-          8
-        ],
-        [
-          17,
-          14
-        ]
-      ],
-      "enemy_facings": [
-        [
-          0,
-          1
-        ],
-        [
-          0,
-          -1
-        ],
-        [
-          0,
-          1
-        ]
-      ],
-      "enemy_awareness": [
-        "alerted",
-        "investigating",
-        "alerted"
-      ],
-      "enemy_goals": [
-        [
-          10,
-          3
-        ],
-        [
-          18,
-          6
-        ],
-        [
-          17,
-          14
-        ]
-      ],
-      "enemy_tasks": [
-        "hold_angle",
-        "protect_vip",
-        "guard_exit"
-      ],
-      "visible_tiles": [
-        [
-          [
-            10,
+            12,
             3
           ],
           [
-            11,
-            5
-          ]
-        ],
-        [
-          [
-            16,
-            5
-          ],
-          [
-            17,
-            5
-          ],
-          [
-            17,
-            6
-          ],
-          [
-            18,
+            12,
             4
           ],
           [
-            18,
+            13,
+            1
+          ],
+          [
+            13,
+            2
+          ],
+          [
+            13,
+            3
+          ],
+          [
+            13,
+            4
+          ],
+          [
+            13,
+            5
+          ],
+          [
+            14,
+            0
+          ],
+          [
+            14,
+            1
+          ],
+          [
+            14,
+            4
+          ],
+          [
+            14,
+            5
+          ],
+          [
+            14,
+            6
+          ]
+        ],
+        [
+          [
+            17,
             5
           ],
           [
             18,
-            6
+            5
           ],
           [
-            18,
-            7
-          ],
-          [
-            18,
-            8
+            19,
+            4
           ],
           [
             19,
@@ -5263,149 +7235,7 @@
           ]
         ]
       ],
-      "text": "....................\n....#...............\n....#.........#.....\n....#.....G...#.....\n....#..####.........\n....................\n.....c......#....c..\n............#.......\n......####..#.....G.\n............#.......\n..cc......cc...###..\n....................\n.............c......\n...............cc.P.\n.................Gx.\n...................."
-    },
-    {
-      "turn": 28,
-      "player_pos": [
-        18,
-        14
-      ],
-      "target_pos": [
-        18,
-        6
-      ],
-      "target_alive": false,
-      "player_alive": true,
-      "mission_crisis": true,
-      "alerted": true,
-      "local_alert": true,
-      "alert_stage": "mission_crisis",
-      "alert_reason": "target_down",
-      "local_alert_reason": "target_down",
-      "confirmed_contact_reason": "visual_contact",
-      "mission_crisis_reason": "target_down",
-      "shot_revealed": true,
-      "exposed": true,
-      "detected": true,
-      "confirmed_contact": true,
-      "enemy_positions": [
-        [
-          10,
-          3
-        ],
-        [
-          18,
-          7
-        ],
-        [
-          17,
-          14
-        ]
-      ],
-      "enemy_facings": [
-        [
-          0,
-          1
-        ],
-        [
-          0,
-          -1
-        ],
-        [
-          0,
-          1
-        ]
-      ],
-      "enemy_awareness": [
-        "alerted",
-        "investigating",
-        "alerted"
-      ],
-      "enemy_goals": [
-        [
-          10,
-          3
-        ],
-        [
-          18,
-          6
-        ],
-        [
-          17,
-          14
-        ]
-      ],
-      "enemy_tasks": [
-        "hold_angle",
-        "protect_vip",
-        "guard_exit"
-      ],
-      "visible_tiles": [
-        [
-          [
-            10,
-            3
-          ],
-          [
-            11,
-            5
-          ]
-        ],
-        [
-          [
-            16,
-            4
-          ],
-          [
-            17,
-            4
-          ],
-          [
-            17,
-            5
-          ],
-          [
-            18,
-            3
-          ],
-          [
-            18,
-            4
-          ],
-          [
-            18,
-            5
-          ],
-          [
-            18,
-            6
-          ],
-          [
-            18,
-            7
-          ],
-          [
-            19,
-            4
-          ],
-          [
-            19,
-            5
-          ]
-        ],
-        [
-          [
-            17,
-            14
-          ],
-          [
-            17,
-            15
-          ]
-        ]
-      ],
-      "text": "....................\n....#...............\n....#.........#.....\n....#.....G...#.....\n....#..####.........\n....................\n.....c......#....c..\n............#.....G.\n......####..#.......\n............#.......\n..cc......cc...###..\n....................\n.............c......\n...............cc...\n.................GP.\n...................."
+      "text": "....................\n....#.............T.\n....#.........#.....\n....#.....G...#.....\n....#..####.........\n.................G..\n.....c......#....c..\n............#.......\n......####..#.......\n............#.......\n..cc......cc...###..\n....................\n.............c......\n...............cc...\n.................Gx.\n..................P."
     }
   ]
 }

@@ -1,0 +1,439 @@
+{
+  "mission_id": "dockyard_01",
+  "variants": [
+    {
+      "variant_id": "baseline",
+      "width": 20,
+      "height": 16,
+      "spawn": [1, 13],
+      "extraction": [18, 14],
+      "time_limit": 55,
+      "obstacles": [[4, 1], [4, 2], [4, 3], [4, 4], [7, 4], [8, 4], [9, 4], [10, 4], [14, 2], [14, 3], [6, 8], [7, 8], [8, 8], [9, 8], [12, 6], [12, 7], [12, 8], [12, 9], [15, 10], [16, 10], [17, 10]],
+      "cover": [[2, 10], [3, 10], [5, 6], [10, 10], [11, 10], [13, 12], [15, 13], [16, 13], [17, 6]],
+      "primary_objective": "eliminate_target_and_extract",
+      "optional_objectives": [
+        {"objective_id": "avoid_full_alert", "description": "Avoid full alert escalation", "objective_type": "avoid_alert_stage", "stage": "mission_crisis"},
+        {"objective_id": "remain_undetected", "description": "Avoid confirmed player detection", "objective_type": "avoid_detection"},
+        {"objective_id": "finish_under_par", "description": "Finish under the mission par time", "objective_type": "finish_under_turns", "threshold": 42}
+      ],
+      "weapon": {
+        "name": "marksman_rifle",
+        "effective_range": 8,
+        "max_range": 12,
+        "base_accuracy": 0.74,
+        "noise_radius": 7,
+        "aim_bonus_per_turn": 0.08,
+        "breath_bonus": 0.12
+      },
+      "pressure_events": [
+        {"event_id": "exit_secure_timer", "turn": 20, "event_type": "secure_exit", "reason": "exit_secured", "trigger": "post_shot_threat", "trigger_delay": 1, "trigger_reason": "post_shot_lockdown"},
+        {"event_id": "vip_departure_timer", "turn": 28, "event_type": "vip_departure", "reason": "vip_departure_timer", "trigger": "vip_threat", "trigger_delay": 1, "trigger_reason": "vip_threat"}
+      ],
+      "target": {
+        "route": [[15, 4], [17, 4], [17, 6], [15, 6]],
+        "escape_route": [[17, 6], [18, 6], [18, 5], [18, 4], [18, 3], [18, 2], [18, 1]]
+      },
+      "enemies": [
+        {
+          "enemy_id": "guard_north",
+          "route": [[5, 1], [9, 1], [9, 3], [5, 3]],
+          "view_distance": 5,
+          "view_angle": 80.0,
+          "crisis_role": "hold_angle",
+          "crisis_anchor": [10, 3],
+          "weapon": {"name": "guard_rifle", "effective_range": 5, "max_range": 7, "base_accuracy": 0.36, "cooldown_turns": 2, "damage": 0.65}
+        },
+        {
+          "enemy_id": "guard_center",
+          "route": [[8, 6], [11, 6], [11, 9], [8, 9]],
+          "view_distance": 4,
+          "view_angle": 80.0,
+          "crisis_role": "protect_vip",
+          "crisis_anchor": null,
+          "weapon": {"name": "guard_rifle", "effective_range": 5, "max_range": 7, "base_accuracy": 0.36, "cooldown_turns": 2, "damage": 0.65}
+        },
+        {
+          "enemy_id": "guard_exit",
+          "route": [[15, 12], [18, 12], [18, 8], [15, 8]],
+          "view_distance": 5,
+          "view_angle": 75.0,
+          "crisis_role": "guard_exit",
+          "crisis_anchor": [18, 12],
+          "weapon": {"name": "watch_rifle", "effective_range": 6, "max_range": 8, "base_accuracy": 0.42, "cooldown_turns": 2, "damage": 0.75}
+        }
+      ]
+    },
+    {
+      "variant_id": "low_guard_awareness",
+      "width": 20,
+      "height": 16,
+      "spawn": [1, 13],
+      "extraction": [18, 14],
+      "time_limit": 55,
+      "obstacles": [[4, 1], [4, 2], [4, 3], [4, 4], [7, 4], [8, 4], [9, 4], [10, 4], [14, 2], [14, 3], [6, 8], [7, 8], [8, 8], [9, 8], [12, 6], [12, 7], [12, 8], [12, 9], [15, 10], [16, 10], [17, 10]],
+      "cover": [[2, 10], [3, 10], [5, 6], [10, 10], [11, 10], [13, 12], [15, 13], [16, 13], [17, 6]],
+      "primary_objective": "eliminate_target_and_extract",
+      "optional_objectives": [
+        {"objective_id": "avoid_full_alert", "description": "Avoid full alert escalation", "objective_type": "avoid_alert_stage", "stage": "mission_crisis"},
+        {"objective_id": "remain_undetected", "description": "Avoid confirmed player detection", "objective_type": "avoid_detection"},
+        {"objective_id": "finish_under_par", "description": "Finish under the mission par time", "objective_type": "finish_under_turns", "threshold": 42}
+      ],
+      "weapon": {
+        "name": "marksman_rifle",
+        "effective_range": 8,
+        "max_range": 12,
+        "base_accuracy": 0.74,
+        "noise_radius": 7,
+        "aim_bonus_per_turn": 0.08,
+        "breath_bonus": 0.12
+      },
+      "pressure_events": [
+        {"event_id": "exit_secure_timer", "turn": 20, "event_type": "secure_exit", "reason": "exit_secured", "trigger": "post_shot_threat", "trigger_delay": 1, "trigger_reason": "post_shot_lockdown"},
+        {"event_id": "vip_departure_timer", "turn": 28, "event_type": "vip_departure", "reason": "vip_departure_timer", "trigger": "vip_threat", "trigger_delay": 1, "trigger_reason": "vip_threat"}
+      ],
+      "target": {
+        "route": [[15, 4], [17, 4], [17, 6], [15, 6]],
+        "escape_route": [[17, 6], [18, 6], [18, 5], [18, 4], [18, 3], [18, 2], [18, 1]]
+      },
+      "enemies": [
+        {
+          "enemy_id": "guard_north",
+          "route": [[5, 1], [9, 1], [9, 3], [5, 3]],
+          "view_distance": 4,
+          "view_angle": 70.0,
+          "crisis_role": "hold_angle",
+          "crisis_anchor": [10, 3],
+          "weapon": {"name": "guard_rifle", "effective_range": 5, "max_range": 7, "base_accuracy": 0.36, "cooldown_turns": 2, "damage": 0.65}
+        },
+        {
+          "enemy_id": "guard_center",
+          "route": [[8, 6], [11, 6], [11, 9], [8, 9]],
+          "view_distance": 3,
+          "view_angle": 70.0,
+          "crisis_role": "protect_vip",
+          "crisis_anchor": null,
+          "weapon": {"name": "guard_rifle", "effective_range": 5, "max_range": 7, "base_accuracy": 0.36, "cooldown_turns": 2, "damage": 0.65}
+        },
+        {
+          "enemy_id": "guard_exit",
+          "route": [[15, 12], [18, 12], [18, 8], [15, 8]],
+          "view_distance": 4,
+          "view_angle": 65.0,
+          "crisis_role": "guard_exit",
+          "crisis_anchor": [18, 12],
+          "weapon": {"name": "watch_rifle", "effective_range": 6, "max_range": 8, "base_accuracy": 0.42, "cooldown_turns": 2, "damage": 0.75}
+        }
+      ]
+    },
+    {
+      "variant_id": "high_guard_awareness",
+      "width": 20,
+      "height": 16,
+      "spawn": [1, 13],
+      "extraction": [18, 14],
+      "time_limit": 55,
+      "obstacles": [[4, 1], [4, 2], [4, 3], [4, 4], [7, 4], [8, 4], [9, 4], [10, 4], [14, 2], [14, 3], [6, 8], [7, 8], [8, 8], [9, 8], [12, 6], [12, 7], [12, 8], [12, 9], [15, 10], [16, 10], [17, 10]],
+      "cover": [[2, 10], [3, 10], [5, 6], [10, 10], [11, 10], [13, 12], [15, 13], [16, 13], [17, 6]],
+      "primary_objective": "eliminate_target_and_extract",
+      "optional_objectives": [
+        {"objective_id": "avoid_full_alert", "description": "Avoid full alert escalation", "objective_type": "avoid_alert_stage", "stage": "mission_crisis"},
+        {"objective_id": "remain_undetected", "description": "Avoid confirmed player detection", "objective_type": "avoid_detection"},
+        {"objective_id": "finish_under_par", "description": "Finish under the mission par time", "objective_type": "finish_under_turns", "threshold": 42}
+      ],
+      "weapon": {
+        "name": "marksman_rifle",
+        "effective_range": 8,
+        "max_range": 12,
+        "base_accuracy": 0.74,
+        "noise_radius": 7,
+        "aim_bonus_per_turn": 0.08,
+        "breath_bonus": 0.12
+      },
+      "pressure_events": [
+        {"event_id": "exit_secure_timer", "turn": 20, "event_type": "secure_exit", "reason": "exit_secured", "trigger": "post_shot_threat", "trigger_delay": 1, "trigger_reason": "post_shot_lockdown"},
+        {"event_id": "vip_departure_timer", "turn": 28, "event_type": "vip_departure", "reason": "vip_departure_timer", "trigger": "vip_threat", "trigger_delay": 1, "trigger_reason": "vip_threat"}
+      ],
+      "target": {
+        "route": [[15, 4], [17, 4], [17, 6], [15, 6]],
+        "escape_route": [[17, 6], [18, 6], [18, 5], [18, 4], [18, 3], [18, 2], [18, 1]]
+      },
+      "enemies": [
+        {
+          "enemy_id": "guard_north",
+          "route": [[5, 1], [9, 1], [9, 3], [5, 3]],
+          "view_distance": 6,
+          "view_angle": 90.0,
+          "crisis_role": "hold_angle",
+          "crisis_anchor": [10, 3],
+          "weapon": {"name": "guard_rifle", "effective_range": 5, "max_range": 7, "base_accuracy": 0.36, "cooldown_turns": 2, "damage": 0.65}
+        },
+        {
+          "enemy_id": "guard_center",
+          "route": [[8, 6], [11, 6], [11, 9], [8, 9]],
+          "view_distance": 5,
+          "view_angle": 90.0,
+          "crisis_role": "protect_vip",
+          "crisis_anchor": null,
+          "weapon": {"name": "guard_rifle", "effective_range": 5, "max_range": 7, "base_accuracy": 0.36, "cooldown_turns": 2, "damage": 0.65}
+        },
+        {
+          "enemy_id": "guard_exit",
+          "route": [[15, 12], [18, 12], [18, 8], [15, 8]],
+          "view_distance": 6,
+          "view_angle": 85.0,
+          "crisis_role": "guard_exit",
+          "crisis_anchor": [18, 12],
+          "weapon": {"name": "watch_rifle", "effective_range": 6, "max_range": 8, "base_accuracy": 0.42, "cooldown_turns": 2, "damage": 0.75}
+        }
+      ]
+    },
+    {
+      "variant_id": "extra_cover",
+      "width": 20,
+      "height": 16,
+      "spawn": [1, 13],
+      "extraction": [18, 14],
+      "time_limit": 55,
+      "obstacles": [[4, 1], [4, 2], [4, 3], [4, 4], [7, 4], [8, 4], [9, 4], [10, 4], [14, 2], [14, 3], [6, 8], [7, 8], [8, 8], [9, 8], [12, 6], [12, 7], [12, 8], [12, 9], [15, 10], [16, 10], [17, 10]],
+      "cover": [[2, 10], [3, 10], [5, 6], [9, 11], [10, 10], [11, 10], [12, 11], [12, 12], [13, 12], [14, 10], [15, 13], [16, 13], [17, 6]],
+      "primary_objective": "eliminate_target_and_extract",
+      "optional_objectives": [
+        {"objective_id": "avoid_full_alert", "description": "Avoid full alert escalation", "objective_type": "avoid_alert_stage", "stage": "mission_crisis"},
+        {"objective_id": "remain_undetected", "description": "Avoid confirmed player detection", "objective_type": "avoid_detection"},
+        {"objective_id": "finish_under_par", "description": "Finish under the mission par time", "objective_type": "finish_under_turns", "threshold": 42}
+      ],
+      "weapon": {
+        "name": "marksman_rifle",
+        "effective_range": 8,
+        "max_range": 12,
+        "base_accuracy": 0.74,
+        "noise_radius": 7,
+        "aim_bonus_per_turn": 0.08,
+        "breath_bonus": 0.12
+      },
+      "pressure_events": [
+        {"event_id": "exit_secure_timer", "turn": 20, "event_type": "secure_exit", "reason": "exit_secured", "trigger": "post_shot_threat", "trigger_delay": 1, "trigger_reason": "post_shot_lockdown"},
+        {"event_id": "vip_departure_timer", "turn": 28, "event_type": "vip_departure", "reason": "vip_departure_timer", "trigger": "vip_threat", "trigger_delay": 1, "trigger_reason": "vip_threat"}
+      ],
+      "target": {
+        "route": [[15, 4], [17, 4], [17, 6], [15, 6]],
+        "escape_route": [[17, 6], [18, 6], [18, 5], [18, 4], [18, 3], [18, 2], [18, 1]]
+      },
+      "enemies": [
+        {
+          "enemy_id": "guard_north",
+          "route": [[5, 1], [9, 1], [9, 3], [5, 3]],
+          "view_distance": 5,
+          "view_angle": 80.0,
+          "crisis_role": "hold_angle",
+          "crisis_anchor": [10, 3],
+          "weapon": {"name": "guard_rifle", "effective_range": 5, "max_range": 7, "base_accuracy": 0.36, "cooldown_turns": 2, "damage": 0.65}
+        },
+        {
+          "enemy_id": "guard_center",
+          "route": [[8, 6], [11, 6], [11, 9], [8, 9]],
+          "view_distance": 4,
+          "view_angle": 80.0,
+          "crisis_role": "protect_vip",
+          "crisis_anchor": null,
+          "weapon": {"name": "guard_rifle", "effective_range": 5, "max_range": 7, "base_accuracy": 0.36, "cooldown_turns": 2, "damage": 0.65}
+        },
+        {
+          "enemy_id": "guard_exit",
+          "route": [[15, 12], [18, 12], [18, 8], [15, 8]],
+          "view_distance": 5,
+          "view_angle": 75.0,
+          "crisis_role": "guard_exit",
+          "crisis_anchor": [18, 12],
+          "weapon": {"name": "watch_rifle", "effective_range": 6, "max_range": 8, "base_accuracy": 0.42, "cooldown_turns": 2, "damage": 0.75}
+        }
+      ]
+    },
+    {
+      "variant_id": "reduced_cover",
+      "width": 20,
+      "height": 16,
+      "spawn": [1, 13],
+      "extraction": [18, 14],
+      "time_limit": 55,
+      "obstacles": [[4, 1], [4, 2], [4, 3], [4, 4], [7, 4], [8, 4], [9, 4], [10, 4], [14, 2], [14, 3], [6, 8], [7, 8], [8, 8], [9, 8], [12, 6], [12, 7], [12, 8], [12, 9], [15, 10], [16, 10], [17, 10]],
+      "cover": [[2, 10], [10, 10], [11, 10], [17, 6]],
+      "primary_objective": "eliminate_target_and_extract",
+      "optional_objectives": [
+        {"objective_id": "avoid_full_alert", "description": "Avoid full alert escalation", "objective_type": "avoid_alert_stage", "stage": "mission_crisis"},
+        {"objective_id": "remain_undetected", "description": "Avoid confirmed player detection", "objective_type": "avoid_detection"},
+        {"objective_id": "finish_under_par", "description": "Finish under the mission par time", "objective_type": "finish_under_turns", "threshold": 42}
+      ],
+      "weapon": {
+        "name": "marksman_rifle",
+        "effective_range": 8,
+        "max_range": 12,
+        "base_accuracy": 0.74,
+        "noise_radius": 7,
+        "aim_bonus_per_turn": 0.08,
+        "breath_bonus": 0.12
+      },
+      "pressure_events": [
+        {"event_id": "exit_secure_timer", "turn": 20, "event_type": "secure_exit", "reason": "exit_secured", "trigger": "post_shot_threat", "trigger_delay": 1, "trigger_reason": "post_shot_lockdown"},
+        {"event_id": "vip_departure_timer", "turn": 28, "event_type": "vip_departure", "reason": "vip_departure_timer", "trigger": "vip_threat", "trigger_delay": 1, "trigger_reason": "vip_threat"}
+      ],
+      "target": {
+        "route": [[15, 4], [17, 4], [17, 6], [15, 6]],
+        "escape_route": [[17, 6], [18, 6], [18, 5], [18, 4], [18, 3], [18, 2], [18, 1]]
+      },
+      "enemies": [
+        {
+          "enemy_id": "guard_north",
+          "route": [[5, 1], [9, 1], [9, 3], [5, 3]],
+          "view_distance": 5,
+          "view_angle": 80.0,
+          "crisis_role": "hold_angle",
+          "crisis_anchor": [10, 3],
+          "weapon": {"name": "guard_rifle", "effective_range": 5, "max_range": 7, "base_accuracy": 0.36, "cooldown_turns": 2, "damage": 0.65}
+        },
+        {
+          "enemy_id": "guard_center",
+          "route": [[8, 6], [11, 6], [11, 9], [8, 9]],
+          "view_distance": 4,
+          "view_angle": 80.0,
+          "crisis_role": "protect_vip",
+          "crisis_anchor": null,
+          "weapon": {"name": "guard_rifle", "effective_range": 5, "max_range": 7, "base_accuracy": 0.36, "cooldown_turns": 2, "damage": 0.65}
+        },
+        {
+          "enemy_id": "guard_exit",
+          "route": [[15, 12], [18, 12], [18, 8], [15, 8]],
+          "view_distance": 5,
+          "view_angle": 75.0,
+          "crisis_role": "guard_exit",
+          "crisis_anchor": [18, 12],
+          "weapon": {"name": "watch_rifle", "effective_range": 6, "max_range": 8, "base_accuracy": 0.42, "cooldown_turns": 2, "damage": 0.75}
+        }
+      ]
+    },
+    {
+      "variant_id": "fast_target_escape",
+      "width": 20,
+      "height": 16,
+      "spawn": [1, 13],
+      "extraction": [18, 14],
+      "time_limit": 55,
+      "obstacles": [[4, 1], [4, 2], [4, 3], [4, 4], [7, 4], [8, 4], [9, 4], [10, 4], [14, 2], [14, 3], [6, 8], [7, 8], [8, 8], [9, 8], [12, 6], [12, 7], [12, 8], [12, 9], [15, 10], [16, 10], [17, 10]],
+      "cover": [[2, 10], [3, 10], [5, 6], [10, 10], [11, 10], [13, 12], [15, 13], [16, 13], [17, 6]],
+      "primary_objective": "eliminate_target_and_extract",
+      "optional_objectives": [
+        {"objective_id": "avoid_full_alert", "description": "Avoid full alert escalation", "objective_type": "avoid_alert_stage", "stage": "mission_crisis"},
+        {"objective_id": "remain_undetected", "description": "Avoid confirmed player detection", "objective_type": "avoid_detection"},
+        {"objective_id": "finish_under_par", "description": "Finish under the mission par time", "objective_type": "finish_under_turns", "threshold": 42}
+      ],
+      "weapon": {
+        "name": "marksman_rifle",
+        "effective_range": 8,
+        "max_range": 12,
+        "base_accuracy": 0.74,
+        "noise_radius": 7,
+        "aim_bonus_per_turn": 0.08,
+        "breath_bonus": 0.12
+      },
+      "pressure_events": [
+        {"event_id": "exit_secure_timer", "turn": 20, "event_type": "secure_exit", "reason": "exit_secured", "trigger": "post_shot_threat", "trigger_delay": 1, "trigger_reason": "post_shot_lockdown"},
+        {"event_id": "vip_departure_timer", "turn": 28, "event_type": "vip_departure", "reason": "vip_departure_timer", "trigger": "vip_threat", "trigger_delay": 1, "trigger_reason": "vip_threat"}
+      ],
+      "target": {
+        "route": [[15, 4], [17, 4], [17, 6], [15, 6]],
+        "escape_route": [[17, 6], [18, 6], [18, 5], [18, 4]]
+      },
+      "enemies": [
+        {
+          "enemy_id": "guard_north",
+          "route": [[5, 1], [9, 1], [9, 3], [5, 3]],
+          "view_distance": 5,
+          "view_angle": 80.0,
+          "crisis_role": "hold_angle",
+          "crisis_anchor": [10, 3],
+          "weapon": {"name": "guard_rifle", "effective_range": 5, "max_range": 7, "base_accuracy": 0.36, "cooldown_turns": 2, "damage": 0.65}
+        },
+        {
+          "enemy_id": "guard_center",
+          "route": [[8, 6], [11, 6], [11, 9], [8, 9]],
+          "view_distance": 4,
+          "view_angle": 80.0,
+          "crisis_role": "protect_vip",
+          "crisis_anchor": null,
+          "weapon": {"name": "guard_rifle", "effective_range": 5, "max_range": 7, "base_accuracy": 0.36, "cooldown_turns": 2, "damage": 0.65}
+        },
+        {
+          "enemy_id": "guard_exit",
+          "route": [[15, 12], [18, 12], [18, 8], [15, 8]],
+          "view_distance": 5,
+          "view_angle": 75.0,
+          "crisis_role": "guard_exit",
+          "crisis_anchor": [18, 12],
+          "weapon": {"name": "watch_rifle", "effective_range": 6, "max_range": 8, "base_accuracy": 0.42, "cooldown_turns": 2, "damage": 0.75}
+        }
+      ]
+    },
+    {
+      "variant_id": "short_range_weapon",
+      "width": 20,
+      "height": 16,
+      "spawn": [1, 13],
+      "extraction": [18, 14],
+      "time_limit": 55,
+      "obstacles": [[4, 1], [4, 2], [4, 3], [4, 4], [7, 4], [8, 4], [9, 4], [10, 4], [14, 2], [14, 3], [6, 8], [7, 8], [8, 8], [9, 8], [12, 6], [12, 7], [12, 8], [12, 9], [15, 10], [16, 10], [17, 10]],
+      "cover": [[2, 10], [3, 10], [5, 6], [10, 10], [11, 10], [13, 12], [15, 13], [16, 13], [17, 6]],
+      "primary_objective": "eliminate_target_and_extract",
+      "optional_objectives": [
+        {"objective_id": "avoid_full_alert", "description": "Avoid full alert escalation", "objective_type": "avoid_alert_stage", "stage": "mission_crisis"},
+        {"objective_id": "remain_undetected", "description": "Avoid confirmed player detection", "objective_type": "avoid_detection"},
+        {"objective_id": "finish_under_par", "description": "Finish under the mission par time", "objective_type": "finish_under_turns", "threshold": 42}
+      ],
+      "weapon": {
+        "name": "compact_rifle",
+        "effective_range": 7,
+        "max_range": 10,
+        "base_accuracy": 0.69,
+        "noise_radius": 7,
+        "aim_bonus_per_turn": 0.08,
+        "breath_bonus": 0.1
+      },
+      "pressure_events": [
+        {"event_id": "exit_secure_timer", "turn": 20, "event_type": "secure_exit", "reason": "exit_secured", "trigger": "post_shot_threat", "trigger_delay": 1, "trigger_reason": "post_shot_lockdown"},
+        {"event_id": "vip_departure_timer", "turn": 28, "event_type": "vip_departure", "reason": "vip_departure_timer", "trigger": "vip_threat", "trigger_delay": 1, "trigger_reason": "vip_threat"}
+      ],
+      "target": {
+        "route": [[15, 4], [17, 4], [17, 6], [15, 6]],
+        "escape_route": [[17, 6], [18, 6], [18, 5], [18, 4], [18, 3], [18, 2], [18, 1]]
+      },
+      "enemies": [
+        {
+          "enemy_id": "guard_north",
+          "route": [[5, 1], [9, 1], [9, 3], [5, 3]],
+          "view_distance": 5,
+          "view_angle": 80.0,
+          "crisis_role": "hold_angle",
+          "crisis_anchor": [10, 3],
+          "weapon": {"name": "guard_rifle", "effective_range": 5, "max_range": 7, "base_accuracy": 0.36, "cooldown_turns": 2, "damage": 0.65}
+        },
+        {
+          "enemy_id": "guard_center",
+          "route": [[8, 6], [11, 6], [11, 9], [8, 9]],
+          "view_distance": 4,
+          "view_angle": 80.0,
+          "crisis_role": "protect_vip",
+          "crisis_anchor": null,
+          "weapon": {"name": "guard_rifle", "effective_range": 5, "max_range": 7, "base_accuracy": 0.36, "cooldown_turns": 2, "damage": 0.65}
+        },
+        {
+          "enemy_id": "guard_exit",
+          "route": [[15, 12], [18, 12], [18, 8], [15, 8]],
+          "view_distance": 5,
+          "view_angle": 75.0,
+          "crisis_role": "guard_exit",
+          "crisis_anchor": [18, 12],
+          "weapon": {"name": "watch_rifle", "effective_range": 6, "max_range": 8, "base_accuracy": 0.42, "cooldown_turns": 2, "damage": 0.75}
+        }
+      ]
+    }
+  ]
+}

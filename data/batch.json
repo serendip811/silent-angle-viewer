@@ -1,86 +1,209 @@
 {
-  "simulation_version": "2026-03-28-range-bands-v1",
+  "simulation_version": "2026-03-29-pressure-role-gating-v51",
+  "provenance": {
+    "mode": "batch",
+    "simulation_version": "2026-03-29-pressure-role-gating-v51",
+    "mission_id": "dockyard_01",
+    "variant_id": "baseline",
+    "time_limit": 55,
+    "batch_size": 1,
+    "seed_start": 1000,
+    "seed_end": 1000
+  },
   "mission": "dockyard_01",
   "variant": "baseline",
-  "batch_size": 20,
+  "batch_size": 1,
   "seed_start": 1000,
-  "seed_end": 1019,
+  "seed_end": 1000,
   "current_turn_limit": 55,
   "recommended_turn_limit": 55,
   "profiles": [
     {
-      "runs": 20,
-      "success_rate": 0.55,
+      "runs": 1,
+      "success_rate": 0.0,
       "shot_reveal_rate": 1.0,
-      "exposure_rate": 1.0,
-      "detection_rate": 1.0,
+      "exposure_rate": 0.0,
+      "detection_rate": 0.0,
       "shot_fired_rate": 1.0,
-      "shot_hit_rate": 0.65,
-      "target_escape_rate": 0.35,
-      "post_shot_death_rate": 0.1,
-      "avg_turns": 21.15,
-      "success_runs": 11,
-      "success_avg_turns": 24.09,
-      "success_p90_turns": 26,
-      "difficulty_score": 48.6,
+      "shot_hit_rate": 0.0,
+      "target_escape_rate": 0.0,
+      "soft_pressure_rate": 1.0,
+      "post_shot_death_rate": 0.0,
+      "avg_turns": 55.0,
+      "success_runs": 0,
+      "success_avg_turns": null,
+      "success_p90_turns": null,
+      "difficulty_score": 50.0,
       "difficulty_label": "Normal",
       "failure_breakdown": {
-        "player_dead": 2,
-        "target_escaped": 7
+        "timeout": 1
       },
-      "simulation_version": "2026-03-28-range-bands-v1",
+      "soft_pressure_reason_breakdown": {
+        "vip_threat": 1
+      },
+      "pressure_event_breakdown": {
+        "exit_secure_timer": 1,
+        "vip_departure_timer": 1
+      },
+      "pressure_effect_breakdown": {
+        "secure_exit": 1
+      },
+      "final_pressure_effect_breakdown": {
+        "secure_exit": 1
+      },
+      "perfect_optional_achievement_rate": 0.0,
+      "perfect_optional_rate": 0.0,
+      "optional_objective_achievement_rates": {
+        "avoid_full_alert": 1.0,
+        "remain_undetected": 1.0,
+        "finish_under_par": 0.0
+      },
+      "optional_objective_completion_rates": {
+        "avoid_full_alert": 0.0,
+        "remain_undetected": 0.0,
+        "finish_under_par": 0.0
+      },
+      "final_alert_stage_breakdown": {
+        "post_shot_threat": 1
+      },
+      "final_alert_stage_rates": {
+        "post_shot_threat": 1.0
+      },
+      "highest_alert_stage_breakdown": {
+        "post_shot_threat": 1
+      },
+      "highest_alert_stage_rates": {
+        "post_shot_threat": 1.0
+      },
+      "simulation_version": "2026-03-29-pressure-role-gating-v51",
       "seed_start": 1000,
-      "seed_end": 1019,
+      "seed_end": 1000,
       "agent": "beginner",
       "variant": "baseline"
     },
     {
-      "runs": 20,
-      "success_rate": 0.95,
+      "runs": 1,
+      "success_rate": 0.0,
       "shot_reveal_rate": 1.0,
-      "exposure_rate": 0.95,
-      "detection_rate": 0.95,
+      "exposure_rate": 0.0,
+      "detection_rate": 0.0,
       "shot_fired_rate": 1.0,
-      "shot_hit_rate": 0.95,
-      "target_escape_rate": 0.0,
-      "post_shot_death_rate": 0.05,
-      "avg_turns": 25.8,
-      "success_runs": 19,
-      "success_avg_turns": 26.21,
-      "success_p90_turns": 28,
-      "difficulty_score": 26.44,
-      "difficulty_label": "Easy",
+      "shot_hit_rate": 0.0,
+      "target_escape_rate": 1.0,
+      "soft_pressure_rate": 1.0,
+      "post_shot_death_rate": 0.0,
+      "avg_turns": 32.0,
+      "success_runs": 0,
+      "success_avg_turns": null,
+      "success_p90_turns": null,
+      "difficulty_score": 60.82,
+      "difficulty_label": "Hard",
       "failure_breakdown": {
-        "player_dead": 1
+        "target_escaped": 1
       },
-      "simulation_version": "2026-03-28-range-bands-v1",
+      "soft_pressure_reason_breakdown": {
+        "vip_threat": 1
+      },
+      "pressure_event_breakdown": {
+        "exit_secure_timer": 1,
+        "vip_departure_timer": 1
+      },
+      "pressure_effect_breakdown": {
+        "secure_exit": 1
+      },
+      "final_pressure_effect_breakdown": {
+        "secure_exit": 1
+      },
+      "perfect_optional_achievement_rate": 1.0,
+      "perfect_optional_rate": 0.0,
+      "optional_objective_achievement_rates": {
+        "avoid_full_alert": 1.0,
+        "remain_undetected": 1.0,
+        "finish_under_par": 1.0
+      },
+      "optional_objective_completion_rates": {
+        "avoid_full_alert": 0.0,
+        "remain_undetected": 0.0,
+        "finish_under_par": 0.0
+      },
+      "final_alert_stage_breakdown": {
+        "post_shot_threat": 1
+      },
+      "final_alert_stage_rates": {
+        "post_shot_threat": 1.0
+      },
+      "highest_alert_stage_breakdown": {
+        "post_shot_threat": 1
+      },
+      "highest_alert_stage_rates": {
+        "post_shot_threat": 1.0
+      },
+      "simulation_version": "2026-03-29-pressure-role-gating-v51",
       "seed_start": 1000,
-      "seed_end": 1019,
+      "seed_end": 1000,
       "agent": "standard",
       "variant": "baseline"
     },
     {
-      "runs": 20,
-      "success_rate": 0.95,
+      "runs": 1,
+      "success_rate": 0.0,
       "shot_reveal_rate": 1.0,
-      "exposure_rate": 0.8,
-      "detection_rate": 0.8,
+      "exposure_rate": 0.0,
+      "detection_rate": 0.0,
       "shot_fired_rate": 1.0,
-      "shot_hit_rate": 1.0,
-      "target_escape_rate": 0.0,
-      "post_shot_death_rate": 0.05,
-      "avg_turns": 33.5,
-      "success_runs": 19,
-      "success_avg_turns": 33.47,
-      "success_p90_turns": 38,
-      "difficulty_score": 24.84,
-      "difficulty_label": "Easy",
+      "shot_hit_rate": 0.0,
+      "target_escape_rate": 1.0,
+      "soft_pressure_rate": 1.0,
+      "post_shot_death_rate": 0.0,
+      "avg_turns": 30.0,
+      "success_runs": 0,
+      "success_avg_turns": null,
+      "success_p90_turns": null,
+      "difficulty_score": 60.45,
+      "difficulty_label": "Hard",
       "failure_breakdown": {
-        "player_dead": 1
+        "target_escaped": 1
       },
-      "simulation_version": "2026-03-28-range-bands-v1",
+      "soft_pressure_reason_breakdown": {
+        "vip_threat": 1
+      },
+      "pressure_event_breakdown": {
+        "exit_secure_timer": 1,
+        "vip_departure_timer": 1
+      },
+      "pressure_effect_breakdown": {
+        "secure_exit": 1
+      },
+      "final_pressure_effect_breakdown": {
+        "secure_exit": 1
+      },
+      "perfect_optional_achievement_rate": 1.0,
+      "perfect_optional_rate": 0.0,
+      "optional_objective_achievement_rates": {
+        "avoid_full_alert": 1.0,
+        "remain_undetected": 1.0,
+        "finish_under_par": 1.0
+      },
+      "optional_objective_completion_rates": {
+        "avoid_full_alert": 0.0,
+        "remain_undetected": 0.0,
+        "finish_under_par": 0.0
+      },
+      "final_alert_stage_breakdown": {
+        "post_shot_threat": 1
+      },
+      "final_alert_stage_rates": {
+        "post_shot_threat": 1.0
+      },
+      "highest_alert_stage_breakdown": {
+        "post_shot_threat": 1
+      },
+      "highest_alert_stage_rates": {
+        "post_shot_threat": 1.0
+      },
+      "simulation_version": "2026-03-29-pressure-role-gating-v51",
       "seed_start": 1000,
-      "seed_end": 1019,
+      "seed_end": 1000,
       "agent": "expert",
       "variant": "baseline"
     }

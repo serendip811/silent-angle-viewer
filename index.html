@@ -399,21 +399,46 @@
     }
 
     function renderStats(replay) {
-      const localFrame = firstFrameMatching(replay, (frame) => frame.alert_stage === 'local_investigation');
+      const localFrame = firstFrameMatching(replay, (frame) => frame.local_alert || frame.alert_stage === 'local_investigation');
+      const postShotThreatFrame = firstFrameMatching(replay, (frame) => frame.alert_stage === 'post_shot_threat');
       const contactFrame = firstFrameMatching(replay, (frame) => frame.alert_stage === 'confirmed_contact');
       const crisisFrame = firstFrameMatching(replay, (frame) => frame.alert_stage === 'mission_crisis');
+      const pressureFrame = firstFrameMatching(replay, (frame) => frame.security_pressure || frame.pressure_stage !== 'none');
+      const shotFrame = firstFrameMatching(replay, (frame) => frame.shot_fired_this_turn || frame.player_shot_fired);
+      const escapeFrame = firstFrameMatching(replay, (frame) => frame.target_escape_started_this_turn || frame.target_escaping);
+      const objectiveSummary = (replay.result.optional_objective_results || [])
+        .map((objective) => `achieved ${objective.achieved ? 'yes' : 'no'} | condition ${objective.condition_met ? 'met' : 'failed'} | completed ${objective.completed ? 'yes' : 'no'} | ${objective.description} | ${objective.detail}`)
+        .join(' | ') || '-';
       const stats = {
         Success: replay.result.success,
         'Failure Reason': replay.result.failure_reason,
+        'Primary Objective': replay.mission.primary_objective || '-',
+        'Optional Objectives': (replay.mission.optional_objectives || []).map((objective) => objective.description).join(' | ') || '-',
+        'Optional Achieved': `${replay.result.optional_objectives_achieved ?? 0}/${replay.result.optional_objectives_total ?? 0}`,
+        'Optional Completed': `${replay.result.optional_objectives_completed ?? 0}/${replay.result.optional_objectives_total ?? 0}`,
+        'Optional Results': objectiveSummary,
         Turns: replay.result.turns,
         'Current Limit': replay.mission.time_limit,
         'Recommended Limit': recommendedLimitForVariant(replay.mission.variant_id),
         'Escalation Path': summarizeEscalationPath(replay),
         'Mission Crisis': replay.frames?.some((frame) => frame.mission_crisis) ?? false,
         Alerted: replay.frames?.some((frame) => frame.alerted) ?? false,
+        'Mission Pressure': (replay.mission.pressure_events || []).map((event) => `${event.event_id}@${event.turn}`).join(', ') || '-',
+        'Security Pressure': replay.result.security_pressure ?? false,
+        'Pressure Stage': replay.result.pressure_stage || '-',
+        'Pressure Turn': pressureFrame?.turn ?? '-',
+        'Pressure Cause': pressureFrame?.pressure_reason || replay.result.pressure_reason || '-',
+        'Soft Pressure': replay.result.soft_pressure_triggered ?? false,
+        'Soft Pressure Turn': replay.result.soft_pressure_turn ?? '-',
+        'Soft Pressure Cause': replay.result.soft_pressure_reason || '-',
+        'Triggered Events': (replay.result.pressure_events_triggered || []).join(', ') || '-',
+        'Triggered Effects': (replay.result.triggered_pressure_effects || []).join(', ') || '-',
+        'Active Effects': (replay.result.active_pressure_effects || []).join(', ') || '-',
         'Local Alert': replay.frames?.some((frame) => frame.local_alert) ?? false,
         'Local Alert Turn': localFrame?.turn ?? '-',
         'Local Alert Cause': localFrame?.local_alert_reason || '-',
+        'Post-Shot Threat Turn': postShotThreatFrame?.turn ?? '-',
+        'Post-Shot Threat Cause': postShotThreatFrame?.alert_reason || '-',
         'Contact Turn': contactFrame?.turn ?? '-',
         'Contact Cause': contactFrame?.confirmed_contact_reason || '-',
         'Crisis Turn': crisisFrame?.turn ?? '-',
@@ -424,10 +449,22 @@
         'Exposure Turn': replay.result.exposure_turn ?? '-',
         Detected: replay.result.detected,
         'Detection Turn': replay.result.detection_turn ?? '-',
+        'Final Alert Stage': replay.result.final_alert_stage || '-',
+        'Highest Alert Stage': replay.result.highest_alert_stage || replay.result.final_alert_stage || '-',
+        'Final Alert Cause': replay.result.final_alert_reason || '-',
         'Shot Fired': replay.result.shot_fired,
+        'Shot Turn': replay.result.shot_turn ?? shotFrame?.turn ?? '-',
         'Shot Hit': replay.result.shot_hit,
+        'Target Down Turn': replay.result.target_down_turn ?? '-',
+        'Target Escaping': replay.frames?.some((frame) => frame.target_escaping) ?? false,
+        'Target Escape Start': replay.result.target_escape_start_turn ?? escapeFrame?.turn ?? '-',
+        'Target Escape Turn': replay.result.target_escape_turn ?? '-',
+        'Target Escape Cause': replay.result.target_escape_reason || escapeFrame?.target_escape_reason || '-',
+        'Player Alive': replay.result.player_alive,
+        'Target Alive': replay.result.target_alive,
         Extracted: replay.result.extracted,
         Seed: replay.seed,
+        Provenance: formatProvenance(replay.provenance),
       };
       const grid = document.getElementById('stats-grid');
       grid.innerHTML = '';
@@ -456,6 +493,24 @@
       return point ? `${point[0]}, ${point[1]}` : 'none';
     }
 
+    function formatSeedRange(payload) {
+      if (!payload) return '-';
+      if (payload.seed !== undefined) return String(payload.seed);
+      if (payload.seed_start !== undefined && payload.seed_end !== undefined) {
+        return payload.seed_start === payload.seed_end ? String(payload.seed_start) : `${payload.seed_start}-${payload.seed_end}`;
+      }
+      return '-';
+    }
+
+    function formatProvenance(payload) {
+      if (!payload) return 'Provenance unavailable';
+      const mode = payload.mode || 'unknown';
+      const version = payload.simulation_version || '-';
+      const seeds = formatSeedRange(payload);
+      const batch = payload.batch_size !== undefined ? ` | batch ${payload.batch_size}` : '';
+      return `${mode} | sim ${version} | seeds ${seeds}${batch}`;
+    }
+
     function renderEnemyStates(replay, frame) {
       const list = document.getElementById('enemy-list');
       list.innerHTML = '';
@@ -479,7 +534,7 @@
     }
 
     function renderVariants(payload) {
-      document.getElementById('variant-meta').textContent = `Mission ${payload.mission} | batch ${payload.batch_size}`;
+      document.getElementById('variant-meta').textContent = `Mission ${payload.mission} | ${formatProvenance(payload.provenance || payload)}`;
       const body = document.getElementById('variant-body');
       body.innerHTML = '';
       payload.variants.forEach((variant) => {
@@ -512,9 +567,15 @@
       setPill('mission-pill', `Mission: ${mission.mission_id}`);
       setPill('variant-pill', `Variant: ${mission.variant_id}`);
       setPill('profile-pill', `Profile: ${replay.profile.name}`);
+      const transitions = [];
+      if (frame.shot_fired_this_turn) transitions.push('shot');
+      if (frame.shot_hit_this_turn) transitions.push('hit');
+      if (frame.target_escape_started_this_turn) transitions.push(`escape:${frame.target_escape_reason || 'unknown'}`);
+      if (frame.pressure_events_triggered_this_turn?.length) transitions.push(`pressure:${frame.pressure_events_triggered_this_turn.join(',')}`);
+      if (frame.alert_stage_changed) transitions.push(`stage:${frame.alert_stage}`);
       setPill(
         'turn-pill',
-        `Turn: ${frame.turn} | stage ${frame.alert_stage} | cause ${frame.alert_reason} | reveal ${frame.shot_revealed ? 'yes' : 'no'} | alert ${frame.alerted ? 'yes' : 'no'} | contact ${frame.confirmed_contact ? 'yes' : 'no'}`
+        `Turn: ${frame.turn} | stage ${frame.alert_stage} | cause ${frame.alert_reason} | reveal ${frame.shot_revealed ? 'yes' : 'no'} | alert ${frame.alerted ? 'yes' : 'no'} | contact ${frame.confirmed_contact ? 'yes' : 'no'}${transitions.length ? ` | changes ${transitions.join(' / ')}` : ''}`
       );
       turnSlider.value = state.index;
     }
